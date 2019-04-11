@@ -1,11 +1,13 @@
 Package: noiseR
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
+Title: R package for noise modeling
+Version: 0.0.1
+Author: Cássio Rachid Simões, Carlos Barros de Araújo
+Date: 2019-04-11
+Maintainer: Cássio Rachid Simões <cassiorachid@gmail.com>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.1.1
