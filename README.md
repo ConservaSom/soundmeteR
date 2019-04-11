@@ -1,2 +1,2 @@
 # noiseR
-R package for sound decay modeling.
+R package for noise modeling.
