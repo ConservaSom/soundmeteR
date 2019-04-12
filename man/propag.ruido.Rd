@@ -9,25 +9,25 @@ propag.ruido(points=NA, ID=NULL, NIS0=NA, Alfa=NA, Beta=NA, elev.r=NA, contour.v
 \arguments{
 \item{points}{Matrix with longitude (first column) and latitude (second column) of each point to be modeled.}
 
-\item{ID}{Matrix with ids for each point the user wants to model. Do not use repeated names.}
+\item{ID}{Matrix with IDs for each point the user wants to model. Do not use repeated names.}
 
 \item{NIS0}{Sound intensity level at 1m. Parameter of the sound decay model. See details for explanations of the equation.}
 
-\item{Alfa}{Matrix with values of  `alfa` constant of the decay equation (see details for more information). Need to be one row for each point, even if they are the same.}
+\item{Alfa}{Matrix with values of  \emph{alfa} constant of the decay equation (see details for more information). Need to be one row for each point, even if they are the same.}
 
-\item{Beta}{Same as the alfa parameter, but representing values of `beta` constant.}
+\item{Beta}{Same as the \emph{alfa} parameter, but representing values of \emph{beta} constant.}
 
-\item{elev.r}{Raster with elevation values. OBS.: This raster will be used to extract all relevant GIS information (ex.: reslution, size, crs).}
+\item{elev.r}{Raster with elevation values. OBS.: This raster will be used to extract all relevant GIS information (\emph{i. e.} reslution, size, crs).}
 
-\item{contour.veg}{Object type `SpatialPolygonDataFrame` with the contour of the open areas (areas without vegetagion cover). Still in improvement, need to work with multiple open areas.}
+\item{contour.veg}{Object type 'SpatialPolygonDataFrame' with the contour of the open areas (areas without vegetagion cover). Still in improvement, need to work with multiple open areas.}
 
-\item{save.meta}{Logical. If `TRUE` all steps of the process of modeling will be saved in your work directory. Objects will be saved with 'Results.propag' at the beggining of the file name. (By default = `TRUE`)}
+\item{save.meta}{Logical. If \code{TRUE} all steps of the process of modeling will be saved in your work directory. Objects will be saved with 'Results.propag_' at the beggining of the file name. (By default = \code{TRUE})}
 
-\item{name.meta}{Optional. Define a custom name to be added after de default name if `save.meta` is `TRUE`.}
+\item{name.meta}{Optional. Define a custom name to be added after de default name if \code{save.meta} is \code{TRUE}.}
 
-\item{multicore}{Logical. If `TRUE` multicore processing will be active. This parameter improve the processing time. (by deafult = `TRUE`)}
+\item{multicore}{Logical. If \code{TRUE} multicore processing will be active. This parameter improve the processing time. (by deafult = \code{TRUE})}
 
-\item{cl}{Numerical. Cluster object. Number of processes to be used in the `propag.ruido` computation. Only considered if `multicore` is `TRUE`. See documentation of package `parallel` and `snow` for details. (By default = number of CPU cores of the current host less one)}
+\item{cl}{Numerical. Cluster object. Number of processes to be used in the \code{propag.ruido} computation. Only considered if \code{multicore} is \code{TRUE}. See documentation of package \code{\link{parallel}} and \code{\link{snow}} for details. (By default = number of CPU cores of the current host less one)}
 }
 \value{
 

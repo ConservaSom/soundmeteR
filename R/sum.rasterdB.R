@@ -10,7 +10,7 @@
 #' @author Cássio Rachid Simões <cassiorachid@@gmail.com>
 #'
 #' @param x A list of raster objects with values in decibels (Intensity Level) to sum.
-#' @param na.rm Logical. `NA` action, if `TRUE`, ignore NA values during the sum.
+#' @param na.rm Logical. \code{NA} action, if \code{TRUE}, ignore \code{NA} values during the sum.
 #'
 #' @details Include details.
 #'
