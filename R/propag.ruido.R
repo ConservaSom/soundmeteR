@@ -1,4 +1,4 @@
-#' Sound decay models on GIS
+#' Sound decay models for points on GIS
 #'
 #' @name propag.ruido
 #'
@@ -27,7 +27,7 @@
 #' @author Cássio Rachid Simões <cassiorachid@@gmail.com>
 #' @author Carlos Barros de Araújo <cabarau@@gmail.com>
 #'
-#' @seealso
+#' @seealso \code{\link{propag.ruido.linha}}
 #'
 #' @example
 #'

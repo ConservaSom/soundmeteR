@@ -1,44 +1,42 @@
-###################################################################################################################
-#
-#
-#####Script de automatizacao de analise de propagacao de ruido com decaimento de vegetacao e relevo por linha #####
-#Modificado a partir da propag.ruido para poder ser implementada em fondes de ruido em forma de linha (ex. estradas e esteiras)
+#' Sound decay models for lines on GIS
+#'
+#' @name propag.ruido.linha
+#'
+#' @description
+#'
+#' @usage propag.ruido.linha(line.origin=NA, line.end=NA, ID=NULL, NIS0=NA, Alfa=NA, Beta=NA, elev.r=NA, contour.veg=NA, save.meta=T, name.meta=NULL, multicore=F, cl=detectCores()-1)
+#'
+#' @param line.origin Matrix with longitude (first column) and latitude (second column) of the beggining  of each line to be modeled (only straight lines are acepted).
+#' @param line.end Matrix with longitude (first column) and latitude (second column) of the end  of each line to be modeled (only straight lines are acepted)
+#' @param ID Matrix with IDs for each line the user wants to model. Do not use repeated names.
+#' @param NIS0 Sound intensity level at 1m. Parameter of the sound decay model. See details for explanations of the equation.
+#' @param Alfa Matrix with values of  \emph{alfa} constant of the decay equation (see details for more information). Need to be one row for each point, even if they are the same.
+#' @param Beta Same as the \emph{alfa} parameter, but representing values of \emph{beta} constant.
+#' @param elev.r Raster with elevation values. OBS.: This raster will be used to extract all relevant GIS information (\emph{i. e.} reslution, size, crs).
+#' @param contour.veg Object type 'SpatialPolygonDataFrame' with the contour of the open areas (areas without vegetagion cover). Still in improvement, need to work with multiple open areas.
+#' @param save.meta Logical. If \code{TRUE} all steps of the process of modeling will be saved in your work directory. Objects will be saved with 'Results.propag_' at the beggining of the file name. (By default = \code{TRUE})
+#' @param name.meta Optional. Define a custom name to be added after de default name if \code{save.meta} is \code{TRUE}.
+#' @param multicore Logical. If \code{TRUE} multicore processing will be active. This parameter improve the processing time. (by deafult = \code{TRUE})
+#' @param cl Numerical. Cluster object. Number of processes to be used in the \code{propag.ruido} computation. Only considered if \code{multicore} is \code{TRUE}. See documentation of package \code{\link{parallel}} and \code{\link{snow}} for details. (By default = number of CPU cores of the current host less one)
+#'
+#' @details Include here the equations used and their explanation.
+#'
+#' @references
+#'
+#' @return
+#'
+#' @author Cássio Rachid Simões <cassiorachid@@gmail.com>
+#' @author Carlos Barros de Araújo <cabarau@@gmail.com>
+#'
+#' @note Function modified from \code{\link{propag.ruido}}.
+#'
+#' @seealso \code{\link{propag.ruido}}
+#'
+#' @example
+#'
+#'
 #2018.05.31
 #versao 0.1
-###################################################################################################################
-
-#OBSERVA??ES ####
-#implementado apenas para linhas retas at? o momento. Com apenas duas coordenadas: Inicio e fim da linha.
-#No futuro, implementar para linhas a partir de um shape
-
-
-####Argumentos ####
-#line.origin: Coordenadas da origem da linha (obrigat?riamente uma reta).
-#
-##line.end: Coordenadas do final da linha (obrigat?riamente uma reta).
-#
-#ID: matriz contendo a identificacao dos pontos que serao modelado. nao podem existir nome iguais.
-#
-#NIS0: Valor de NIS a 1 metro para a equacao de decaimento do ponto.
-#
-#Alfa: Matriz contendo os valores da constante alfa da equacao de decaimente. Deve ser uma matriz com um valor para cada ponto, mesmo que seja repetido.
-#
-#Beta: Semelhante ao argumento alfa, porem apresentando os valores da contante beta.
-#
-#elev.r: Raster contendo informacoes de elevacao. NOTA: Esse raster vai ser a referencia de tamanho,  resolucao e coordenadas de toda a analise.
-#
-#contour.veg: objeto do tipo SpatialPolygonDataFrame que contem o contor da regiao que nao apresenta vegetacao.
-#
-#save.meta: Argumento que define se deseja salvar ou nao as matrizes armazenadas em lista com os resultados de todas as etapas do calculo no seu diretorio de trabalho. O padrao e TRUE. Objetos serao salvos como "Results.propag_*" no seu diretorio de trabalho.
-#
-#name.meta: Opcional. o nome definido aqui serah adicionado ao fim do nome padrao de seva.meta.
-#
-#multicore: Logico. Se TRUE, processamento dee multiplos n?cleos ativada. By default: FALSE
-#
-#cl: Numerical. Cluster object. See package 'parallel' and 'snow' for details. By default: number of CPU cores less one on the current host.
-######cl for dummies: o numero de Cluster significa o numero de processos que ser?o iniciados para executar o dado processamento. Fazer mais testes para entender.
-#
-
 
 propag.ruido.linha <-function(line.origin=NA, line.end=NA, ID=NULL, NIS0=NA, Alfa=NA, Beta=NA, elev.r=NA, contour.veg=NA, save.meta=T, name.meta=NULL, multicore=F, cl=detectCores()-1){
 
