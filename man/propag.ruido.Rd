@@ -44,6 +44,9 @@ Include here the equations used and their explanation.
 \references{
 
 }
+\seealso{
+
+}
 \author{
 Cássio Rachid Simões <cassiorachid@gmail.com>
 
