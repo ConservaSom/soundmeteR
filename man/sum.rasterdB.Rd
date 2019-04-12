@@ -9,7 +9,7 @@ sum.rasterdB(x, na.rm=FALSE)
 \arguments{
 \item{x}{A list of raster objects with values in decibels (Intensity Level) to sum.}
 
-\item{na.rm}{Logical. `NA` action, if `TRUE`, ignore NA values during the sum.}
+\item{na.rm}{Logical. \code{NA} action, if \code{TRUE}, ignore \code{NA} values during the sum.}
 }
 \value{
 One raster with the sum of all other raster of the input.
