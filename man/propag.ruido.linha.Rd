@@ -4,7 +4,9 @@
 \alias{propag.ruido.linha}
 \title{Sound decay models for lines on GIS}
 \usage{
-propag.ruido.linha(line.origin=NA, line.end=NA, ID=NULL, NIS0=NA, Alfa=NA, Beta=NA, elev.r=NA, contour.veg=NA, save.meta=T, name.meta=NULL, multicore=F, cl=detectCores()-1)
+propag.ruido.linha(line.origin=NA, line.end=NA, ID=NULL, NIS0=NA, Alfa=NA,
+       Beta=NA, elev.r=NA, contour.veg=NA, save.meta=T, name.meta=NULL, multicore=F,
+       cl=detectCores()-1)
 }
 \arguments{
 \item{line.origin}{Matrix with longitude (first column) and latitude (second column) of the beggining  of each line to be modeled (only straight lines are acepted).}

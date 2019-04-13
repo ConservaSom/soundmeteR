@@ -4,7 +4,9 @@
 #'
 #' @description
 #'
-#' @usage propag.ruido(points=NA, ID=NULL, NIS0=NA, Alfa=NA, Beta=NA, elev.r=NA, contour.veg=NA, save.meta=T, name.meta=NULL, multicore=F, cl=detectCores()-1)
+#' @usage propag.ruido(points=NA, ID=NULL, NIS0=NA, Alfa=NA, Beta=NA, elev.r=NA,
+#'        contour.veg=NA, save.meta=T, name.meta=NULL, multicore=F,
+#'        cl=detectCores()-1)
 #'
 #' @param points Matrix with longitude (first column) and latitude (second column) of each point to be modeled.
 #' @param ID Matrix with IDs for each point the user wants to model. Do not use repeated names.

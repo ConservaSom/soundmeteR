@@ -4,7 +4,9 @@
 \alias{propag.ruido}
 \title{Sound decay models for points on GIS}
 \usage{
-propag.ruido(points=NA, ID=NULL, NIS0=NA, Alfa=NA, Beta=NA, elev.r=NA, contour.veg=NA, save.meta=T, name.meta=NULL, multicore=F, cl=detectCores()-1)
+propag.ruido(points=NA, ID=NULL, NIS0=NA, Alfa=NA, Beta=NA, elev.r=NA,
+       contour.veg=NA, save.meta=T, name.meta=NULL, multicore=F,
+       cl=detectCores()-1)
 }
 \arguments{
 \item{points}{Matrix with longitude (first column) and latitude (second column) of each point to be modeled.}

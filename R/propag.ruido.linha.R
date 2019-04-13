@@ -4,7 +4,9 @@
 #'
 #' @description
 #'
-#' @usage propag.ruido.linha(line.origin=NA, line.end=NA, ID=NULL, NIS0=NA, Alfa=NA, Beta=NA, elev.r=NA, contour.veg=NA, save.meta=T, name.meta=NULL, multicore=F, cl=detectCores()-1)
+#' @usage propag.ruido.linha(line.origin=NA, line.end=NA, ID=NULL, NIS0=NA, Alfa=NA,
+#'        Beta=NA, elev.r=NA, contour.veg=NA, save.meta=T, name.meta=NULL, multicore=F,
+#'        cl=detectCores()-1)
 #'
 #' @param line.origin Matrix with longitude (first column) and latitude (second column) of the beggining  of each line to be modeled (only straight lines are acepted).
 #' @param line.end Matrix with longitude (first column) and latitude (second column) of the end  of each line to be modeled (only straight lines are acepted)
