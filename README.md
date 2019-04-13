@@ -8,7 +8,7 @@ Package only availaible on [github](http://github.com/). In order to install you
 
 ```r
 #Load 'devtools' package
-library(devtolls)
+library(devtools)
 
 #Install 'noiseR' from github repositorie
 install_github("cassiorachid/noiseR", auth_token = "a063a039da862750bd86512ccced45b531879791")
