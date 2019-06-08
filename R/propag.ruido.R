@@ -2,7 +2,7 @@
 #'
 #' @name propag.ruido
 #'
-#' @description
+# @description
 #'
 #' @usage propag.ruido(points=NA, ID=NULL, NIS0=NA, Alfa=NA, Beta=NA, elev.r=NA,
 #'        contour.veg=NA, save.meta=T, name.meta=NULL, multicore=F,
@@ -22,16 +22,16 @@
 #'
 #' @details Include here the equations used and their explanation.
 #'
-#' @references
+# @references
 #'
-#' @return
+# @return
 #'
 #' @author Cássio Rachid Simões <cassiorachid@@gmail.com>
 #' @author Carlos Barros de Araújo <cabarau@@gmail.com>
 #'
 #' @seealso \code{\link{propag.ruido.linha}}
 #'
-#' @example
+# @example
 #'
 #'
 

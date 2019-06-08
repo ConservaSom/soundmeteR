@@ -19,8 +19,7 @@
 #'
 #' @author Cássio Rachid Simões <cassiorachid@@gmail.com>
 #'
-#' @seealso \code{\link[seewave]{meandB}}
-#' @seealso \code{\link[seewave]{rms}}
+#' @seealso \code{\link[seewave]{meandB}}, \code{\link[seewave]{rms}}
 #'
 #' @example rms.dB(c(80,60,65,62))
 #'
