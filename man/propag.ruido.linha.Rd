@@ -33,23 +33,14 @@ propag.ruido.linha(line.origin=NA, line.end=NA, ID=NULL, NIS0=NA, Alfa=NA,
 
 \item{cl}{Numerical. Cluster object. Number of processes to be used in the \code{propag.ruido} computation. Only considered if \code{multicore} is \code{TRUE}. See documentation of package \code{\link{parallel}} and \code{\link{snow}} for details. (By default = number of CPU cores of the current host less one)}
 }
-\value{
-
-}
 \description{
-
+Sound decay models for lines on GIS
 }
 \details{
 Include here the equations used and their explanation.
 }
 \note{
 Function modified from \code{\link{propag.ruido}}.
-}
-\examples{
-
-}
-\references{
-
 }
 \seealso{
 \code{\link{propag.ruido}}

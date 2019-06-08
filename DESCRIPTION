@@ -1,8 +1,8 @@
 Type: Package
 Package: noiseR
 Title: R package for noise modeling
-Version: 0.0.1
-Date: 2019-04-13
+Version: 0.0.2
+Date: 2019-06-8
 Author: Cássio Rachid Simões and Carlos Barros de Araújo
 Maintainer: Cássio Rachid Simões <cassiorachid@gmail.com>
 Description: More about what it does (maybe more than one line)
@@ -14,4 +14,4 @@ Imports: raster, rgeos, sp, tuneR
 Suggests: parallel
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 6.1.1.9000
