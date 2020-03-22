@@ -7,6 +7,6 @@ R package for noise modeling.
 Package only availaible on [github](http://github.com/). In order to install you will need the [devtools](https://cran.r-project.org/package=devtools) package intalled on your [R program](https://www.r-project.org/). If you want to install, please follow the steps bellow:
 
 ```r
-#Install 'noiseR' from github repositorie
+#Install 'noiseR' from github repository
 devtools::install_github("cassiorachid/noiseR", auth_token = "a063a039da862750bd86512ccced45b531879791")
 ```
