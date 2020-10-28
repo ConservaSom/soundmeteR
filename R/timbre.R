@@ -1,29 +1,33 @@
-#Escrevendo funcoes para analise de intensidade por tercas de oitavas
-#cassiorachid@gmail.com
-
-#Funcao 'timbre' versao 0.6 ####
-#2018.05.20
-#Novidades da vers?o:
-#Op??o de output com intervalos de bandas em oitavas ou ter?as de oitavas.
-
-#Espectro de potencia baseado em http://samcarcagno.altervista.org/blog/basic-sound-processing-r/?doing_wp_cron=1495144982.9675290584564208984375
-#Valores de ponderacao das curvas A, B e c baseador em: Bech & Zacharov. 2006. Perceptual Audio Evaluation-Theory, Method and Application
-
-#Caution: You need to use an audiofile with entire values of secconds of duration to avoid bugs. Example: 35s, 60s, 19s.
-  #By default, the function will trunc your audiofile to the next entire value of seconds.
-#These function works only with mono audiofiles.
-#The audiofiles need to have at least 44100Hz of sampling rate.
+#' Intensity per octave or octave thirds
+#'
+#' @name timbre
+#'
+#' @description
+#'
+#' @usage timbre(files="wd", weighting="none", bands="thirds", saveresults=F,
+#'        outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T)
+#'
+#' @param files The audiofile to be analyzed. Can be "wd" to get all wave files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory, or an Wave object (or a list containing more than one Wave object). (By default: "wd")
+#' @param weighting Character. Indicate the weighting curve to use on the anlysis. A, B, C and none are supported. (By default: "none")
+#' @param bands Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")
+#' @param saveresults Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})
+#' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})
+#' @param Leq.calib Numerical. The sound intensity level (in dB) that the sound in the audio file must have (by default: NULL). Can not be set if \code{Calib.value} is also set.
+#' @param Calib.value Numerical. The calibration value returned from the analysis of a reference sound using \code{Leq.calib} (by default: NULL). Can not be set if \code{Leq.calib} is also set.
+#' @param time.mess Logical. Activate or deactivate message of time to complete the function execution. (By default: \code{TRUE})
+#' @param stat.mess Logical. Activate or deactivate status message of the function execution. (By default: \code{TRUE})
+#'
+#' @author Cássio Rachid Simões <cassiorachid@@gmail.com>
+#'
+#' @details Caution: You need to use an audiofile with entire values of secconds of duration to avoid bugs. Example: 35s, 60s, 19s. By default, the function will trunc your audiofile to the next entire value of seconds.
+#' @details These function works only with mono audiofiles.
+#' @details The audio files need to have at least 44100Hz of sampling rate.
+#'
+#' @references Espectro de potencia baseado em http://samcarcagno.altervista.org/blog/basic-sound-processing-r/?doing_wp_cron=1495144982.9675290584564208984375
+#' @references Valores de ponderacao das curvas A, B e c baseado em: Bech & Zacharov. 2006. Perceptual Audio Evaluation-Theory, Method and Application
 
 #### Arguments ####
-#files: The audiofile to be analysed.
-#weighting:
-#bands: Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")
-#saveresults:
-#outname:
-#Leq.calib:lkmdb
-#Calib.value:
-#time.mess:
-#stat.mess:
+
 
 timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T){
   start.time<-Sys.time()
@@ -56,14 +60,13 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
   if((!is.null(Calib.value)) && (!is.numeric(Calib.value))) {stop("Please, use a numeric value on 'Calib.value'.", call. = F)}
 
-  if(bands!="thirds" && bands!="octaves"){stop("Please, check the 'bands' argument. Only 'octaves' or 'thirds' intervals available.", call. = F)} #mexendo aqui" pronto####
+  if(bands!="thirds" && bands!="octaves"){stop("Please, check the 'bands' argument. Only 'octaves' or 'thirds' intervals available.", call. = F)}
 
 
   Freqbands<-c(24.8,31.3,39.4,49.6,62.5,78.7,99.2,125,157.5,198.4,250,315.0,396.9,500,630.0,793.7,1000,1259.9,1587.4,2000,2519.8,3174.8,4000,5039.7,6349.6,8000,10079.4,12699.2,16000,20158.7)
   matriz<-data.frame(matrix(data=NA,nrow=length(arquivos),ncol=2+length(Freqbands)))
   colnames(matriz)<-c("Arquivo","Leq","25","31.5","40","50","63","80","100","125","160","200","250","315","400","500","630","800","1000","1250","1600","2000","2500","3150","4000","5000","6300","8000","10000","12500","16000","20000")
 
-  #mexendo aqui! PRONTO!####
   if(bands=="octaves"){
     matriz.octaves<- data.frame(matrix(data=NA,nrow=length(arquivos),ncol=2+10))
     colnames(matriz.octaves)<-c("Arquivo","Leq","31.5","63","125","250","500","1000","2000","4000","8000","16000")
@@ -187,7 +190,6 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
     }
 
 
-    #mexendo aqui! Falta debugar! ####
     #mudando os intervalos para bandas de oitavas ao inv?s de ter?as.
     if(bands=="octaves"){
       matriz.octaves[i,1:2]<-matriz[i,1:2] #adicionando o Leq a planilha de oitavas
@@ -215,7 +217,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
     if(saveresults) { #Salvando a matriz por som analisado ####
 
-      if(bands=="octaves"){ #mexendo aqui! Pronto! ####
+      if(bands=="octaves"){
         matriz.2save<-matriz.octaves
       }else {
         matriz.2save<-matriz
@@ -233,7 +235,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
   }
 
 
-  if(bands=="octaves"){ #mexendo aqui! Pronto! ####
+  if(bands=="octaves"){
     matriz<-matriz.octaves
   }
 
