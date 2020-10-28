@@ -128,9 +128,14 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
         }
       }
 
-       sum.int<-20*log10(sum(10^(
+      #sqrt adicionado por deducao ----
+      #Uma vez que a raiz da soma da energia do espectro de potencia eh igual a o rms do oscilograma, se fez necessario aplicar esse mesmo metodo para os intervalos de oitavas e tercas de oitavas
+      #a deducao veio quando o link abaixo diz que somando a energia das bandas se obtem o mesmo valor do LAeq (testado aqui e so confere se as bandas forem calculadas pela raiz da soma e não apenas a soma)
+      #https://www.cirrusresearch.co.uk/blog/2020/03/calculation-of-dba-from-octave-band-sound-pressure-levels/
+      #Testado com os dados de Harrison et al (1980) e os dados são mais pŕoximos com esse metodo do sqrt
+       sum.int<-20*log10(sqrt(sum(10^(
         espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2]
-        /20)))
+        /20))))
 
       if(is.finite(sum.int)){
         matriz[i,j+2]<-sum.int
@@ -180,7 +185,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
       }
 
     } else if(weighting=="none"){ # Implementando Curva Z (nenhuma) ####
-      matriz[i,2]<-round(20*log10( sum(10^(matriz[i,c(-1,-2)]/20)) ),1)
+      matriz[i,2]<-round(20*log10(sum(10^(matriz[i,c(-1,-2)]/20))),1)
 
       if(is.numeric(Leq.calib)) {
         calibration[i,1]<-matriz[i,1]
@@ -194,7 +199,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
     }
 
 
-    #mudando os intervalos para bandas de oitavas ao inv?s de ter?as.
+    #mudando os intervalos para bandas de oitavas ####
     if(bands=="octaves"){
       matriz.octaves[i,1:2]<-matriz[i,1:2] #adicionando o Leq a planilha de oitavas
       matriz[i,c(-1:-2)]<-10^(matriz[i,c(-1:-2)]/20) #linearizando para somar
@@ -213,7 +218,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
       matriz[i,c(-1:-2)]<-round(20*log10(matriz[i,c(-1:-2)]),1) #voltando a matriz de ter?as para dB para evitar erros nas demais etapas da fun??o
 
-      matriz.octaves[i,c(-1:-2)]<-round(20*log10(matriz.octaves[i,c(-1:-2)]),1) #convertendo a matriz de oitavas pra dB tamb?m
+      matriz.octaves[i,c(-1:-2)]<-round(20*log10(matriz.octaves[i,c(-1:-2)]),1) #convertendo a matriz de oitavas pra dB tambem
 
     }
 
