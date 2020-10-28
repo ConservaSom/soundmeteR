@@ -1,29 +1,33 @@
-#Escrevendo funcoes para analise de intensidade por tercas de oitavas
-#cassiorachid@gmail.com
-
-#Funcao 'timbre' versao 0.6 ####
-#2018.05.20
-#Novidades da vers?o:
-#Op??o de output com intervalos de bandas em oitavas ou ter?as de oitavas.
-
-#Espectro de potencia baseado em http://samcarcagno.altervista.org/blog/basic-sound-processing-r/?doing_wp_cron=1495144982.9675290584564208984375
-#Valores de ponderacao das curvas A, B e c baseador em: Bech & Zacharov. 2006. Perceptual Audio Evaluation-Theory, Method and Application
-
-#Caution: You need to use an audiofile with entire values of secconds of duration to avoid bugs. Example: 35s, 60s, 19s.
-  #By default, the function will trunc your audiofile to the next entire value of seconds.
-#These function works only with mono audiofiles.
-#The audiofiles need to have at least 44100Hz of sampling rate.
+#' Intensity per octave or octave thirds
+#'
+#' @name timbre
+#'
+#' @description
+#'
+#' @usage timbre(files="wd", weighting="none", bands="thirds", saveresults=F,
+#'        outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T)
+#'
+#' @param files The audiofile to be analyzed. Can be "wd" to get all wave files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory, or an Wave object (or a list containing more than one Wave object). (By default: "wd")
+#' @param weighting Character. Indicate the weighting curve to use on the anlysis. A, B, C and none are supported. (By default: "none")
+#' @param bands Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")
+#' @param saveresults Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})
+#' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})
+#' @param Leq.calib Numerical. The sound intensity level (in dB) that the sound in the audio file must have (by default: NULL). Can not be set if \code{Calib.value} is also set.
+#' @param Calib.value Numerical. The calibration value returned from the analysis of a reference sound using \code{Leq.calib} (by default: NULL). Can not be set if \code{Leq.calib} is also set.
+#' @param time.mess Logical. Activate or deactivate message of time to complete the function execution. (By default: \code{TRUE})
+#' @param stat.mess Logical. Activate or deactivate status message of the function execution. (By default: \code{TRUE})
+#'
+#' @author Cássio Rachid Simões <cassiorachid@@gmail.com>
+#'
+#' @details Caution: You need to use an audiofile with entire values of secconds of duration to avoid bugs. Example: 35s, 60s, 19s. By default, the function will trunc your audiofile to the next entire value of seconds.
+#' @details These function works only with mono audiofiles.
+#' @details The audio files need to have at least 44100Hz of sampling rate.
+#'
+#' @references Espectro de potencia baseado em http://samcarcagno.altervista.org/blog/basic-sound-processing-r/?doing_wp_cron=1495144982.9675290584564208984375
+#' @references Valores de ponderacao das curvas A, B e c baseado em: Bech & Zacharov. 2006. Perceptual Audio Evaluation-Theory, Method and Application
 
 #### Arguments ####
-#files: The audiofile to be analysed.
-#weighting:
-#bands: Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")
-#saveresults:
-#outname:
-#Leq.calib:lkmdb
-#Calib.value:
-#time.mess:
-#stat.mess:
+
 
 timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T){
   start.time<-Sys.time()
