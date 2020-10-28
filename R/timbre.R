@@ -63,6 +63,8 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
   if(bands!="thirds" && bands!="octaves"){stop("Please, check the 'bands' argument. Only 'octaves' or 'thirds' intervals available.", call. = F)}
 
 
+  #Defininfo os intervalos de frequência e montando a matriz que amazenara resultados ####
+  #
   Freqbands<-c(24.8,31.3,39.4,49.6,62.5,78.7,99.2,125,157.5,198.4,250,315.0,396.9,500,630.0,793.7,1000,1259.9,1587.4,2000,2519.8,3174.8,4000,5039.7,6349.6,8000,10079.4,12699.2,16000,20158.7)
   matriz<-data.frame(matrix(data=NA,nrow=length(arquivos),ncol=2+length(Freqbands)))
   colnames(matriz)<-c("Arquivo","Leq","25","31.5","40","50","63","80","100","125","160","200","250","315","400","500","630","800","1000","1250","1600","2000","2500","3150","4000","5000","6300","8000","10000","12500","16000","20000")
@@ -110,8 +112,9 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
     freqArray <- (0:(nUniquePts-1)) * (som@samp.rate / n) #  create the frequency array
 
-    espec<-data.frame(Freq.Hz=freqArray, Int.dB=10*log10(p))
+    espec<-data.frame(Freq.Hz=freqArray, Int.dB=10*log10(p)) #Tabela contendo frequencias e energia em dBFS. ----
 
+    #Calulando a quantidade de energia por banda de frequência ####
     for (j in 1:length(Freqbands)) {
 
 
@@ -136,6 +139,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
     matriz[i,c(-1,-2)]<-round(matriz[i,c(-1,-2)], 1) #arredondando valores para 1 casa decimal
 
+    #Implementando curvas de ponderacao ####
     if(weighting=="A"){ # Implementando Curva A ####
       matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+c(-44.7,-39.4,-34.6,-30.2,-26.2,-22.5,-19.1,-16.1,-13.4,-10.9,-8.6,-6.6,-4.8,-3.2,-1.9,-0.8,0,0.6,1,1.2,1.3,1.2,1,0.5,-0.1,-1.1,-2.5,-4.3,-6.6,-9.3)
       matriz[i,2]<-round(10*log10(sum(10^(matriz[i,c(-1,-2)]/10))),1)
@@ -176,7 +180,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
       }
 
     } else if(weighting=="none"){ # Implementando Curva Z (nenhuma) ####
-      matriz[i,2]<-round(10*log10(sum(10^(matriz[i,c(-1,-2)]/10))),1)
+      matriz[i,2]<-round(10*log10( sum(10^(matriz[i,c(-1,-2)]/10)) ),1)
 
       if(is.numeric(Leq.calib)) {
         calibration[i,1]<-matriz[i,1]
