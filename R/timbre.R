@@ -112,7 +112,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
     freqArray <- (0:(nUniquePts-1)) * (som@samp.rate / n) #  create the frequency array
 
-    espec<-data.frame(Freq.Hz=freqArray, Int.dB=10*log10(p)) #Tabela contendo frequencias e energia em dBFS. ----
+    espec<-data.frame(Freq.Hz=freqArray, Int.dB=20*log10(p)) #Tabela contendo frequencias e energia em dBFS. DUVIDA: 20*log10(p) ou 10*log10(p)? Mantendo em 20 por enquanto, nosso objetivo é SPL. Mudando todos no 'change level reference to 20' commit  ----
 
     #Calulando a quantidade de energia por banda de frequência ####
     for (j in 1:length(Freqbands)) {
@@ -128,9 +128,9 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
         }
       }
 
-       sum.int<-10*log10(sum(10^(
+       sum.int<-20*log10(sum(10^(
         espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2]
-        /10)))
+        /20)))
 
       if(is.finite(sum.int)){
         matriz[i,j+2]<-sum.int
@@ -142,7 +142,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
     #Implementando curvas de ponderacao ####
     if(weighting=="A"){ # Implementando Curva A ####
       matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+c(-44.7,-39.4,-34.6,-30.2,-26.2,-22.5,-19.1,-16.1,-13.4,-10.9,-8.6,-6.6,-4.8,-3.2,-1.9,-0.8,0,0.6,1,1.2,1.3,1.2,1,0.5,-0.1,-1.1,-2.5,-4.3,-6.6,-9.3)
-      matriz[i,2]<-round(10*log10(sum(10^(matriz[i,c(-1,-2)]/10))),1)
+      matriz[i,2]<-round(20*log10(sum(10^(matriz[i,c(-1,-2)]/20))),1)
 
       if(is.numeric(Leq.calib)) {
         calibration[i,1]<-matriz[i,1]
@@ -150,12 +150,12 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
       } else if(is.numeric(Calib.value)) {
         matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+Calib.value
-        matriz[i,2]<-round(10*log10(rowSums(10^(matriz[i,c(-1,-2)]/10))),1)
+        matriz[i,2]<-round(20*log10(rowSums(10^(matriz[i,c(-1,-2)]/20))),1)
       }
 
     } else if(weighting=="B") { # Implementando Curva B ####
       matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+c(-20.4,-17.1,-14.2,-11.6,-9.3,-7.4,-5.6,-4.2,-3,-2,-1.3,-0.8,-0.5,-0.3,-0.1,0,0,0,0,-0.1,-0.2,-0.4,-0.7,-1.2,-1.9,-2.9,-4.3,-6.1,-8.4,-11.1)
-      matriz[i,2]<-round(10*log10(sum(10^(matriz[i,c(-1,-2)]/10))),1)
+      matriz[i,2]<-round(20*log10(sum(10^(matriz[i,c(-1,-2)]/20))),1)
 
       if(is.numeric(Leq.calib)) {
         calibration[i,1]<-matriz[i,1]
@@ -163,12 +163,12 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
       } else if(is.numeric(Calib.value)) {
         matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+Calib.value
-        matriz[i,2]<-round(10*log10(rowSums(10^(matriz[i,c(-1,-2)]/10))),1)
+        matriz[i,2]<-round(20*log10(rowSums(10^(matriz[i,c(-1,-2)]/20))),1)
       }
 
     } else if(weighting=="C"){ # Implementando Curva C ####
       matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+c(-4.4,-3,-2,-1.3,-0.8,-0.5,-0.3,-0.2,-0.1,0,0,0,0,0,0,0,0,0,-0.1,-0.2,-0.3,-0.5,-0.8,-1.3,-2,-3,-4.4,-6.2,-8.5,-11.2)
-      matriz[i,2]<-round(10*log10(sum(10^(matriz[i,c(-1,-2)]/10))),1)
+      matriz[i,2]<-round(20*log10(sum(10^(matriz[i,c(-1,-2)]/20))),1)
 
       if(is.numeric(Leq.calib)) {
         calibration[i,1]<-matriz[i,1]
@@ -176,11 +176,11 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
       } else if(is.numeric(Calib.value)) {
         matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+Calib.value
-        matriz[i,2]<-round(10*log10(rowSums(10^(matriz[i,c(-1,-2)]/10))),1)
+        matriz[i,2]<-round(20*log10(rowSums(10^(matriz[i,c(-1,-2)]/20))),1)
       }
 
     } else if(weighting=="none"){ # Implementando Curva Z (nenhuma) ####
-      matriz[i,2]<-round(10*log10( sum(10^(matriz[i,c(-1,-2)]/10)) ),1)
+      matriz[i,2]<-round(20*log10( sum(10^(matriz[i,c(-1,-2)]/20)) ),1)
 
       if(is.numeric(Leq.calib)) {
         calibration[i,1]<-matriz[i,1]
@@ -188,7 +188,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
       } else if(is.numeric(Calib.value)) {
         matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+Calib.value
-        matriz[i,2]<-round(10*log10(rowSums(10^(matriz[i,c(-1,-2)]/10))),1)
+        matriz[i,2]<-round(20*log10(rowSums(10^(matriz[i,c(-1,-2)]/20))),1)
       }
 
     }
@@ -197,7 +197,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
     #mudando os intervalos para bandas de oitavas ao inv?s de ter?as.
     if(bands=="octaves"){
       matriz.octaves[i,1:2]<-matriz[i,1:2] #adicionando o Leq a planilha de oitavas
-      matriz[i,c(-1:-2)]<-10^(matriz[i,c(-1:-2)]/10) #linearizando para somar
+      matriz[i,c(-1:-2)]<-10^(matriz[i,c(-1:-2)]/20) #linearizando para somar
 
       #Somando as intensidads das ter?as pertencentes ao intervalo da oitava:
       matriz.octaves[i,"31.5"] = matriz[i,which(colnames(matriz)=="31.5")-1] + matriz[i,which(colnames(matriz)=="31.5")] + matriz[i,which(colnames(matriz)=="31.5")+1]
@@ -211,9 +211,9 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
       matriz.octaves[i,"8000"] = matriz[i,which(colnames(matriz)=="8000")-1] + matriz[i,which(colnames(matriz)=="8000")] + matriz[i,which(colnames(matriz)=="8000")+1]
       matriz.octaves[i,"16000"] = matriz[i,which(colnames(matriz)=="16000")-1] + matriz[i,which(colnames(matriz)=="16000")] + matriz[i,which(colnames(matriz)=="16000")+1]
 
-      matriz[i,c(-1:-2)]<-round(10*log10(matriz[i,c(-1:-2)]),1) #voltando a matriz de ter?as para dB para evitar erros nas demais etapas da fun??o
+      matriz[i,c(-1:-2)]<-round(20*log10(matriz[i,c(-1:-2)]),1) #voltando a matriz de ter?as para dB para evitar erros nas demais etapas da fun??o
 
-      matriz.octaves[i,c(-1:-2)]<-round(10*log10(matriz.octaves[i,c(-1:-2)]),1) #convertendo a matriz de oitavas pra dB tamb?m
+      matriz.octaves[i,c(-1:-2)]<-round(20*log10(matriz.octaves[i,c(-1:-2)]),1) #convertendo a matriz de oitavas pra dB tamb?m
 
     }
 
