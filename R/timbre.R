@@ -128,14 +128,9 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
         }
       }
 
-      #sqrt adicionado por deducao ----
-      #Uma vez que a raiz da soma da energia do espectro de potencia eh igual a o rms do oscilograma, se fez necessario aplicar esse mesmo metodo para os intervalos de oitavas e tercas de oitavas
-      #a deducao veio quando o link abaixo diz que somando a energia das bandas se obtem o mesmo valor do LAeq (testado aqui e so confere se as bandas forem calculadas pela raiz da soma e não apenas a soma)
-      #https://www.cirrusresearch.co.uk/blog/2020/03/calculation-of-dba-from-octave-band-sound-pressure-levels/
-      #Testado com os dados de Harrison et al (1980) e os dados são mais pŕoximos com esse metodo do sqrt
-       sum.int<-LineartodB( sqrt(sum(
+      sum.int<-LineartodB( sum(#se houver sqrt aqui, eh necessario guargar os resultados sem sqrt para ponderacao ver o link a seguir para compreender a ideia de colocar sqrt aqui #https://www.cirrusresearch.co.uk/blog/2020/03/calculation-of-dba-from-octave-band-sound-pressure-levels/
          dBtoLinear(espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2], fac="IL", ref=1) #usando fator 10 (IL) por conta da conversao passada ter usado a mesma para chegar em dB
-        )), fac="IL", ref=1)
+        ), fac="IL", ref=1)
 
       if(is.finite(sum.int)){
         matriz[i,j+2]<-sum.int
@@ -186,9 +181,9 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
     } else if(weighting=="none"){ # Implementando Curva Z (nenhuma) ####
       matriz[i,2]<-round(
-        LineartodB(  sum( #sem sqrt por ter o sqrt nas bandas
+        LineartodB(  sqrt(sum( #essa equacao resulta igual ao rms do oscilograma
           dBtoLinear(matriz[i,c(-1,-2)], fac="IL", ref=1)
-        ), fac="IL", ref=1)
+        )) , fac="IL", ref=1)
         ,1)
 
       if(is.numeric(Leq.calib)) {
