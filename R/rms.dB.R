@@ -11,11 +11,11 @@
 #' @param ... Further arguments passed to \code{\link[base]{mean}}.
 #'
 #' @details This function convert your dB data to linear values, compute the Root Mean Square (rms) and converts the result to dB again.
-#' @details This function was adaptet from \code{\link[seewave]{meandB}} and \code{\link[seewave]{rms}} functions from \code{\link[seewave]{seewave}} package. See their help for more details.
+#' @details This function was adapted from \code{\link[seewave]{meandB}} and \code{\link[seewave]{rms}} functions from \code{\link[seewave]{seewave}} package. See their help for more details.
 #'
 #' @references
 #'
-#' @return A numeric values that represent the root mean square of x.
+#' @return A numeric value that represent the root mean square of x.
 #'
 #' @author Cássio Rachid Simões <cassiorachid@@gmail.com>
 #'
