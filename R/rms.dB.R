@@ -25,17 +25,17 @@
 #'
 rms.dB<-function(x, level="SPL", ...){
   if(level == "IL") {
-    ref <- 10
+    factanal() <- 10
   }else if(level == "SPL"){
-    ref <- 20
+    fac <- 20
   }else{stop("Only 'SPL' or 'IL' acepted for level argument.")
   }
 
-  x <- 10^(x/ref) #Convert to linear
+  x <- 10^(x/fac) #Convert to linear
 
   x <- sqrt(mean(x^2, ...)) #compute the rms
 
-  x <- ref * log10(x) #back to decibels
+  x <- fac * log10(x) #back to decibels
 
   return(x)
 }
