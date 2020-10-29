@@ -14,7 +14,7 @@ rms.dB(x, level="SPL", ...)
 \item{...}{Further arguments passed to \code{\link[base]{mean}}.}
 }
 \value{
-A numeric values that represent the root mean square of x.
+A numeric value that represent the root mean square of x.
 }
 \description{
 Function to compute the root mean square (RMS) of values in decibels (dB).
@@ -22,10 +22,7 @@ Function to compute the root mean square (RMS) of values in decibels (dB).
 \details{
 This function convert your dB data to linear values, compute the Root Mean Square (rms) and converts the result to dB again.
 
-This function was adaptet from \code{\link[seewave]{meandB}} and \code{\link[seewave]{rms}} functions from \code{\link[seewave]{seewave}} package. See their help for more details.
-}
-\references{
-
+This function was adapted from \code{\link[seewave]{meandB}} and \code{\link[seewave]{rms}} functions from \code{\link[seewave]{seewave}} package. See their help for more details.
 }
 \seealso{
 \code{\link[seewave]{meandB}}, \code{\link[seewave]{rms}}
