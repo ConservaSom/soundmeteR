@@ -112,7 +112,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
     freqArray <- (0:(nUniquePts-1)) * (som@samp.rate / n) #  create the frequency array
 
-    espec<-data.frame(Freq.Hz=freqArray, Int.dB=20*log10(p)) #Tabela contendo frequencias e energia em dBFS. DUVIDA: 20*log10(p) ou 10*log10(p)? Mantendo em 20 por enquanto, nosso objetivo é SPL. Mudando todos no 'change level reference to 20' commit  ----
+    espec<-data.frame(Freq.Hz=freqArray, Int.dB=LineartodB(p, fac="IL", ref=1)) #Tabela contendo frequencias e energia em dBFS. DUVIDA: 20*log10(p) ou 10*log10(p)? usando 10 aqui por que a samcarcacno tmb usa, ver pagina que a função LineartodB() recomenda para entender melhor  ----
 
     #Calulando a quantidade de energia por banda de frequência ####
     for (j in 1:length(Freqbands)) {
@@ -133,9 +133,9 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
       #a deducao veio quando o link abaixo diz que somando a energia das bandas se obtem o mesmo valor do LAeq (testado aqui e so confere se as bandas forem calculadas pela raiz da soma e não apenas a soma)
       #https://www.cirrusresearch.co.uk/blog/2020/03/calculation-of-dba-from-octave-band-sound-pressure-levels/
       #Testado com os dados de Harrison et al (1980) e os dados são mais pŕoximos com esse metodo do sqrt
-       sum.int<-20*log10(sqrt(sum(10^(
-        espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2]
-        /20))))
+       sum.int<-LineartodB( sqrt(sum(
+         dBtoLinear(espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2], fac="IL", ref=1) #usando fator 10 (IL) por conta da conversao passada ter usado a mesma para chegar em dB
+        )), fac="IL", ref=1)
 
       if(is.finite(sum.int)){
         matriz[i,j+2]<-sum.int
@@ -185,7 +185,11 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
       }
 
     } else if(weighting=="none"){ # Implementando Curva Z (nenhuma) ####
-      matriz[i,2]<-round(20*log10(sum(10^(matriz[i,c(-1,-2)]/20))),1)
+      matriz[i,2]<-round(
+        LineartodB(  sum( #sem sqrt por ter o sqrt nas bandas
+          dBtoLinear(matriz[i,c(-1,-2)], fac="IL", ref=1)
+        ), fac="IL", ref=1)
+        ,1)
 
       if(is.numeric(Leq.calib)) {
         calibration[i,1]<-matriz[i,1]
