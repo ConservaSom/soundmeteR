@@ -25,7 +25,7 @@
 #'
 rms.dB<-function(x, level="SPL", ...){
   if(level == "IL") {
-    factanal() <- 10
+    fac <- 10
   }else if(level == "SPL"){
     fac <- 20
   }else{stop("Only 'SPL' or 'IL' acepted for level argument.")
