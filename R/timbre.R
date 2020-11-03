@@ -131,7 +131,11 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
       sum.int<-LineartodB( sqrt(sum(#se houver sqrt aqui, eh necessario guargar os resultados sem sqrt para ponderacao ver o link a seguir para compreender a ideia de colocar sqrt aqui #https://www.cirrusresearch.co.uk/blog/2020/03/calculation-of-dba-from-octave-band-sound-pressure-levels/
          espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2]^2 #equação de energia por banda baseada em Miyara 2017
+<<<<<<< HEAD
       ))/sqrt(2) #to apply calibration
+=======
+      ))/sqrt(2)
+>>>>>>> 130ffc28d4ea89cdc9e30014464c233309f2a959
         , fac="IL", ref=1)
 
       if(is.finite(sum.int)){
