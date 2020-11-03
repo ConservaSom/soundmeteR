@@ -113,7 +113,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
     freqArray <- (0:(nUniquePts-1)) * (som@samp.rate / n) #  create the frequency array
 
-    espec<-data.frame(Freq.Hz=freqArray, Int.linear=p) #Espectro em escala linear
+    espec<-data.frame(Freq.Hz=freqArray, Int.linear=p^2) #p^2 é parte da equação 8.39 de Miyara (2017)
 
     #Calulando a quantidade de energia por banda de frequência ####
     for (j in 1:length(Freqbands)) {
@@ -130,7 +130,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
       }
 
       sum.int<-LineartodB( sqrt(sum(#se houver sqrt aqui, eh necessario guargar os resultados sem sqrt para ponderacao ver o link a seguir para compreender a ideia de colocar sqrt aqui #https://www.cirrusresearch.co.uk/blog/2020/03/calculation-of-dba-from-octave-band-sound-pressure-levels/
-         espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2]^2 #equação de energia por banda baseada em Miyara 2017
+         espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2] #equação de energia por banda baseada em Miyara 2017
       ))/sqrt(2) #to apply calibration
         , fac="IL", ref=1)
 
