@@ -25,6 +25,7 @@
 #'
 #' @references Espectro de potencia baseado em http://samcarcagno.altervista.org/blog/basic-sound-processing-r/?doing_wp_cron=1495144982.9675290584564208984375
 #' @references Valores de ponderacao das curvas A, B e c baseado em: Bech & Zacharov. 2006. Perceptual Audio Evaluation-Theory, Method and Application
+#' @references Miyara. 2017. Software-Based Acoustical Measurements. Springer.
 
 #### Arguments ####
 
@@ -102,12 +103,12 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
     p <- fft(s1)
     nUniquePts <- ceiling((n+1)/2)
     p <- p[1:nUniquePts] #select just the first half since the second half is a mirror image of the first
-    p <- (abs(p)/n)^2 #take the absolute  ('abs')value, or the magnitude, scale by the number of points ('(/n)') so that the magnitude does not depend on the length of the signal or on its sampling frequency, and square it ('^2') to get the power
+    p <- 2*(abs(p/n)) #changed here and next if/else in 2020.11.03 to match Miyara (2017) routine in topi 8.6.6
 
-    if (n %% 2 > 0){  #multiply by two (see technical document for details). odd nfft excludes Nyquist point
-      p[2:length(p)] <- p[2:length(p)]*2 # we've got odd number of points fft
+    if (n %% 2 > 0){  #Routine to remove Nyquist point. Odd nfft excludes Nyquist point
+      p[2:length(p)] <- p[2:length(p)] # we've got odd number of points fft
     } else {
-      p[2: (length(p) -1)] <- p[2: (length(p) -1)]*2 # we've got even number of points fft
+      p[2: (length(p) -1)] <- p[2: (length(p) -1)] # we've got even number of points fft
     }
 
     freqArray <- (0:(nUniquePts-1)) * (som@samp.rate / n) #  create the frequency array
