@@ -113,7 +113,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
     freqArray <- (0:(nUniquePts-1)) * (som@samp.rate / n) #  create the frequency array
 
-    espec<-data.frame(Freq.Hz=freqArray, Int.dB=LineartodB(p, fac="IL", ref=1)) #Tabela contendo frequencias e energia em dBFS. DUVIDA: 20*log10(p) ou 10*log10(p)? usando 10 aqui por que a samcarcacno tmb usa, ver pagina que a função LineartodB() recomenda para entender melhor  ----
+    espec<-data.frame(Freq.Hz=freqArray, Int.linear=p) #Espectro em escala linear
 
     #Calulando a quantidade de energia por banda de frequência ####
     for (j in 1:length(Freqbands)) {
@@ -130,7 +130,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
       }
 
       sum.int<-LineartodB( sum(#se houver sqrt aqui, eh necessario guargar os resultados sem sqrt para ponderacao ver o link a seguir para compreender a ideia de colocar sqrt aqui #https://www.cirrusresearch.co.uk/blog/2020/03/calculation-of-dba-from-octave-band-sound-pressure-levels/
-         dBtoLinear(espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2], fac="IL", ref=1) #usando fator 10 (IL) por conta da conversao passada ter usado a mesma para chegar em dB
+         espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2]
         ), fac="IL", ref=1)
 
       if(is.finite(sum.int)){
