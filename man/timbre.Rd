@@ -10,7 +10,7 @@ timbre(files="wd", weighting="none", bands="thirds", saveresults=F,
 \arguments{
 \item{files}{The audiofile to be analyzed. Can be "wd" to get all wave files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory, or an Wave object (or a list containing more than one Wave object). (By default: "wd")}
 
-\item{weighting}{Character. Indicate the weighting curve to use on the anlysis. A, B, C and none are supported. (By default: "none")}
+\item{weighting}{Character. Argument passed to \code{\link[seewave]{dBweight}} to indicate the weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See \code{\link[seewave]{dBweight}} for details. (By default: "none")}
 
 \item{bands}{Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")}
 
@@ -37,9 +37,9 @@ These function works only with mono audiofiles.
 The audio files need to have at least 44100Hz of sampling rate.
 }
 \references{
-Espectro de potencia baseado em http://samcarcagno.altervista.org/blog/basic-sound-processing-r/?doing_wp_cron=1495144982.9675290584564208984375
+Power spectrum adapted from: Carcagno, S. 2013. Basic Sound Processing with R [Blog post]. Retrieved from http://samcarcagno.altervista.org/blog/basic-sound-processing-r/
 
-Valores de ponderacao das curvas A, B e c baseado em: Bech & Zacharov. 2006. Perceptual Audio Evaluation-Theory, Method and Application
+Miyara, F. 2017. Software-Based Acoustical Measurements. Springer. 429 pp. DOI: 10.1007/978-3-319-55871-4
 }
 \author{
 Cássio Rachid Simões <cassiorachid@gmail.com>

@@ -23,11 +23,8 @@
 #' @details These function works only with mono audiofiles.
 #' @details The audio files need to have at least 44100Hz of sampling rate.
 #'
-#' @references Power spectrum adapted from http://samcarcagno.altervista.org/blog/basic-sound-processing-r/?doing_wp_cron=1495144982.9675290584564208984375
-#' @references Miyara. 2017. Software-Based Acoustical Measurements. Springer.
-
-#### Arguments ####
-
+#' @references Power spectrum adapted from: Carcagno, S. 2013. Basic Sound Processing with R [Blog post]. Retrieved from http://samcarcagno.altervista.org/blog/basic-sound-processing-r/
+#' @references Miyara, F. 2017. Software-Based Acoustical Measurements. Springer. 429 pp. DOI: 10.1007/978-3-319-55871-4
 
 timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T){
   start.time<-Sys.time()
