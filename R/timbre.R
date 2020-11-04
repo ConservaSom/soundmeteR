@@ -45,10 +45,6 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
   if(length(arquivos)==0){stop("There is no wave files on your working directory", call. = F)}
 
-  if(!weighting=="none" && !weighting=="A" && !weighting=="B" && !weighting=="C" ) {
-    stop("Wrong weighting curve. Only 'A', 'B', 'C' and 'none' are available.", call. = F)
-  }
-
   if(!saveresults && !is.null(outname)) {stop("You can't set an 'outname' if 'saveresults' is FALSE", call. = F)}
 
   if((!is.null(Leq.calib)) && (!is.null(Calib.value))) {stop("You can't use 'Leq.calib' and 'Calib.value' in the same function. Please, choose only one.", call. = F)}
@@ -68,6 +64,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
   for(i in 1:length(arquivos)){
 
+    #Trunc file duration to entire values of seconds ####
     if(class(arquivos[[i]])=="Wave"){
       som<-arquivos[[i]]
       if(!trunc(length(som)/som@samp.rate)==length(som)/som@samp.rate){
@@ -84,12 +81,12 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
     if(som@samp.rate<44100){stop("Your audiofiles need to have at least 44100Hz of sampling rate.")}
 
-    s1 <- som@left/2^(som@bit-1) #scaled to the maximum possible (as result of '2^(bitrate-1)')
+    s1 <- som@left/2^(som@bit-1) #scaled to the maximum possible (as result of '/2^(bitrate-1)')
     n <- length(s1)
     p <- fft(s1)
     nUniquePts <- ceiling((n+1)/2)
     p <- p[1:nUniquePts] #select just the first half since the second half is a mirror image of the first
-    p <- 2*(abs(p/n)) #changed here and next if/else in 2020.11.03 to match Miyara (2017) routine in topic 8.6.6
+    p <- 2*(abs(p/n)) #changed here and next if/else in 2020.11.03 to match Miyara (2017) code routine in topic 8.6.6
 
     if (n %% 2 > 0){  #Routine to remove Nyquist point. Odd nfft excludes Nyquist point
       p[2:length(p)] <- p[2:length(p)]
@@ -101,7 +98,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
     rm(som) #to free memory usage
 
-    espec<-data.frame(Freq.Hz=freqArray, Int.linear=p^2) #p^2 is part of equation 8.39 de Miyara (2017)
+    espec<-data.frame(Freq.Hz=freqArray, Int.linear=p^2) #p^2 is part of Miyara (2017) code routine in topic 8.6.6
 
     #Calulando a quantidade de energia por banda de frequência ####
     for (j in 1:length(Freqbands)) {
@@ -137,6 +134,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
     #Calculando Leq ####
     #Equation 1.83 from Miraya (2017) to sum one-third octave bands
+    #It needs to be factor 10 (same as 'IL') and without reference (same as 1)
     matriz[i,2]<-round(
       LineartodB( sum(
         dBtoLinear(matriz[i,c(-1,-2)], factor="IL", ref=1)
@@ -156,7 +154,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
       matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+Calib.value
       matriz[i,2]<-round(
         LineartodB( sum(
-          dBtoLinear(matriz[i,c(-1,-2)], factor="IL", ref=1)#Equation 1.83 from Miraya (2017) to sum one-third octave bands
+          dBtoLinear(matriz[i,c(-1,-2)], factor="IL", ref=1)#Equation 1.83 from Miraya (2017) to sum one-third octave bands. It needs to be factor 10 (same as 'IL') and without reference (same as 1)
         ) , fac="IL", ref=1)
         ,2)
     }
@@ -167,7 +165,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
       colnames(matriz.octaves)<-c("Arquivo","Leq","31.5","63","125","250","500","1000","2000","4000","8000","16000")
 
       matriz.octaves[i,1:2]<-matriz[i,1:2] #adicionando o Leq a planilha de oitavas
-      matriz[i,c(-1:-2)]<-dBtoLinear(matriz[i,c(-1:-2)], factor="IL", ref = 1) #Assumming that eq. 1.83 from Miyara (2017) can be applyed here to
+      matriz[i,c(-1:-2)]<-dBtoLinear(matriz[i,c(-1:-2)], factor="IL", ref = 1) #Assumming that eq. 1.83 from Miyara (2017) can be applyed here too. It needs to be factor 10 (same as 'IL') and without reference (same as 1)
 
       #Somando as intensidads das ter?as pertencentes ao intervalo da oitava:
       matriz.octaves[i,"31.5"] = matriz[i,which(colnames(matriz)=="31.5")-1] + matriz[i,which(colnames(matriz)=="31.5")] + matriz[i,which(colnames(matriz)=="31.5")+1]
@@ -181,9 +179,9 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
       matriz.octaves[i,"8000"] = matriz[i,which(colnames(matriz)=="8000")-1] + matriz[i,which(colnames(matriz)=="8000")] + matriz[i,which(colnames(matriz)=="8000")+1]
       matriz.octaves[i,"16000"] = matriz[i,which(colnames(matriz)=="16000")-1] + matriz[i,which(colnames(matriz)=="16000")] + matriz[i,which(colnames(matriz)=="16000")+1]
 
-      matriz[i,c(-1:-2)]<-round(LineartodB(matriz[i,c(-1:-2)], factor = "IL", ref=1),2) #here IL and ref is relative to eq 1.83 from Miyara (2017)
+      matriz[i,c(-1:-2)]<-round(LineartodB(matriz[i,c(-1:-2)], factor = "IL", ref=1),2) #here IL and ref is relative to eq 1.83 from Miyara (2017). It needs to be factor 10 (same as 'IL') and without reference (same as 1)
 
-      matriz.octaves[i,c(-1:-2)]<-round(LineartodB(matriz.octaves[i,c(-1:-2)], factor = "IL", ref = 1),2) #here IL and ref is relative to eq 1.83 from Miyara (2017)
+      matriz.octaves[i,c(-1:-2)]<-round(LineartodB(matriz.octaves[i,c(-1:-2)], factor = "IL", ref = 1),2) #here IL and ref is relative to eq 1.83 from Miyara (2017). It needs to be factor 10 (same as 'IL') and without reference (same as 1)
 
     }
 
