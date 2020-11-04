@@ -129,9 +129,10 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
         }
       }
 
-      sum.int<-LineartodB( sqrt(sum( #equation based on Miyara 2017 8.6.6 topic
-         espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2]
-      ))/sqrt(2) #/sqrt(2) to be able to apply calibration (Miyara 2017, topic 8.6.6 codes)
+      sum.int<-LineartodB(
+        sqrt(sum( #equation based on Miyara 2017 8.6.6 topic
+          espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2]
+        ))/sqrt(2) #/sqrt(2) to be able to apply calibration (Miyara 2017, topic 8.6.6 codes)
         , factor="SPL", ref=20)
 
       if(is.finite(sum.int)){
