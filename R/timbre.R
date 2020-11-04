@@ -64,16 +64,11 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
   if(bands!="thirds" && bands!="octaves"){stop("Please, check the 'bands' argument. Only 'octaves' or 'thirds' intervals available.", call. = F)}
 
 
-  #Defininfo os intervalos de frequência e montando a matriz que amazenara resultados ####
-  #
+  #Definindo os intervalos de frequência e montando a matriz que amazenara resultados ####
   Freqbands<-c(24.8,31.3,39.4,49.6,62.5,78.7,99.2,125,157.5,198.4,250,315.0,396.9,500,630.0,793.7,1000,1259.9,1587.4,2000,2519.8,3174.8,4000,5039.7,6349.6,8000,10079.4,12699.2,16000,20158.7)
   matriz<-data.frame(matrix(data=NA,nrow=length(arquivos),ncol=2+length(Freqbands)))
   colnames(matriz)<-c("Arquivo","Leq","25","31.5","40","50","63","80","100","125","160","200","250","315","400","500","630","800","1000","1250","1600","2000","2500","3150","4000","5000","6300","8000","10000","12500","16000","20000")
 
-  if(bands=="octaves"){
-    matriz.octaves<- data.frame(matrix(data=NA,nrow=length(arquivos),ncol=2+10))
-    colnames(matriz.octaves)<-c("Arquivo","Leq","31.5","63","125","250","500","1000","2000","4000","8000","16000")
-  }
 
   for(i in 1:length(arquivos)){
 
@@ -171,8 +166,11 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
     #mudando os intervalos para bandas de oitavas ####
     if(bands=="octaves"){
+      matriz.octaves<- data.frame(matrix(data=NA,nrow=length(arquivos),ncol=2+10))
+      colnames(matriz.octaves)<-c("Arquivo","Leq","31.5","63","125","250","500","1000","2000","4000","8000","16000")
+
       matriz.octaves[i,1:2]<-matriz[i,1:2] #adicionando o Leq a planilha de oitavas
-      matriz[i,c(-1:-2)]<-10^(matriz[i,c(-1:-2)]/20) #linearizando para somar
+      matriz[i,c(-1:-2)]<-dBtoLinear(matriz[i,c(-1:-2)], factor="IL", ref = 1) #Assumming that eq. 1.83 from Miyara (2017) can be applyed here to
 
       #Somando as intensidads das ter?as pertencentes ao intervalo da oitava:
       matriz.octaves[i,"31.5"] = matriz[i,which(colnames(matriz)=="31.5")-1] + matriz[i,which(colnames(matriz)=="31.5")] + matriz[i,which(colnames(matriz)=="31.5")+1]
@@ -186,9 +184,9 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
       matriz.octaves[i,"8000"] = matriz[i,which(colnames(matriz)=="8000")-1] + matriz[i,which(colnames(matriz)=="8000")] + matriz[i,which(colnames(matriz)=="8000")+1]
       matriz.octaves[i,"16000"] = matriz[i,which(colnames(matriz)=="16000")-1] + matriz[i,which(colnames(matriz)=="16000")] + matriz[i,which(colnames(matriz)=="16000")+1]
 
-      matriz[i,c(-1:-2)]<-round(20*log10(matriz[i,c(-1:-2)]),1) #voltando a matriz de ter?as para dB para evitar erros nas demais etapas da fun??o
+      matriz[i,c(-1:-2)]<-round(LineartodB(matriz[i,c(-1:-2)], factor = "IL", ref=1),1) #here IL and ref is relative to eq 1.83 from Miyara (2017)
 
-      matriz.octaves[i,c(-1:-2)]<-round(20*log10(matriz.octaves[i,c(-1:-2)]),1) #convertendo a matriz de oitavas pra dB tambem
+      matriz.octaves[i,c(-1:-2)]<-round(LineartodB(matriz.octaves[i,c(-1:-2)], factor = "IL", ref = 1),1) #here IL and ref is relative to eq 1.83 from Miyara (2017)
 
     }
 
