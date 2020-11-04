@@ -144,8 +144,10 @@ timbre<-function(files="wd", weighting="none", bands="thirds", ref=20, saveresul
 
     #Gerando valor de calibração ####
     if(is.numeric(Leq.calib)) {
-      calibration<-data.frame(matrix(data=NA,nrow=length(arquivos),ncol=2))
-      colnames(calibration)<-c("Arquivo","Calib.value" )
+      if(i==1){
+        calibration<-data.frame(matrix(data=NA,nrow=length(arquivos),ncol=2))
+        colnames(calibration)<-c("Arquivo","Calib.value" )
+      }
 
       calibration[i,1]<-matriz[i,1]
       calibration[i,2]<-Leq.calib-matriz[i,2]
@@ -162,8 +164,10 @@ timbre<-function(files="wd", weighting="none", bands="thirds", ref=20, saveresul
 
     #mudando os intervalos para bandas de oitavas ####
     if(bands=="octaves"){
-      matriz.octaves<- data.frame(matrix(data=NA,nrow=length(arquivos),ncol=2+10))
-      colnames(matriz.octaves)<-c("Arquivo","Leq","31.5","63","125","250","500","1000","2000","4000","8000","16000")
+      if(i==1){
+        matriz.octaves<- data.frame(matrix(data=NA,nrow=length(arquivos),ncol=2+10))
+        colnames(matriz.octaves)<-c("Arquivo","Leq","31.5","63","125","250","500","1000","2000","4000","8000","16000")
+      }
 
       matriz.octaves[i,1:2]<-matriz[i,1:2] #adicionando o Leq a planilha de oitavas
       matriz[i,c(-1:-2)]<-dBtoLinear(matriz[i,c(-1:-2)], factor="IL", ref=1) #Assumming that eq. 1.83 from Miyara (2017) can be applyed here too. It needs to be factor 10 (same as 'IL') and without reference (same as 1)
