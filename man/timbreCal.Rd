@@ -2,7 +2,7 @@
 % Please edit documentation in R/timbreCal.R
 \name{timbreCal}
 \alias{timbreCal}
-\title{Timbre analysis for audiofiles with reference sound}
+\title{Timbre analysis for audiofiles with reference signal}
 \usage{
 timbreCal(files="wd", SignalDur=NULL, RefValue=NULL,weighting="none",
        bands="thirds", saveresults=F, outname=NULL, time.mess=T, stat.mess=T)
@@ -27,9 +27,12 @@ timbreCal(files="wd", SignalDur=NULL, RefValue=NULL,weighting="none",
 \item{stat.mess}{Logical. Activate or deactivate status message of the function execution. (By default: \code{TRUE})}
 }
 \description{
-To use this function the audio file must begin with 2 seconds of silence, followed by a reference sound with known intensity, followed by another 2 seconds of silence, and the following sound to analyze.
+This function passes the parameters to \code{\link{timbre}} to automatize the calibration and return spectral analysis with dB SPL results.
+}
+\details{
+To use this function, the audio file must begin with 2 seconds of silence, followed by a reference signal with known intensity, followed by another 2 seconds of silence, and the following sound to analyze.
 
-The duration of the reference sound must be specified (in seconds) on the \code{SignalDur} argument and his intensity (in dB) on the 'refValue' argument.
+The duration of the reference signal must be specified (in seconds) on the \code{SignalDur} argument and his intensity (in dB SPL) on the \code{refValue} argument.
 }
 \seealso{
 \code{\link{timbre}}

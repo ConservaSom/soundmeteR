@@ -1,9 +1,8 @@
-#' Timbre analysis for audiofiles with reference sound
+#' Timbre analysis for audiofiles with reference signal
 #'
 #' @name timbreCal
 #'
-#' @description  To use this function the audio file must begin with 2 seconds of silence, followed by a reference sound with known intensity, followed by another 2 seconds of silence, and the following sound to analyze.
-#' @description  The duration of the reference sound must be specified (in seconds) on the \code{SignalDur} argument and his intensity (in dB) on the 'refValue' argument.
+#' @description This function passes the parameters to \code{\link{timbre}} to automatize the calibration and return spectral analysis with dB SPL results.
 #'
 #' @usage timbreCal(files="wd", SignalDur=NULL, RefValue=NULL,weighting="none",
 #'        bands="thirds", saveresults=F, outname=NULL, time.mess=T, stat.mess=T)
@@ -19,6 +18,9 @@
 #' @param stat.mess Logical. Activate or deactivate status message of the function execution. (By default: \code{TRUE})
 #'
 #' @author Cássio Rachid Simões <cassiorachid@@gmail.com>
+#'
+#' @details   To use this function, the audio file must begin with 2 seconds of silence, followed by a reference signal with known intensity, followed by another 2 seconds of silence, and the following sound to analyze.
+#' @details   The duration of the reference signal must be specified (in seconds) on the \code{SignalDur} argument and his intensity (in dB SPL) on the \code{refValue} argument.
 #'
 #' @seealso \code{\link{timbre}}
 #'
@@ -54,13 +56,13 @@ timbreCal<- function(files="wd", SignalDur=NULL, RefValue=NULL,weighting="none",
 
   for(i in 1:length(arquivos)){ #Loop que analisara os arquivos####
 
-    if(class(arquivos[[i]])=="Wave"){ #isolando o som de refer?ncia do som ####
+    if(class(arquivos[[i]])=="Wave"){ #isolando o sinal de refer?ncia do som ####
       som<-extractWave(arquivos[[i]], from=2, to=SignalDur+2, xunit="time", interact=F)
     } else {
       som<-readWave(arquivos[[i]], from=2, to=SignalDur+2, units="seconds"  )
     }
 
-    calib.value<-timbre(files=som, Leq.calib=RefValue, Calib.value=NULL, saveresults=F, outname=NULL, weighting=weighting, time.mess=F, stat.mess=F) #Analisar o sinal de referencia e obter o valor de calibra??o ####
+    calib.value<-timbre(files=som, Leq.calib=RefValue, Calib.value=NULL, saveresults=F, outname=NULL, weighting=weighting, time.mess=F, stat.mess=F) #Analisa o sinal de referencia e obtem o valor de calibracao ####
     calib.value<-calib.value[,2]
 
     if(class(arquivos[[i]])=="Wave"){ #isolando o som a ser analisado ####
