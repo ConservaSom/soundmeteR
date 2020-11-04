@@ -8,7 +8,7 @@
 #'        outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T)
 #'
 #' @param files The audiofile to be analyzed. Can be "wd" to get all wave files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory, or an Wave object (or a list containing more than one Wave object). (By default: "wd")
-#' @param weighting Character. Indicate the weighting curve to use on the anlysis. A, B, C and none are supported. (By default: "none")
+#' @param weighting Character. Argument passed to \code{\link[seewave]{dBweight}} to indicate the weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See \code{\link[seewave]{dBweight}} for details. (By default: "none")
 #' @param bands Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")
 #' @param saveresults Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})
 #' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})
@@ -23,8 +23,7 @@
 #' @details These function works only with mono audiofiles.
 #' @details The audio files need to have at least 44100Hz of sampling rate.
 #'
-#' @references Espectro de potencia baseado em http://samcarcagno.altervista.org/blog/basic-sound-processing-r/?doing_wp_cron=1495144982.9675290584564208984375
-#' @references Valores de ponderacao das curvas A, B e c baseado em: Bech & Zacharov. 2006. Perceptual Audio Evaluation-Theory, Method and Application
+#' @references Power spectrum adapted from http://samcarcagno.altervista.org/blog/basic-sound-processing-r/?doing_wp_cron=1495144982.9675290584564208984375
 #' @references Miyara. 2017. Software-Based Acoustical Measurements. Springer.
 
 #### Arguments ####
@@ -135,21 +134,19 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
     matriz[i,c(-1,-2)]<-round(matriz[i,c(-1,-2)], 1) #arredondando valores para 1 casa decimal
 
     #Implementando curvas de ponderacao ####
-    if(weighting=="A"){ # Implementando Curva A ####
-      matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+c(-44.7,-39.4,-34.6,-30.2,-26.2,-22.5,-19.1,-16.1,-13.4,-10.9,-8.6,-6.6,-4.8,-3.2,-1.9,-0.8,0,0.6,1,1.2,1.3,1.2,1,0.5,-0.1,-1.1,-2.5,-4.3,-6.6,-9.3)
-    } else if(weighting=="B") { # Implementando Curva B ####
-      matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+c(-20.4,-17.1,-14.2,-11.6,-9.3,-7.4,-5.6,-4.2,-3,-2,-1.3,-0.8,-0.5,-0.3,-0.1,0,0,0,0,-0.1,-0.2,-0.4,-0.7,-1.2,-1.9,-2.9,-4.3,-6.1,-8.4,-11.1)
-    } else if(weighting=="C"){ # Implementando Curva C ####
-      matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+c(-4.4,-3,-2,-1.3,-0.8,-0.5,-0.3,-0.2,-0.1,0,0,0,0,0,0,0,0,0,-0.1,-0.2,-0.3,-0.5,-0.8,-1.3,-2,-3,-4.4,-6.2,-8.5,-11.2)
-    }
+    if(any(weighting == c("A", "B", "C", "D", "ITU"))){
+      matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+round(seewave::dBweight(as.numeric(colnames(matriz[,-1:-2])))[[weighting]],2)
+    } else if(weighting != "none"){stop("Wrong weighting curve. Only 'A', 'B', 'C', 'D', 'ITU', and 'none' accepted. See dBweight()' for details.")}
 
-    #Equation 1.83 from Miraya (2017) to sum one-third octave bands ####
+    #Calculando Leq ####
+    #Equation 1.83 from Miraya (2017) to sum one-third octave bands
     matriz[i,2]<-round(
       LineartodB( sum(
         dBtoLinear(matriz[i,c(-1,-2)], factor="IL", ref=1)
       ) , fac="IL", ref=1)
       ,1)
 
+    #Gerando valor de calibração ####
     if(is.numeric(Leq.calib)) {
       calibration<-data.frame(matrix(data=NA,nrow=length(arquivos),ncol=2))
       colnames(calibration)<-c("Arquivo","Calib.value" )
@@ -157,7 +154,8 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
       calibration[i,1]<-matriz[i,1]
       calibration[i,2]<-Leq.calib-matriz[i,2]
 
-    } else if(is.numeric(Calib.value)) {
+
+    } else if(is.numeric(Calib.value)) { #calibrando ####
       matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+Calib.value
       matriz[i,2]<-round(
         LineartodB( sum(
