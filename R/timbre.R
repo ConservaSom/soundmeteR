@@ -98,22 +98,22 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
     if(som@samp.rate<44100){stop("Your audiofiles need to have at least 44100Hz of sampling rate.")}
 
-    s1 <- som@left/2^(som@bit-1) #Mudando a escala da onda para relativo ao maximo (determinado por '2^(bitrate-1)')
+    s1 <- som@left/2^(som@bit-1) #scaled to the maximum possible (as result of '2^(bitrate-1)')
     n <- length(s1)
     p <- fft(s1)
     nUniquePts <- ceiling((n+1)/2)
     p <- p[1:nUniquePts] #select just the first half since the second half is a mirror image of the first
-    p <- 2*(abs(p/n)) #changed here and next if/else in 2020.11.03 to match Miyara (2017) routine in topi 8.6.6
+    p <- 2*(abs(p/n)) #changed here and next if/else in 2020.11.03 to match Miyara (2017) routine in topic 8.6.6
 
     if (n %% 2 > 0){  #Routine to remove Nyquist point. Odd nfft excludes Nyquist point
-      p[2:length(p)] <- p[2:length(p)] # we've got odd number of points fft
+      p[2:length(p)] <- p[2:length(p)]
     } else {
-      p[2: (length(p) -1)] <- p[2: (length(p) -1)] # we've got even number of points fft
+      p[2: (length(p) -1)] <- p[2: (length(p) -1)]
     }
 
-    freqArray <- (0:(nUniquePts-1)) * (som@samp.rate / n) #  create the frequency array
+    freqArray <- (0:(nUniquePts-1)) * (som@samp.rate / n) #create the frequency array
 
-    espec<-data.frame(Freq.Hz=freqArray, Int.linear=p^2) #p^2 é parte da equação 8.39 de Miyara (2017)
+    espec<-data.frame(Freq.Hz=freqArray, Int.linear=p^2) #p^2 is part of equation 8.39 de Miyara (2017)
 
     #Calulando a quantidade de energia por banda de frequência ####
     for (j in 1:length(Freqbands)) {
@@ -129,9 +129,9 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
         }
       }
 
-      sum.int<-LineartodB( sqrt(sum(#se houver sqrt aqui, eh necessario guargar os resultados sem sqrt para ponderacao ver o link a seguir para compreender a ideia de colocar sqrt aqui #https://www.cirrusresearch.co.uk/blog/2020/03/calculation-of-dba-from-octave-band-sound-pressure-levels/
-         espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2] #equação de energia por banda baseada em Miyara 2017
-      ))/sqrt(2) #to apply calibration
+      sum.int<-LineartodB( sqrt(sum( #equation based on Miyara 2017 8.6.6 topic
+         espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2]
+      ))/sqrt(2) #/sqrt(2) to be able to apply calibration (Miyara 2017, topic 8.6.6 codes)
         , factor="SPL", ref=20)
 
       if(is.finite(sum.int)){
