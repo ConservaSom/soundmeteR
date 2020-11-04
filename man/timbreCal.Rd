@@ -8,7 +8,7 @@ timbreCal(files="wd", SignalDur=NULL, RefValue=NULL,weighting="none",
        bands="thirds", saveresults=F, outname=NULL, time.mess=T, stat.mess=T)
 }
 \arguments{
-\item{files}{The audiofile to be analyzed. Can be "wd" to get all wave files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory, or an Wave object (or a list containing more than one Wave object). (By default: "wd")}
+\item{files}{The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")}
 
 \item{SignalDur}{Numerical. Specify the reference signal duration (in seconds) on the beggining of the audiofile. (By default: \code{NULL})}
 

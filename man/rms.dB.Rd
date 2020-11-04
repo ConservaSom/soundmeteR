@@ -4,12 +4,14 @@
 \alias{rms.dB}
 \title{Root Mean Square with dB values}
 \usage{
-rms.dB(x, level="SPL", ...)
+rms.dB(x, level="SPL", ref=1, ...)
 }
 \arguments{
 \item{x}{Numerical. A numeric vector or a numeric matrix with dB values.}
 
-\item{level}{Character. Specify in what scale your data is. \code{SPL} for Sound Pressute Level or \code{IL} for Intensity Level.}
+\item{level}{Character. Specify in what scale your data is. \code{SPL} for Sound Pressute Level or \code{IL} for Intensity Level. (By deafault \code{SPL})}
+
+\item{ref}{Numerical. Reference value for conversion. For Sound in water the ref is 1microPa and on air 20 microPa. (By default 1)}
 
 \item{...}{Further arguments passed to \code{\link[base]{mean}}.}
 }
@@ -20,9 +22,13 @@ A numeric value that represent the root mean square of x.
 Function to compute the root mean square (RMS) of values in decibels (dB).
 }
 \details{
-This function convert your dB data to linear values, compute the Root Mean Square (rms) and converts the result to dB again.
+This function converts your dB data to linear values (through \code{\link[seewave]{dBtoLinear}} function), compute the Root Mean Square (rms), and converts the result back to dB (through \code{\link[seewave]{LineartodB}} function).
 
 This function was adapted from \code{\link[seewave]{meandB}} and \code{\link[seewave]{rms}} functions from \code{\link[seewave]{seewave}} package. See their help for more details.
+}
+\examples{
+rms.dB(c(80,60,65,62))
+
 }
 \seealso{
 \code{\link[seewave]{meandB}}, \code{\link[seewave]{rms}}

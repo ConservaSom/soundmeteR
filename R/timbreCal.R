@@ -7,7 +7,7 @@
 #' @usage timbreCal(files="wd", SignalDur=NULL, RefValue=NULL,weighting="none",
 #'        bands="thirds", saveresults=F, outname=NULL, time.mess=T, stat.mess=T)
 #'
-#' @param files The audiofile to be analyzed. Can be "wd" to get all wave files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory, or an Wave object (or a list containing more than one Wave object). (By default: "wd")
+#' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
 #' @param SignalDur Numerical. Specify the reference signal duration (in seconds) on the beggining of the audiofile. (By default: \code{NULL})
 #' @param RefValue Numerical. Specify the reference signal intensity (in deciBells) on the beggining of the audiofile. (By default: \code{NULL})
 #' @param weighting Character. Indicate the weighting curve to use on the anlysis. A, B, C and none are supported. (By default: "none")
