@@ -75,11 +75,6 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
     colnames(matriz.octaves)<-c("Arquivo","Leq","31.5","63","125","250","500","1000","2000","4000","8000","16000")
   }
 
-
-  if(!is.null(Leq.calib)) {
-    calibration<-data.frame(matrix(data=NA,nrow=length(arquivos),ncol=2))
-    colnames(calibration)<-c("Arquivo","Calib.value" )}
-
   for(i in 1:length(arquivos)){
 
     if(class(arquivos[[i]])=="Wave"){
@@ -145,61 +140,34 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
     #Implementando curvas de ponderacao ####
     if(weighting=="A"){ # Implementando Curva A ####
       matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+c(-44.7,-39.4,-34.6,-30.2,-26.2,-22.5,-19.1,-16.1,-13.4,-10.9,-8.6,-6.6,-4.8,-3.2,-1.9,-0.8,0,0.6,1,1.2,1.3,1.2,1,0.5,-0.1,-1.1,-2.5,-4.3,-6.6,-9.3)
-      matriz[i,2]<-round(20*log10(sum(10^(matriz[i,c(-1,-2)]/20))),1)
-
-      if(is.numeric(Leq.calib)) {
-        calibration[i,1]<-matriz[i,1]
-        calibration[i,2]<-Leq.calib-matriz[i,2]
-
-      } else if(is.numeric(Calib.value)) {
-        matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+Calib.value
-        matriz[i,2]<-round(20*log10(rowSums(10^(matriz[i,c(-1,-2)]/20))),1)
-      }
-
     } else if(weighting=="B") { # Implementando Curva B ####
       matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+c(-20.4,-17.1,-14.2,-11.6,-9.3,-7.4,-5.6,-4.2,-3,-2,-1.3,-0.8,-0.5,-0.3,-0.1,0,0,0,0,-0.1,-0.2,-0.4,-0.7,-1.2,-1.9,-2.9,-4.3,-6.1,-8.4,-11.1)
-      matriz[i,2]<-round(20*log10(sum(10^(matriz[i,c(-1,-2)]/20))),1)
-
-      if(is.numeric(Leq.calib)) {
-        calibration[i,1]<-matriz[i,1]
-        calibration[i,2]<-Leq.calib-matriz[i,2]
-
-      } else if(is.numeric(Calib.value)) {
-        matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+Calib.value
-        matriz[i,2]<-round(20*log10(rowSums(10^(matriz[i,c(-1,-2)]/20))),1)
-      }
-
     } else if(weighting=="C"){ # Implementando Curva C ####
       matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+c(-4.4,-3,-2,-1.3,-0.8,-0.5,-0.3,-0.2,-0.1,0,0,0,0,0,0,0,0,0,-0.1,-0.2,-0.3,-0.5,-0.8,-1.3,-2,-3,-4.4,-6.2,-8.5,-11.2)
-      matriz[i,2]<-round(20*log10(sum(10^(matriz[i,c(-1,-2)]/20))),1)
-
-      if(is.numeric(Leq.calib)) {
-        calibration[i,1]<-matriz[i,1]
-        calibration[i,2]<-Leq.calib-matriz[i,2]
-
-      } else if(is.numeric(Calib.value)) {
-        matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+Calib.value
-        matriz[i,2]<-round(20*log10(rowSums(10^(matriz[i,c(-1,-2)]/20))),1)
-      }
-
-    } else if(weighting=="none"){ # Implementando Curva Z (nenhuma) ####
-      matriz[i,2]<-round(
-        LineartodB(  sqrt(sum( #essa equacao resulta igual ao rms do oscilograma
-          dBtoLinear(matriz[i,c(-1,-2)], fac="IL", ref=1)
-        )) , fac="IL", ref=1)
-        ,1)
-
-      if(is.numeric(Leq.calib)) {
-        calibration[i,1]<-matriz[i,1]
-        calibration[i,2]<-Leq.calib-matriz[i,2]
-
-      } else if(is.numeric(Calib.value)) {
-        matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+Calib.value
-        matriz[i,2]<-round(20*log10(rowSums(10^(matriz[i,c(-1,-2)]/20))),1)
-      }
-
     }
 
+    #Equation 1.83 from Miraya (2017) to sum one-third octave bands ####
+    matriz[i,2]<-round(
+      LineartodB( sum(
+        dBtoLinear(matriz[i,c(-1,-2)], factor="IL", ref=1)
+      ) , fac="IL", ref=1)
+      ,1)
+
+    if(is.numeric(Leq.calib)) {
+      calibration<-data.frame(matrix(data=NA,nrow=length(arquivos),ncol=2))
+      colnames(calibration)<-c("Arquivo","Calib.value" )
+
+      calibration[i,1]<-matriz[i,1]
+      calibration[i,2]<-Leq.calib-matriz[i,2]
+
+    } else if(is.numeric(Calib.value)) {
+      matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+Calib.value
+      matriz[i,2]<-round(
+        LineartodB( sum(
+          dBtoLinear(matriz[i,c(-1,-2)], factor="IL", ref=1)#Equation 1.83 from Miraya (2017) to sum one-third octave bands
+        ) , fac="IL", ref=1)
+        ,1)
+    }
 
     #mudando os intervalos para bandas de oitavas ####
     if(bands=="octaves"){
