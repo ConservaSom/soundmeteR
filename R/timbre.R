@@ -131,7 +131,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
       }else{matriz[i,j+2]<-NA}
     }
 
-    matriz[i,c(-1,-2)]<-round(matriz[i,c(-1,-2)], 1) #arredondando valores para 1 casa decimal
+    matriz[i,c(-1,-2)]<-round(matriz[i,c(-1,-2)], 2) #arredondando valores para 2 casas decimais
 
     #Implementando curvas de ponderacao ####
     if(any(weighting == c("A", "B", "C", "D", "ITU"))){
@@ -144,7 +144,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
       LineartodB( sum(
         dBtoLinear(matriz[i,c(-1,-2)], factor="IL", ref=1)
       ) , fac="IL", ref=1)
-      ,1)
+      ,2)
 
     #Gerando valor de calibração ####
     if(is.numeric(Leq.calib)) {
@@ -161,7 +161,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
         LineartodB( sum(
           dBtoLinear(matriz[i,c(-1,-2)], factor="IL", ref=1)#Equation 1.83 from Miraya (2017) to sum one-third octave bands
         ) , fac="IL", ref=1)
-        ,1)
+        ,2)
     }
 
     #mudando os intervalos para bandas de oitavas ####
@@ -184,9 +184,9 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
       matriz.octaves[i,"8000"] = matriz[i,which(colnames(matriz)=="8000")-1] + matriz[i,which(colnames(matriz)=="8000")] + matriz[i,which(colnames(matriz)=="8000")+1]
       matriz.octaves[i,"16000"] = matriz[i,which(colnames(matriz)=="16000")-1] + matriz[i,which(colnames(matriz)=="16000")] + matriz[i,which(colnames(matriz)=="16000")+1]
 
-      matriz[i,c(-1:-2)]<-round(LineartodB(matriz[i,c(-1:-2)], factor = "IL", ref=1),1) #here IL and ref is relative to eq 1.83 from Miyara (2017)
+      matriz[i,c(-1:-2)]<-round(LineartodB(matriz[i,c(-1:-2)], factor = "IL", ref=1),2) #here IL and ref is relative to eq 1.83 from Miyara (2017)
 
-      matriz.octaves[i,c(-1:-2)]<-round(LineartodB(matriz.octaves[i,c(-1:-2)], factor = "IL", ref = 1),1) #here IL and ref is relative to eq 1.83 from Miyara (2017)
+      matriz.octaves[i,c(-1:-2)]<-round(LineartodB(matriz.octaves[i,c(-1:-2)], factor = "IL", ref = 1),2) #here IL and ref is relative to eq 1.83 from Miyara (2017)
 
     }
 
