@@ -4,16 +4,17 @@
 #'
 #' @description
 #'
-#' @usage timbre(files="wd", weighting="none", bands="thirds", saveresults=F,
+#' @usage timbre(files="wd", weighting="none", bands="thirds", ref=20, saveresults=F,
 #'        outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T)
 #'
 #' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
 #' @param weighting Character. Argument passed to \code{\link[seewave]{dBweight}} to indicate the weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See \code{\link[seewave]{dBweight}} for details. (By default: "none")
 #' @param bands Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")
+#' @param ref Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)
 #' @param saveresults Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})
 #' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})
-#' @param Leq.calib Numerical. The sound intensity level (in dB) that the sound in the audio file must have (by default: NULL). Can not be set if \code{Calib.value} is also set.
-#' @param Calib.value Numerical. The calibration value returned from the analysis of a reference sound using \code{Leq.calib} (by default: NULL). Can not be set if \code{Leq.calib} is also set.
+#' @param Leq.calib Numerical. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: \code{NULL}). Can not be set if \code{Calib.value} is also set.
+#' @param Calib.value Numerical. The calibration value returned from the analysis of a reference signal using \code{Leq.calib} (by default: \code{NULL}). Can not be set if \code{Leq.calib} is also set.
 #' @param time.mess Logical. Activate or deactivate message of time to complete the function execution. (By default: \code{TRUE})
 #' @param stat.mess Logical. Activate or deactivate status message of the function execution. (By default: \code{TRUE})
 #'
@@ -26,7 +27,7 @@
 #' @references Power spectrum adapted from: Carcagno, S. 2013. Basic Sound Processing with R [Blog post]. Retrieved from http://samcarcagno.altervista.org/blog/basic-sound-processing-r/
 #' @references Miyara, F. 2017. Software-Based Acoustical Measurements. Springer. 429 pp. DOI: 10.1007/978-3-319-55871-4
 
-timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T){
+timbre<-function(files="wd", weighting="none", bands="thirds", ref=20, saveresults=F, outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T){
   start.time<-Sys.time()
 
   require(tuneR)
@@ -118,7 +119,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
         sqrt(sum( #equation based on Miyara 2017 8.6.6 topic
           espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2]
         ))/sqrt(2) #/sqrt(2) to be able to apply calibration (Miyara 2017, topic 8.6.6 codes)
-        , factor="SPL", ref=20)
+        , factor="SPL", ref=ref)
 
       if(is.finite(sum.int)){
         matriz[i,j+2]<-sum.int
@@ -165,7 +166,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
       colnames(matriz.octaves)<-c("Arquivo","Leq","31.5","63","125","250","500","1000","2000","4000","8000","16000")
 
       matriz.octaves[i,1:2]<-matriz[i,1:2] #adicionando o Leq a planilha de oitavas
-      matriz[i,c(-1:-2)]<-dBtoLinear(matriz[i,c(-1:-2)], factor="IL", ref = 1) #Assumming that eq. 1.83 from Miyara (2017) can be applyed here too. It needs to be factor 10 (same as 'IL') and without reference (same as 1)
+      matriz[i,c(-1:-2)]<-dBtoLinear(matriz[i,c(-1:-2)], factor="IL", ref=1) #Assumming that eq. 1.83 from Miyara (2017) can be applyed here too. It needs to be factor 10 (same as 'IL') and without reference (same as 1)
 
       #Somando as intensidads das ter?as pertencentes ao intervalo da oitava:
       matriz.octaves[i,"31.5"] = matriz[i,which(colnames(matriz)=="31.5")-1] + matriz[i,which(colnames(matriz)=="31.5")] + matriz[i,which(colnames(matriz)=="31.5")+1]
@@ -181,7 +182,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
       matriz[i,c(-1:-2)]<-round(LineartodB(matriz[i,c(-1:-2)], factor = "IL", ref=1),2) #here IL and ref is relative to eq 1.83 from Miyara (2017). It needs to be factor 10 (same as 'IL') and without reference (same as 1)
 
-      matriz.octaves[i,c(-1:-2)]<-round(LineartodB(matriz.octaves[i,c(-1:-2)], factor = "IL", ref = 1),2) #here IL and ref is relative to eq 1.83 from Miyara (2017). It needs to be factor 10 (same as 'IL') and without reference (same as 1)
+      matriz.octaves[i,c(-1:-2)]<-round(LineartodB(matriz.octaves[i,c(-1:-2)], factor = "IL", ref=1),2) #here IL and ref is relative to eq 1.83 from Miyara (2017). It needs to be factor 10 (same as 'IL') and without reference (same as 1)
 
     }
 

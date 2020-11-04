@@ -4,7 +4,7 @@
 \alias{timbreCal}
 \title{Timbre analysis for audiofiles with reference signal}
 \usage{
-timbreCal(files="wd", SignalDur=NULL, RefValue=NULL,weighting="none",
+timbreCal(files="wd", SignalDur=NULL, RefValue=NULL, ref=20, weighting="none",
        bands="thirds", saveresults=F, outname=NULL, time.mess=T, stat.mess=T)
 }
 \arguments{
@@ -12,7 +12,9 @@ timbreCal(files="wd", SignalDur=NULL, RefValue=NULL,weighting="none",
 
 \item{SignalDur}{Numerical. Specify the reference signal duration (in seconds) on the beggining of the audiofile. (By default: \code{NULL})}
 
-\item{RefValue}{Numerical. Specify the reference signal intensity (in deciBells) on the beggining of the audiofile. (By default: \code{NULL})}
+\item{RefValue}{Numerical. Specify the reference signal sound pressure level (in deciBells SPL) on the beggining of the audiofile. (By default: \code{NULL})}
+
+\item{ref}{Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)}
 
 \item{weighting}{Character. Indicate the weighting curve to use on the anlysis. A, B, C and none are supported. (By default: "none")}
 

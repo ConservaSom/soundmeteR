@@ -4,7 +4,7 @@
 \alias{timbre}
 \title{Intensity per octave or octave thirds}
 \usage{
-timbre(files="wd", weighting="none", bands="thirds", saveresults=F,
+timbre(files="wd", weighting="none", bands="thirds", ref=20, saveresults=F,
        outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T)
 }
 \arguments{
@@ -14,13 +14,15 @@ timbre(files="wd", weighting="none", bands="thirds", saveresults=F,
 
 \item{bands}{Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")}
 
+\item{ref}{Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)}
+
 \item{saveresults}{Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})}
 
 \item{outname}{Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})}
 
-\item{Leq.calib}{Numerical. The sound intensity level (in dB) that the sound in the audio file must have (by default: NULL). Can not be set if \code{Calib.value} is also set.}
+\item{Leq.calib}{Numerical. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: \code{NULL}). Can not be set if \code{Calib.value} is also set.}
 
-\item{Calib.value}{Numerical. The calibration value returned from the analysis of a reference sound using \code{Leq.calib} (by default: NULL). Can not be set if \code{Leq.calib} is also set.}
+\item{Calib.value}{Numerical. The calibration value returned from the analysis of a reference signal using \code{Leq.calib} (by default: \code{NULL}). Can not be set if \code{Leq.calib} is also set.}
 
 \item{time.mess}{Logical. Activate or deactivate message of time to complete the function execution. (By default: \code{TRUE})}
 

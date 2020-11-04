@@ -4,12 +4,13 @@
 #'
 #' @description This function passes the parameters to \code{\link{timbre}} to automatize the calibration and return spectral analysis with dB SPL results.
 #'
-#' @usage timbreCal(files="wd", SignalDur=NULL, RefValue=NULL,weighting="none",
+#' @usage timbreCal(files="wd", SignalDur=NULL, RefValue=NULL, ref=20, weighting="none",
 #'        bands="thirds", saveresults=F, outname=NULL, time.mess=T, stat.mess=T)
 #'
 #' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
 #' @param SignalDur Numerical. Specify the reference signal duration (in seconds) on the beggining of the audiofile. (By default: \code{NULL})
-#' @param RefValue Numerical. Specify the reference signal intensity (in deciBells) on the beggining of the audiofile. (By default: \code{NULL})
+#' @param RefValue Numerical. Specify the reference signal sound pressure level (in deciBells SPL) on the beggining of the audiofile. (By default: \code{NULL})
+#' @param ref Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)
 #' @param weighting Character. Indicate the weighting curve to use on the anlysis. A, B, C and none are supported. (By default: "none")
 #' @param bands Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")
 #' @param saveresults Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})
@@ -31,7 +32,7 @@
 #Pensar ao invés de usar um trecho da gravação para calibrar usar um arquivo externo.
 
 
-timbreCal<- function(files="wd", SignalDur=NULL, RefValue=NULL,weighting="none", bands="thirds", saveresults=F, outname=NULL, time.mess=T, stat.mess=T){
+timbreCal<- function(files="wd", SignalDur=NULL, RefValue=NULL, ref=20, weighting="none", bands="thirds", saveresults=F, outname=NULL, time.mess=T, stat.mess=T){
 
   start.time<-Sys.time()
 
@@ -50,8 +51,7 @@ timbreCal<- function(files="wd", SignalDur=NULL, RefValue=NULL,weighting="none",
   }
 
   if(!is.numeric(SignalDur)){stop("A numeric value specifying the duration (in seconds) of the referencing signal must be set on the 'SignalDur' argument.")}
-  if(!is.numeric(RefValue)){stop("A numeric value specifying the intensity (in dB) of the referencing signal must be set on the 'RefValue' argument.")}
-  if(!exists("timbre") || !is.function(timbre)){stop("'timbre' function is required to run this function.")}
+  if(!is.numeric(RefValue)){stop("A numeric value specifying the intensity (in dB SPL) of the referencing signal must be set on the 'RefValue' argument.")}
   if(!saveresults && !is.null(outname)) {stop("You can't set an 'outname' if 'saveresults' is FALSE", call. = F)}
 
   for(i in 1:length(arquivos)){ #Loop que analisara os arquivos####
@@ -62,7 +62,7 @@ timbreCal<- function(files="wd", SignalDur=NULL, RefValue=NULL,weighting="none",
       som<-readWave(arquivos[[i]], from=2, to=SignalDur+2, units="seconds"  )
     }
 
-    calib.value<-timbre(files=som, Leq.calib=RefValue, Calib.value=NULL, saveresults=F, outname=NULL, weighting=weighting, time.mess=F, stat.mess=F) #Analisa o sinal de referencia e obtem o valor de calibracao ####
+    calib.value<-timbre(files=som, Leq.calib=RefValue, ref=ref, Calib.value=NULL, saveresults=F, outname=NULL, weighting=weighting, time.mess=F, stat.mess=F) #Analisa o sinal de referencia e obtem o valor de calibracao ####
     calib.value<-calib.value[,2]
 
     if(class(arquivos[[i]])=="Wave"){ #isolando o som a ser analisado ####
@@ -72,9 +72,9 @@ timbreCal<- function(files="wd", SignalDur=NULL, RefValue=NULL,weighting="none",
     }
 
     if(i==1){#gerando a matriz de resultados ####
-    results<-timbre(files=som, Calib.value=calib.value, Leq.calib=NULL, saveresults=F, outname=NULL, weighting=weighting, bands=bands, time.mess=F, stat.mess=F)
+    results<-timbre(files=som, Calib.value=calib.value, ref=ref, Leq.calib=NULL, saveresults=F, outname=NULL, weighting=weighting, bands=bands, time.mess=F, stat.mess=F)
     }else {results<-rbind(results,
-                 timbre(files=som, Calib.value=calib.value, Leq.calib=NULL, saveresults=F, outname=NULL, weighting=weighting, bands=bands, time.mess=F, stat.mess=F)
+                 timbre(files=som, Calib.value=calib.value, ref=ref, Leq.calib=NULL, saveresults=F, outname=NULL, weighting=weighting, bands=bands, time.mess=F, stat.mess=F)
     )}
 
     if(is.list(arquivos) && is.null(names(arquivos))){ # colocando o nome dos arquivos na primeira coluna####
