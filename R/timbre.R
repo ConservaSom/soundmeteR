@@ -103,6 +103,8 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
 
     freqArray <- (0:(nUniquePts-1)) * (som@samp.rate / n) #create the frequency array
 
+    rm(som) #to free memory usage
+
     espec<-data.frame(Freq.Hz=freqArray, Int.linear=p^2) #p^2 is part of equation 8.39 de Miyara (2017)
 
     #Calulando a quantidade de energia por banda de frequência ####
@@ -195,17 +197,22 @@ timbre<-function(files="wd", weighting="none", bands="thirds", saveresults=F, ou
     if(saveresults) { #Salvando a matriz por som analisado ####
 
       if(bands=="octaves"){
-        matriz.2save<-matriz.octaves
+        write.table(matriz.octaves,
+                    paste("TimbreResults_",weighting,"-weighting",
+                          ifelse(!is.null(Leq.calib),paste("_Calib.value"),paste("")),
+                          ifelse(!is.null(Calib.value),paste("_Adjusted"),paste("")),
+                          ifelse(!is.null(outname),paste("_",outname, sep=""),paste("")),
+                          ".txt", sep="")
+                    ,row.names = F, col.names = T,sep = "\t", quote=F)
       }else {
-        matriz.2save<-matriz
-      }
-      write.table(matriz.2save,
-                  paste("TimbreResults_",weighting,"-weighting",
-                        ifelse(!is.null(Leq.calib),paste("_Calib.value"),paste("")),
-                        ifelse(!is.null(Calib.value),paste("_Adjusted"),paste("")),
-                        ifelse(!is.null(outname),paste("_",outname, sep=""),paste("")),
-                        ".txt", sep="")
-                  ,row.names = F, col.names = T,sep = "\t", quote=F)}
+        write.table(matriz,
+                    paste("TimbreResults_",weighting,"-weighting",
+                          ifelse(!is.null(Leq.calib),paste("_Calib.value"),paste("")),
+                          ifelse(!is.null(Calib.value),paste("_Adjusted"),paste("")),
+                          ifelse(!is.null(outname),paste("_",outname, sep=""),paste("")),
+                          ".txt", sep="")
+                    ,row.names = F, col.names = T,sep = "\t", quote=F)
+      }}
 
     if(stat.mess){cat(c("File", i, "of", length(arquivos), "done."), sep=" ", fill = T)}
 
