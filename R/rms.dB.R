@@ -11,7 +11,7 @@
 #' @param ref Numerical. Reference value for conversion. For Sound in water the ref is 1microPa and on air 20 microPa. (By default 1)
 #' @param ... Further arguments passed to \code{\link[base]{mean}}.
 #'
-#' @details This function converts your dB data to linear values (through \code{\link[seewave]{dBtoLinear}} function), compute the Root Mean Square (rms), and converts the result back to dB (through \code{\link[seewave]{LineartodB}} function).
+#' @details This function converts your dB data to linear values (through \code{\link{dBtoLinear}} function), compute the Root Mean Square (rms), and converts the result back to dB (through \code{\link{LineartodB}} function).
 #' @details This function was adapted from \code{\link[seewave]{meandB}} and \code{\link[seewave]{rms}} functions from \code{\link[seewave]{seewave}} package. See their help for more details.
 #'
 #'
