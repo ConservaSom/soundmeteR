@@ -2,7 +2,6 @@ Type: Package
 Package: noiseR
 Title: R package for noise analysis and modeling
 Version: 0.1.0
-Date: 2019-06-8
 Author: Cássio Rachid Simões and Carlos Barros de Araújo
 Maintainer: Cássio Rachid Simões <cassiorachid@gmail.com>
 Description: An R package designed for sound analysis through spectral analysis in octaves and one-thirds octaves, making possible calibration to obtain sound pressure level (SPL), and modeling sound decay in geographic information system (GIS).
