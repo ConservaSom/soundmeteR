@@ -15,7 +15,7 @@
 #' @details This function was adapted from \code{\link[seewave]{meandB}} and \code{\link[seewave]{rms}} functions from \code{\link[seewave]{seewave}} package. See their help for more details.
 #'
 #'
-#' @return A numeric value that represent the root mean square of x.
+#' @return A numeric value that represents the root mean square of x.
 #'
 #' @author Cássio Rachid Simões <cassiorachid@@gmail.com>
 #'
