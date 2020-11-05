@@ -2,9 +2,9 @@
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#stable)
 
-R package for noise modeling.
+R package for noise analysis and modeling.
 
-Package only availaible on [github](http://github.com/). In order to install you will need the [devtools](https://cran.r-project.org/package=devtools) package intalled on your [R program](https://www.r-project.org/). If you want to install, please follow the steps bellow:
+Package only availaible on [github](http://github.com/). In order to install you will need the [devtools](https://cran.r-project.org/package=devtools) package installed on your [R program](https://www.r-project.org/). If you want to install, please follow the code bellow:
 
 ```r
 #Install 'noiseR' from github repository
