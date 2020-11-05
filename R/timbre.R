@@ -1,4 +1,4 @@
-#' Intensity per octave or octave thirds
+#' Level per octaves or one-thirds octaves
 #'
 #' @name timbre
 #'

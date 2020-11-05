@@ -2,7 +2,7 @@
 % Please edit documentation in R/timbre.R
 \name{timbre}
 \alias{timbre}
-\title{Intensity per octave or octave thirds}
+\title{Level per octaves or one-thirds octaves}
 \usage{
 timbre(files="wd", weighting="none", bands="thirds", ref=20, saveresults=F,
        outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T)

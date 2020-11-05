@@ -20,8 +20,8 @@
 #'
 #' @author Cássio Rachid Simões <cassiorachid@@gmail.com>
 #'
-#' @details   To use this function, the audio file must begin with 2 seconds of silence, followed by a reference signal with known intensity, followed by another 2 seconds of silence, and the following sound to analyze.
-#' @details   The duration of the reference signal must be specified (in seconds) on the \code{SignalDur} argument and his intensity (in dB SPL) on the \code{refValue} argument.
+#' @details   To use this function, the audio file must begin with 2 seconds of silence, followed by a reference signal with known SPL, followed by another 2 seconds of silence, and the following sound to analyze.
+#' @details   The duration of the reference signal must be specified (in seconds) on the \code{SignalDur} argument and his value (in dB SPL) on the \code{refValue} argument.
 #'
 #' @seealso \code{\link{timbre}}
 #'

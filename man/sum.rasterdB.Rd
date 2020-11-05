@@ -16,8 +16,6 @@ One raster with the sum of all other raster of the input.
 }
 \description{
 Function to sum rasters with decibel values (Intensity Level).
-
-Last upate: 2018.06.01
 }
 \details{
 Include details.

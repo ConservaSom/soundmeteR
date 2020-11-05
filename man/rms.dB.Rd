@@ -9,7 +9,7 @@ rms.dB(x, level="SPL", ref=1, ...)
 \arguments{
 \item{x}{Numerical. A numeric vector or a numeric matrix with dB values.}
 
-\item{level}{Character. Specify in what scale your data is. \code{SPL} for Sound Pressute Level or \code{IL} for Intensity Level. (By deafault \code{SPL})}
+\item{level}{Character. Specify in what scale your data is. \code{SPL} for Sound Pressute Level or \code{IL} for Intensity Level. (By default \code{SPL})}
 
 \item{ref}{Numerical. Reference value for conversion. For Sound in water the ref is 1microPa and on air 20 microPa. (By default 1)}
 

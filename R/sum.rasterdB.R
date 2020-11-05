@@ -3,7 +3,6 @@
 #' @name sum.rasterdB
 #'
 #' @description Function to sum rasters with decibel values (Intensity Level).
-#' @description Last upate: 2018.06.01
 #'
 #' @usage sum.rasterdB(x, na.rm=FALSE)
 #'

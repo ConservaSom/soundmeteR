@@ -32,9 +32,9 @@ timbreCal(files="wd", SignalDur=NULL, RefValue=NULL, ref=20, weighting="none",
 This function passes the parameters to \code{\link{timbre}} to automatize the calibration and return spectral analysis with dB SPL results.
 }
 \details{
-To use this function, the audio file must begin with 2 seconds of silence, followed by a reference signal with known intensity, followed by another 2 seconds of silence, and the following sound to analyze.
+To use this function, the audio file must begin with 2 seconds of silence, followed by a reference signal with known SPL, followed by another 2 seconds of silence, and the following sound to analyze.
 
-The duration of the reference signal must be specified (in seconds) on the \code{SignalDur} argument and his intensity (in dB SPL) on the \code{refValue} argument.
+The duration of the reference signal must be specified (in seconds) on the \code{SignalDur} argument and his value (in dB SPL) on the \code{refValue} argument.
 }
 \seealso{
 \code{\link{timbre}}
