@@ -23,6 +23,7 @@
 #' @details Caution: You need to use an audiofile with entire values of secconds of duration to avoid bugs. Example: 35s, 60s, 19s. By default, the function will trunc your audiofile to the next entire value of seconds.
 #' @details These function works only with mono audiofiles.
 #' @details The audio files need to have at least 44100Hz of sampling rate.
+#' @details If you intend to work with decibels at full scale (dBFS), we recommend setting \code{ref=1}. With this, your results will be relative to 0 dBFS.
 #'
 #' @references Power spectrum adapted from: Carcagno, S. 2013. Basic Sound Processing with R [Blog post]. Retrieved from http://samcarcagno.altervista.org/blog/basic-sound-processing-r/
 #' @references Miyara, F. 2017. Software-Based Acoustical Measurements. Springer. 429 pp. DOI: 10.1007/978-3-319-55871-4
