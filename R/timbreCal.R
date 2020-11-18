@@ -66,7 +66,7 @@ timbreCal<- function(files="wd", SignalDur=NULL, RefValue=NULL, ref=20, weightin
     calib.value<-calib.value[,2]
 
     if(class(arquivos[[i]])=="Wave"){ #isolando o som a ser analisado ####
-      som<-extractWave(arquivos[[i]], from=4+SignalDur, xunit="time", interact=F)
+      som<-extractWave(arquivos[[i]], from=4+SignalDur, to=Inf, xunit="time", interact=F)
     } else {
       som<-readWave(arquivos[[i]], from=4+SignalDur, units="seconds"  )
     }
