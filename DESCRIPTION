@@ -1,15 +1,14 @@
 Type: Package
-Package: noiseR
-Title: R package for noise analysis and modeling
-Version: 0.1.0
-Author: Cássio Rachid Simões and Carlos Barros de Araújo
+Package: soundmeteR
+Title: R package for analisys as a sound meter
+Version: 0.0.1
+Author: Cássio Rachid Simões <cassiorachid@gmail.com> and Carlos Barros de Araújo <cabarau@gmail.com>
 Maintainer: Cássio Rachid Simões <cassiorachid@gmail.com>
-Description: An R package designed for sound analysis through spectral analysis in octaves and one-thirds octaves, making possible calibration to obtain sound pressure level (SPL), and modeling sound decay in geographic information system (GIS).
-URL: https://github.com/cassiorachid/noiseR
-BugReports: https://github.com/cassiorachid/noiseR/issues
+Description: An R package designed for sound analysis through spectral analysis in octaves and one-thirds octaves, making possible calibration to obtain sound pressure level (SPL) and Sound Intensity Level (SIL).
+URL: https://github.com/cassiorachid/soundmeteR
+BugReports: https://github.com/cassiorachid/soundmeteR/issues
 License: GPL (>=2)
-Imports: raster, rgeos, sp, tuneR, seewave
-Suggests: parallel
+Imports: tuneR, seewave
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1.9000
