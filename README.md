@@ -2,7 +2,7 @@
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#stable)
 
-R package for noise analysis and modeling.
+R package for sound meter alike analysis.
 
 Package only availaible on [github](http://github.com/). In order to install you will need the [devtools](https://cran.r-project.org/package=devtools) package installed on your [R program](https://www.r-project.org/). If you want to install, please follow the code bellow:
 
