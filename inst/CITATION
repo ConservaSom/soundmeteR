@@ -2,11 +2,11 @@ citHeader("Package in alfa version.
 Please contact us before use or cite: cassiorachid@gmail.com, cabarau@gmail.com")
 
 citEntry(entry = "MISC",
-        title = "noiseR: R package for noise modeling",
+        title = "soundmeteR: R for package sound meter alike analysis",
         author = personList(person("Cássio Rachid", "Simões"),person("Carlos Barros", "de Araújo")),
-        year = "2019",
-        url = "https://github.com/cassiorachid/noiseR",
-        textVersion = "Simões, Cássio Rachid and de Araújo, Carlos Barros (2019). noiseR: R package for noise modeling. URL: https://github.com/cassiorachid/noiseR
+        year = "2020",
+        url = "https://github.com/cassiorachid/soundmeteR",
+        textVersion = "Simões, Cássio Rachid and de Araújo, Carlos Barros (2020). soundmeteR: R package for sound meter alike analysis. URL: https://github.com/cassiorachid/soundmeteR
 
 NOTE: Our dependencies still need to be referenced."
 )
