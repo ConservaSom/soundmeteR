@@ -29,7 +29,7 @@ rms.dB<-function(x, level="SPL", ref=1, ...){
 
   x <- sqrt(mean(x^2, ...)) #compute the rms
 
-  x <- LineartodB(x, factor=level, ref=1) #back to decibels
+  x <- LineartodB(x, factor=level, ref=ref) #back to decibels
 
   return(x)
 }
