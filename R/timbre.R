@@ -73,11 +73,12 @@ timbre<-function(files="wd", weighting="none", bands="thirds", ref=20, saveresul
       som<-readWave(arquivos[[i]])
     }
 
-    #Trunc samples to duration with 3 decimal places ####
-    #This doesn't work with 22050 Hz of samplingrate
-    if(!trunc((length(som)/som@samp.rate)*10^3)/10^3==length(som)/som@samp.rate){
-      som<-extractWave(som, to=(trunc((length(som)/som@samp.rate)*10^3)/10^3)*som@samp.rate, interact=F)
-      if(!trunc((length(som)/som@samp.rate)*10^3)/10^3==length(som)/som@samp.rate){stop("Something went wrong with your sound file.")}
+    #Trunc samples to duration with 3 decimal places if file bigger than 1s####
+    if(length(som)/som@samp.rate > 1){ #
+      if(!trunc((length(som)/som@samp.rate)*10^3)/10^3==length(som)/som@samp.rate){
+        som<-extractWave(som, to=(trunc((length(som)/som@samp.rate)*10^3)/10^3)*som@samp.rate, interact=F)
+        if(!trunc((length(som)/som@samp.rate)*10^3)/10^3==length(som)/som@samp.rate){message("Warning: It may take a little longer than usual to analyze this file (file duration with more than three decimal places)")}
+      }
     }
 
     if(som@samp.rate<44100){stop("Your audiofiles need to have at least 44100Hz of sampling rate.")}
