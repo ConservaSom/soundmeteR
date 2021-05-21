@@ -4,14 +4,14 @@
 \alias{Tweighting}
 \title{Time Weighting of a Audiofile}
 \usage{
-Tweighting(file, window="fast", ...)
+Tweighting(file, window = "fast", Leq.calib = NULL, ...)
 }
 \arguments{
 \item{file}{Wave object}
 
 \item{window}{Character. Wich time}
 
-\item{Leq.calib}{Numeric. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: NULL). This parameter is passed to \link{\code{timbre}} function.}
+\item{Leq.calib}{Numeric. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: NULL). This parameter is passed to \code{\link{timbre}} function.}
 
 \item{...}{Further arguments passed to \code{\link{timbre}}.}
 }
@@ -19,10 +19,10 @@ Tweighting(file, window="fast", ...)
 A numeric vector
 }
 \description{
-Time Weighting of a Audiofile
+Escrever descrição
 }
 \details{
-This function split your audiofile in smaller files defined as \code{fast} (0.125s) and \code{slow} (1s) and analyze each one with \link{\code(timbre)} function.
+This function split your audiofile in smaller files defined as \code{fast} (0.125s) and \code{slow} (1s) and analyze each one with \code{\link{timbre}} function.
 }
 \examples{
 #creating an example sound file
@@ -49,4 +49,7 @@ Tweighting(som, window = "slow", bands="octaves", Calib.value=309.67)
 
 
 
+}
+\seealso{
+\code{\link{timbre}}, \code{\link{soundmeter}}
 }

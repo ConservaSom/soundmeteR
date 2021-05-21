@@ -1,45 +1,45 @@
-##' Time Weighting of a Audiofile
-##'
-##' @name Tweighting
-##'
-##' @usage Tweighting(file, window="fast", ...)
-##'
-##' @param file Wave object
-##' @param window Character. Wich time
-##' @param Leq.calib Numeric. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: NULL). This parameter is passed to \link{\code{timbre}} function.
-##' @param ... Further arguments passed to \code{\link{timbre}}.
-##'
-##' @details This function split your audiofile in smaller files defined as \code{fast} (0.125s) and \code{slow} (1s) and analyze each one with \link{\code(timbre)} function.
-##'
-##' @return A numeric vector
-##'
-##' @seealso \code{{\link{timbre}}, \code{\link{soundmeter}}
-##'
-##' @examples
-##' #creating an example sound file
-##' som=sine(1000, duration = 44500)
-##'
-##' #default options without calibration (results in dBFS)
-##' Tweighting(som)
-##'
-##' #Simulation of a calib signal with a Leq of 94dB in the field ####
-##' #fast
-##' Tweighting(som, window = "fast", bands="octaves", Leq.calib=94)
-##' #slow
-##' Tweighting(som, window = "slow", bands="octaves", Leq.calib=94)
-##'
-##' #Using the result of the simulation above to calibrate the sound and output
-##' #fast
-##' Tweighting(som, window = "fast", bands="octaves", Calib.value=309.67)
-##' #slow
-##' Tweighting(som, window = "slow", bands="octaves", Calib.value=309.67)
-##'
-##'
-##'
-##'
-##'
-##'
-##'
+#' Time Weighting of a Audiofile
+#'
+#' @name Tweighting
+#'
+#' @description Escrever descrição
+#'
+#' @param file Wave object
+#' @param window Character. Wich time
+#' @param Leq.calib Numeric. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: NULL). This parameter is passed to \code{\link{timbre}} function.
+#' @param ... Further arguments passed to \code{\link{timbre}}.
+#'
+#' @details This function split your audiofile in smaller files defined as \code{fast} (0.125s) and \code{slow} (1s) and analyze each one with \code{\link{timbre}} function.
+#'
+#' @return A numeric vector
+#'
+#' @seealso \code{\link{timbre}}, \code{\link{soundmeter}}
+#'
+#' @examples
+#' #creating an example sound file
+#' som=sine(1000, duration = 44500)
+#'
+#' #default options without calibration (results in dBFS)
+#' Tweighting(som)
+#'
+#' #Simulation of a calib signal with a Leq of 94dB in the field ####
+#' #fast
+#' Tweighting(som, window = "fast", bands="octaves", Leq.calib=94)
+#' #slow
+#' Tweighting(som, window = "slow", bands="octaves", Leq.calib=94)
+#'
+#' #Using the result of the simulation above to calibrate the sound and output
+#' #fast
+#' Tweighting(som, window = "fast", bands="octaves", Calib.value=309.67)
+#' #slow
+#' Tweighting(som, window = "slow", bands="octaves", Calib.value=309.67)
+#'
+#'
+#'
+#'
+#'
+#'
+#'
 
 
 Tweighting <- function(file, window="fast", Leq.calib=NULL,...){
