@@ -37,12 +37,12 @@ timbre<-function(files="wd", weighting="none", bands="thirds", ref=20, saveresul
     arquivos<-list(files)
   }else if(is.list(files)){
     arquivos<-files
-  }else if(any(files=="wd")) {
+  }else if(length(files)==1 && files=="wd") {
     arquivos <- dir(pattern=".WAV", ignore.case=T)
   }else if(is.character(files)) {
     arquivos <- files
   }else {
-    stop("Choose a valid file on 'files' argument. Could be 'wd', a valid file name, a character list of files or a list of wavefiles already loaded inde R environment", call. = F)
+    stop("Choose a valid file on the 'files' argument. Could be 'wd', a filename on your work directory, a character object containing filenames, or a list of wave files already loaded in the R environment", call. = F)
   }
 
   if(length(arquivos)==0){stop("There is no wave files on your working directory", call. = F)}

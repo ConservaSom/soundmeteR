@@ -1,10 +1,12 @@
-##'
-##'
-##'
-##' @param CalibPosition anda de mãos dadas com calib value. Pode ser negativo, positivo ou data.frame com essas combinações
-##' @param CalibValue Anda de mãos dadas com calib position. Quando tem o position, ele é considerado o valor de referência, quando não tem o position, ele é considerado o valor de calibração.
-##' @param fw Fequency weighting
-##' @param tw Time weighting
+#'
+#'
+#'
+#' @param CalibPosition anda de mãos dadas com calib value. Pode ser negativo, positivo ou data.frame com essas combinações
+#' @param CalibValue Anda de mãos dadas com calib position. Quando tem o position, ele é considerado o valor de referência, quando não tem o position, ele é considerado o valor de calibração.
+#' @param fw Fequency weighting
+#' @param tw Time weighting
+#' @param bandpass ainda não implementado
+#' @param stat.mess ainda não implementado
 
 soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValue=0, ref=20, fw="none", bands="octaves", banpass=NULL, tw="fast", time.mess=T, stat.mess=F){
 
@@ -18,7 +20,7 @@ soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValu
     arquivos<-list(files)
   }else if(is.list(files)){
     arquivos<-files
-  }else if(files=="wd") {
+  }else if(length(files)==1 && files=="wd") {
     arquivos <- dir(pattern=".WAV", ignore.case=T)
   }else if(is.character(files)) {
     arquivos <- files

@@ -42,17 +42,17 @@ timbreCal<- function(files="wd", SignalDur=NULL, RefValue=NULL, ref=20, weightin
     arquivos<-list(files)
   }else if(is.list(files)){
     arquivos<-files
-  }else if(any(files=="wd")) {
+  }else if(length(files)==1 && files=="wd") {
     arquivos <- dir(pattern=".WAV", ignore.case=T)
   }else if(is.character(files)) {
     arquivos <- files
   }else {
-    stop("Choose a valid file on 'files' argument. Could be 'wd', a valid file name, a character list of files or a list of wavefiles already loaded inde R environment", call. = F)
+    stop("Choose a valid file on the 'files' argument. Could be 'wd', a filename on your work directory, a character object containing filenames, or a list of wave files already loaded in the R environment", call. = F)
   }
 
-  if(!is.numeric(SignalDur)){stop("A numeric value specifying the duration (in seconds) of the referencing signal must be set on the 'SignalDur' argument.")}
-  if(!is.numeric(RefValue)){stop("A numeric value specifying the intensity (in dB SPL) of the referencing signal must be set on the 'RefValue' argument.")}
-  if(!saveresults && !is.null(outname)) {stop("You can't set an 'outname' if 'saveresults' is FALSE", call. = F)}
+  if(!is.numeric(SignalDur)){stop("A numeric value specifying the duration (in seconds) of the referencing signal must be set on the 'SignalDur' argument.")} #rever essa mensagem de erro ----
+  if(!is.numeric(RefValue)){stop("A numeric value specifying the intensity (in dB SPL) of the referencing signal must be set on the 'RefValue' argument.")} #rever essa mensagem de erro ----
+  if(!saveresults && !is.null(outname)) {stop("You can't set an 'outname' if 'saveresults' is FALSE", call. = F)} #rever essa mensagem de erro ----
 
   for(i in 1:length(arquivos)){ #Loop que analisara os arquivos####
 
