@@ -9,7 +9,7 @@ Tweighting(file, window = "fast", Leq.calib = NULL, ...)
 \arguments{
 \item{file}{Wave object}
 
-\item{window}{Character. Wich time}
+\item{window}{Character. Wich time window should be used. 'fast' or 'slow' are accepted. (by default: "fast")}
 
 \item{Leq.calib}{Numeric. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: NULL). This parameter is passed to \code{\link{timbre}} function.}
 

@@ -5,7 +5,7 @@
 #' @description Escrever descrição
 #'
 #' @param file Wave object
-#' @param window Character. Wich time
+#' @param window Character. Wich time window should be used. 'fast' or 'slow' are accepted. (by default: "fast")
 #' @param Leq.calib Numeric. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: NULL). This parameter is passed to \code{\link{timbre}} function.
 #' @param ... Further arguments passed to \code{\link{timbre}}.
 #'
