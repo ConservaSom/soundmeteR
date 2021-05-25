@@ -3,13 +3,17 @@
 #'
 #' @param CalibPosition anda de mãos dadas com calib value. Pode ser negativo, positivo ou data.frame com essas combinações
 #' @param CalibValue Anda de mãos dadas com calib position. Quando tem o position, ele é considerado o valor de referência, quando não tem o position, ele é considerado o valor de calibração.
-#' @param fw Fequency weighting
+#' @param fw Character. Argument passed to \code{\link[seewave]{dBweight}} to indicate the frequency weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See \code{\link[seewave]{dBweight}} for details. (By default: "none")
 #' @param tw Time weighting
 #' @param bandpass ainda não implementado
-#' @param stat.mess ainda não implementado
+#' @param time.mess Logical. Activate or deactivate message of time to complete the function execution. (By default: \code{TRUE})
+#' @param stat.mess Logical. Activate or deactivate status message of the function execution. (By default: \code{TRUE})
 #' @param channel Only "left" or "right" acepted. By default "left"
+#' @param saveresults Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})
+#' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})
 
-soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValue=0, ref=20, fw="none", bands="octaves", banpass=NULL, tw="fast", time.mess=T, stat.mess=F, channel="left"){
+
+soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValue=0, ref=20, fw="none", bands="octaves", banpass=NULL, tw="fast", time.mess=T, stat.mess=T, channel="left", saveresults=F, outname=NULL){
 
   start.time<-Sys.time()
 
@@ -123,7 +127,16 @@ soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValu
     res[i,-1]=round(res[i,-1],2) #arredondando valores para duas casas decimais
 
 
-    # rm(cal.val) #Removendo cal.val para evitar erro quando recomeçar o loop ----
+    if(saveresults) { #Salvando a matriz a cada audio analisado ----
+      write.table(res,
+                  paste("soundmeterResult_", fw, "-weighting_",
+                        tw,
+                        ifelse(!is.null(outname),paste("_", outname, sep=""),paste("")),
+                        ".txt", sep="")
+                  ,row.names = F, col.names = T,sep = "\t", quote=F)
+    }
+
+    if(stat.mess){cat(c("File", i, "of", length(arquivos), "done."), sep=" ", fill = T)} #stat.mess ----
 
   } #final do loop maior ####
 
