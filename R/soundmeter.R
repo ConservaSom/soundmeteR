@@ -7,8 +7,9 @@
 #' @param tw Time weighting
 #' @param bandpass ainda não implementado
 #' @param stat.mess ainda não implementado
+#' @param channel Only "left" or "right" acepted. By default "left"
 
-soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValue=0, ref=20, fw="none", bands="octaves", banpass=NULL, tw="fast", time.mess=T, stat.mess=F){
+soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValue=0, ref=20, fw="none", bands="octaves", banpass=NULL, tw="fast", time.mess=T, stat.mess=F, channel="left"){
 
   start.time<-Sys.time()
 
@@ -32,9 +33,11 @@ soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValu
   if(is.list(arquivos)){
     from=data.frame(1:length(arquivos), from)$from
     to=data.frame(1:length(arquivos), to)$to
+    channel=data.frame(1:length(arquivos), channel)$channel
   }else {
     from=data.frame(arquivos, from)$from
     to=data.frame(arquivos, to)$to
+    channel=data.frame(arquivos, channel)$channel
   }
 
   #início do loop maior ####
@@ -45,6 +48,11 @@ soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValu
       som<-arquivos[[i]]
     } else {
       som<-readWave(arquivos[[i]])
+    }
+
+    #Extraindo o canal ####
+    if(channel[i] == "right"){
+      som=mono(som, "right")
     }
 
     #Ajustando informações de CalibValue ####
@@ -107,7 +115,7 @@ soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValu
 
     res[i,c("L90","L50","L10")] = LineartodB(quantile(dBtoLinear(matriz$Leq, factor = "SPL", ref = ref), probs=c(0.1, 0.5, 0.9)), factor = "SPL", ref = ref) #L90,L50 e L10
 
-    res$Lpeak[i]=LineartodB(max(abs(som@left/2^(som@bit -1))), factor="SPL", ref=ref) #Lpeak
+    res$Lpeak[i]=LineartodB(max(abs(extractWave(som, from=from[i] , to=to[i], xunit = "time", interact=F)@left/2^(som@bit -1))), factor="SPL", ref=ref) #Lpeak
     if(!is.null(cal.val)) res$Lpeak[i] = res$Lpeak[i]+cal.val
 
     res[i,8:ncol(res)]=apply(matriz, 2, meandB, level="SPL") #Leq e bandas
