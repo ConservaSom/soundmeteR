@@ -14,7 +14,6 @@
 #'
 #' @return The same object of the input with the converted values.
 #'
-#' @author Cássio Rachid Simões <cassiorachid@@gmail.com>
 #'
 #' @seealso \code{\link{rms.dB}}, \code{\link{LineartodB}}, \code{\link[seewave]{convSPL}}
 #'
@@ -51,7 +50,6 @@ dBtoLinear<-function(x, factor="IL", ref=1){
 #'
 #' @return The same object of the input with the converted values.
 #'
-#' @author Cássio Rachid Simões <cassiorachid@@gmail.com>
 #'
 #' @seealso \code{\link{rms.dB}}, \code{\link{dBtoLinear}}, \code{\link[seewave]{convSPL}}
 #'
