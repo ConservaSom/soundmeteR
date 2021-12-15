@@ -17,7 +17,6 @@
 #'
 #' @return A numeric value that represents the root mean square of x.
 #'
-#' @author Cássio Rachid Simões <cassiorachid@@gmail.com>
 #'
 #' @seealso \code{\link[seewave]{meandB}}, \code{\link[seewave]{rms}}
 #'

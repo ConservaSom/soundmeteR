@@ -18,9 +18,8 @@
 #' @param time.mess Logical. Activate or deactivate message of time to complete the function execution. (By default: \code{TRUE})
 #' @param stat.mess Logical. Activate or deactivate status message of the function execution. (By default: \code{TRUE})
 #'
-#' @author Cássio Rachid Simões <cassiorachid@@gmail.com>
 #'
-#' @details Caution: You need to use an audiofile with entire values of secconds of duration to avoid bugs. Example: 35s, 60s, 19s. By default, the function will trunc your audiofile to the next entire value of seconds.
+#' @details Caution: You need to use an audiofile with entire values of seconds of duration to avoid bugs. Example: 35s, 60s, 19s. By default, the function will trunc your audiofile to the next entire value of seconds.
 #' @details These function works only with mono audiofiles.
 #' @details The audio files need to have at least 44100Hz of sampling rate.
 #' @details If you intend to work with decibels at full scale (dBFS), we recommend setting \code{ref=1}. With this, your results will be relative to 0 dBFS.
