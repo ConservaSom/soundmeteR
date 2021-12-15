@@ -33,6 +33,3 @@ rms.dB(c(80,60,65,62))
 \seealso{
 \code{\link[seewave]{meandB}}, \code{\link[seewave]{rms}}
 }
-\author{
-Cássio Rachid Simões <cassiorachid@gmail.com>
-}

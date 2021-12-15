@@ -30,6 +30,3 @@ LineartodB(dBtoLinear(c(80,60,65,62)))
 \seealso{
 \code{\link{rms.dB}}, \code{\link{dBtoLinear}}, \code{\link[seewave]{convSPL}}
 }
-\author{
-Cássio Rachid Simões <cassiorachid@gmail.com>
-}
