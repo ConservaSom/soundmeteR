@@ -11,7 +11,15 @@
 #' @param channel Only "left" or "right" acepted. By default "left"
 #' @param saveresults Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})
 #' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})
-
+#'
+#' @details If your reference signal is in a separate file, we recommend you to get the \code{CalibValue} with \link{Tweighting} function. It's examples provide more details.
+#'
+#' @examples
+#' data("tham")
+#' soundmeter(tham, CalibValue = 130.24, tw="slow") #slow time window with calib value
+#' soundmeter(tham, CalibValue = NULL, tw="fast") #fast time window in dBFS
+#'
+#'
 
 soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValue=0, ref=20, fw="none", bands="octaves", banpass=NULL, tw="fast", time.mess=T, stat.mess=T, channel="left", saveresults=F, outname=NULL){
 
@@ -54,6 +62,8 @@ soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValu
     #Extraindo o canal ####
     if(channel[i] == "right"){
       som=mono(som, "right")
+    } else{
+      som=mono(som, "left")
     }
 
     #Ajustando informações de CalibValue ####
