@@ -8,7 +8,7 @@ Description: An R package designed for sound analysis through spectral analysis 
 URL: https://github.com/cassiorachid/soundmeteR
 BugReports: https://github.com/cassiorachid/soundmeteR/issues
 License: GPL (>=3)
-Imports: tuneR, seewave
+Depends: tuneR, seewave
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1.9000

@@ -18,9 +18,6 @@ soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValu
   start.time<-Sys.time()
 
 
-  require(tuneR)
-  require(seewave)
-
   if(class(files)=="Wave"){ #vendo o tipo de arquivo usado no imput e armazenando em um objeto ###
     arquivos<-list(files)
   }else if(is.list(files)){
