@@ -34,6 +34,11 @@
 #' #slow
 #' Tweighting(som, window = "slow", bands="octaves", Calib.value=309.67)
 #'
+#' #With tham data
+#' data(tham)
+#' Tweighting(som, window = "fast", bands="octaves", Calib.value=130.24) #fast
+#' Tweighting(som, window = "slow", bands="octaves", Calib.value=130.24) #slow
+#'
 #'
 #'
 #'
