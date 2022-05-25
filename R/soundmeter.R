@@ -1,4 +1,4 @@
-#'
+#' Function that makes sound meter alike measurements
 #'
 #'
 #' @param CalibPosition anda de mãos dadas com calib value. Pode ser negativo, positivo ou data.frame com essas combinações
