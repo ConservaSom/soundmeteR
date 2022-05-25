@@ -46,6 +46,13 @@ soundmeter(
 \description{
 Function that makes sound meter alike measurements
 }
+\details{
+If your reference signal is in a separate file, we recommend you to get the \code{CalibValue} with \link{Tweighting} function. It's examples provide more details.
+}
 \examples{
 data("tham")
+soundmeter(tham, CalibValue = 130.24, tw="slow") #slow time window with calib value
+soundmeter(tham, CalibValue = NULL, tw="fast") #fast time window in dBFS
+
+
 }
