@@ -39,6 +39,3 @@ The duration of the reference signal must be specified (in seconds) on the \code
 \seealso{
 \code{\link{timbre}}
 }
-\author{
-Cássio Rachid Simões <cassiorachid@gmail.com>
-}

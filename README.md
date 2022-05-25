@@ -1,4 +1,4 @@
-# soundmeteR (alfa version)
+# soundmeteR (beta version)
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#stable)
 
@@ -8,5 +8,5 @@ Package only availaible on [github](http://github.com/). In order to install you
 
 ```r
 #Install 'noiseR' from github repository
-devtools::install_github("cassiorachid/soundmeteR", auth_token = "a063a039da862750bd86512ccced45b531879791")
+devtools::install_github("cassiorachid/soundmeteR")
 ```
