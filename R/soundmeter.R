@@ -5,7 +5,7 @@
 #' @param CalibValue Anda de mãos dadas com calib position. Quando tem o position, ele é considerado o valor de referência, quando não tem o position, ele é considerado o valor de calibração.
 #' @param fw Character. Argument passed to \code{\link[seewave]{dBweight}} to indicate the frequency weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See \code{\link[seewave]{dBweight}} for details. (By default: "none")
 #' @param tw Time weighting
-#' @param bandpass falta implementar
+#' @param bandpass falta implementar...
 #' @param time.mess Logical. Activate or deactivate message of time to complete the function execution. (By default: \code{TRUE})
 #' @param stat.mess Logical. Activate or deactivate status message of the function execution. (By default: \code{TRUE})
 #' @param channel Only "left" or "right" acepted. By default "left"
