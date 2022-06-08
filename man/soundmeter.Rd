@@ -54,5 +54,4 @@ data("tham")
 soundmeter(tham, CalibValue = 130.24, tw="slow") #slow time window with calib value
 soundmeter(tham, CalibValue = NULL, tw="fast") #fast time window in dBFS
 
-
 }

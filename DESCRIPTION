@@ -10,5 +10,5 @@ BugReports: https://github.com/cassiorachid/soundmeteR/issues
 License: GPL (>=3)
 Depends: tuneR, seewave
 Encoding: UTF-8
-LazyData: true
+LazyData: TRUE
 RoxygenNote: 7.1.2

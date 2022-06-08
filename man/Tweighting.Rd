@@ -53,7 +53,6 @@ Tweighting(som, window = "slow", bands="octaves", Calib.value=130.24) #slow
 
 
 
-
 }
 \seealso{
 \code{\link{timbre}}, \code{\link{soundmeter}}

@@ -22,6 +22,7 @@
 #'
 #' @examples rms.dB(c(80,60,65,62))
 #'
+#' @export
 rms.dB<-function(x, level="SPL", ref=1, ...){
 
   x <- dBtoLinear(x, factor=level, ref=ref) #Convert to linear

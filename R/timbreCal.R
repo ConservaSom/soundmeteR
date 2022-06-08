@@ -25,7 +25,7 @@
 #' @seealso \code{\link{timbre}}
 #'
 #'
-#'
+#' @export
 
 #Coisas para fazer:
 #Pensar ao invés de usar um trecho da gravação para calibrar usar um arquivo externo.

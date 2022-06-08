@@ -19,7 +19,7 @@
 #' soundmeter(tham, CalibValue = 130.24, tw="slow") #slow time window with calib value
 #' soundmeter(tham, CalibValue = NULL, tw="fast") #fast time window in dBFS
 #'
-#'
+#' @export
 
 soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValue=0, ref=20, fw="none", bands="octaves", banpass=NULL, tw="fast", time.mess=T, stat.mess=T, channel="left", saveresults=F, outname=NULL){
 

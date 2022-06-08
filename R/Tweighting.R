@@ -44,7 +44,7 @@
 #'
 #'
 #'
-#'
+#' @export
 
 
 Tweighting <- function(file, window="fast", Leq.calib=NULL,...){
