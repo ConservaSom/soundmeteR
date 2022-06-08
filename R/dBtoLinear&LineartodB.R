@@ -20,6 +20,7 @@
 #' @examples dBtoLinear(c(80,60,65,62))
 #' LineartodB(dBtoLinear(c(80,60,65,62)))
 #'
+#' @export
 
 dBtoLinear<-function(x, factor="IL", ref=1){
   if(factor == "IL") {
@@ -56,6 +57,7 @@ dBtoLinear<-function(x, factor="IL", ref=1){
 #' @examples dBtoLinear(c(80,60,65,62))
 #' LineartodB(dBtoLinear(c(80,60,65,62)))
 #'
+#' @export
 
 LineartodB<-function(x, factor="IL", ref=1){
   if(factor == "IL") {
