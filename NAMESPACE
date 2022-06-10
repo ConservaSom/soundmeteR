@@ -3,6 +3,7 @@
 export(LineartodB)
 export(Tweighting)
 export(dBtoLinear)
+export(freq.bands)
 export(rms.dB)
 export(soundmeter)
 export(timbre)
