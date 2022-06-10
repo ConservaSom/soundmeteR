@@ -29,7 +29,7 @@ The interval specified is applied by x/interval (for bellow) of x*interval (for 
   \item Perfect fifth (music theory) = 3/2
   \item Major third (music theory) = 5/4
   \item Minor third (music theory) = 6/5
-  \item This \link[https://academics.hamilton.edu/music/spellman/class_notes/music_theory.htm]{link} shows other values that can be used.
+  \item This \href{https://academics.hamilton.edu/music/spellman/class_notes/music_theory.htm}{link} shows other values that can be used.
 }
 }
 \examples{
