@@ -27,12 +27,19 @@
 #' @references Power spectrum adapted from: Carcagno, S. 2013. Basic Sound Processing with R [Blog post]. Retrieved from http://samcarcagno.altervista.org/blog/basic-sound-processing-r/
 #' @references Miyara, F. 2017. Software-Based Acoustical Measurements. Springer. 429 pp. DOI: 10.1007/978-3-319-55871-4
 #'
+#' @examples
+#' data(tham)
+#' timbre(tham)
+#' timbre(tham, Calib.value=130.24)
+#' timbre(tham, Calib.value=130.24, weighting="A")
+#' timbre(tham, Calib.value=130.24, weighting="A", bands="octaves")
+#'
+#'
+#'
 #' @export
 
 timbre<-function(files="wd", weighting="none", bands="thirds", ref=20, saveresults=F, outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T){
   start.time<-Sys.time()
-
-  require(tuneR)
 
   if(class(files)=="Wave"){
     arquivos<-list(files)
@@ -74,34 +81,9 @@ timbre<-function(files="wd", weighting="none", bands="thirds", ref=20, saveresul
       som<-readWave(arquivos[[i]])
     }
 
-    #Trunc samples to duration with 3 decimal places if file bigger than 1s####
-    if(length(som)/som@samp.rate > 1){ #
-      if(!trunc((length(som)/som@samp.rate)*10^3)/10^3==length(som)/som@samp.rate){
-        som<-extractWave(som, to=(trunc((length(som)/som@samp.rate)*10^3)/10^3)*som@samp.rate, interact=F)
-        if(!trunc((length(som)/som@samp.rate)*10^3)/10^3==length(som)/som@samp.rate){message("Warning: It may take a little longer than usual to analyze this file (file duration with more than three decimal places)")}
-      }
-    }
+    if(som@samp.rate<44100){stop("Your audiofiles need to have at least 44100Hz of sampling rate.", call. = F)}
 
-    if(som@samp.rate<44100){stop("Your audiofiles need to have at least 44100Hz of sampling rate.")}
-
-    s1 <- som@left/2^(som@bit-1) #scaled to the maximum possible (as result of '/2^(bitrate-1)')
-    n <- length(s1)
-    p <- fft(s1)
-    nUniquePts <- ceiling((n+1)/2)
-    p <- p[1:nUniquePts] #select just the first half since the second half is a mirror image of the first
-    p <- 2*(abs(p/n)) #changed here and next if/else in 2020.11.03 to match Miyara (2017) code routine in topic 8.6.6
-
-    if (n %% 2 > 0){  #Routine to remove Nyquist point. Odd nfft excludes Nyquist point
-      p[2:length(p)] <- p[2:length(p)]
-    } else {
-      p[2: (length(p) -1)] <- p[2: (length(p) -1)]
-    }
-
-    freqArray <- (0:(nUniquePts-1)) * (som@samp.rate / n) #create the frequency array
-
-    rm(som) #to free memory usage
-
-    espec<-data.frame(Freq.Hz=freqArray, Int.linear=p^2) #p^2 is part of Miyara (2017) code routine in topic 8.6.6
+    espec=pwrspec(som)
 
     #Calulando a quantidade de energia por banda de frequência ####
     for (j in 1:length(Freqbands)) {

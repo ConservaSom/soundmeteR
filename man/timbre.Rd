@@ -40,6 +40,16 @@ The audio files need to have at least 44100Hz of sampling rate.
 
 If you intend to work with decibels at full scale (dBFS), we recommend setting \code{ref=1}. With this, your results will be relative to 0 dBFS.
 }
+\examples{
+data(tham)
+timbre(tham)
+timbre(tham, Calib.value=130.24)
+timbre(tham, Calib.value=130.24, weighting="A")
+timbre(tham, Calib.value=130.24, weighting="A", bands="octaves")
+
+
+
+}
 \references{
 Power spectrum adapted from: Carcagno, S. 2013. Basic Sound Processing with R [Blog post]. Retrieved from http://samcarcagno.altervista.org/blog/basic-sound-processing-r/
 
