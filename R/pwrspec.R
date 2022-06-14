@@ -6,6 +6,8 @@
 #' @param from Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
 #' @param to Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
 #' @param bandpass A vector with length two with lower and upper limits of the band pass interval in Hz.
+#' @param res.scale Character. Specify the kind of scale the power spectrum amplitude should be adjusted. \code{microPa} for linear values in µPa, and \code{dB} fo decibells values in dB-SPL. (By default "microPa")
+#' @param ref Numerical. Reference value for dB conversion. For Sound in water the ref is 1 µPa and on air 20 µPa. (By default 1)
 #'
 #' @return This function returns a data.frame with Frequency (Hz) and Intensity (microPa) of the file.
 #'
@@ -25,7 +27,7 @@
 #'
 #' @export
 
-pwrspec <- function(file, from=0, to=Inf, bandpass=c(0,Inf)){
+pwrspec <- function(file, from=0, to=Inf, bandpass=c(0,Inf), res.scale="microPa", ref=1){
 
   if(from < 0 & to < 0){ #ajustando para from e to relativo ao tamanho do arquivo
 
@@ -74,10 +76,20 @@ pwrspec <- function(file, from=0, to=Inf, bandpass=c(0,Inf)){
 
   rm(som) #to free memory usage
 
-  espec<-data.frame(Freq.Hz=freqArray, Int.linear=p^2) #p^2 is part of Miyara (2017) code routine in topic 8.6.6
+  espec<-data.frame(Freq.Hz=freqArray, Amp.microPa=p^2) #p^2 is part of Miyara (2017) code routine in topic 8.6.6
 
   espec=espec %>%
     filter(Freq.Hz >= bandpass[1] & Freq.Hz <= bandpass[2])
+
+  if(res.scale == "dB"){
+    espec$Amp.dB=LineartodB(
+      sqrt( #equation based on Miyara 2017 8.6.6 topic
+        espec$Amp.microPa
+      )/sqrt(2) #/sqrt(2) to be able to apply calibration (Miyara 2017, topic 8.6.6 codes)
+      , factor="SPL", ref=ref)
+
+    espec=select(espec, -Amp.microPa)
+  }
 
   return(espec)
 

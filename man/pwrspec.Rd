@@ -4,7 +4,14 @@
 \alias{pwrspec}
 \title{Power Spectrum of a sound file}
 \usage{
-pwrspec(file, from = 0, to = Inf, bandpass = c(0, Inf))
+pwrspec(
+  file,
+  from = 0,
+  to = Inf,
+  bandpass = c(0, Inf),
+  res.scale = "microPa",
+  ref = 1
+)
 }
 \arguments{
 \item{file}{A wave file path in your computer or a class Wave object already loaded into R environment.}
@@ -14,6 +21,10 @@ pwrspec(file, from = 0, to = Inf, bandpass = c(0, Inf))
 \item{to}{Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.}
 
 \item{bandpass}{A vector with length two with lower and upper limits of the band pass interval in Hz.}
+
+\item{res.scale}{Character. Specify the kind of scale the power spectrum amplitude should be adjusted. \code{microPa} for linear values in µPa, and \code{dB} fo decibells values in dB-SPL. (By default "microPa")}
+
+\item{ref}{Numerical. Reference value for dB conversion. For Sound in water the ref is 1 µPa and on air 20 µPa. (By default 1)}
 }
 \value{
 This function returns a data.frame with Frequency (Hz) and Intensity (microPa) of the file.
