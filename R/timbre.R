@@ -91,7 +91,7 @@ timbre<-function(files="wd", from=0, to=Inf, weighting="none", bands="thirds", r
 
     if(som@samp.rate<44100){stop("Your audiofiles need to have at least 44100Hz of sampling rate.", call. = F)}
 
-    espec=pwrspec(som, from=from, to=to)
+    espec=pwrspec(som, from=from, to=to, res.scale = "dB", ref=ref)
 
     #Calulando a quantidade de energia por banda de frequência ####
     for (j in 1:length(Freqbands)) {
@@ -107,11 +107,10 @@ timbre<-function(files="wd", from=0, to=Inf, weighting="none", bands="thirds", r
         }
       }
 
-      sum.int<-LineartodB(
-        sqrt(sum( #equation based on Miyara 2017 8.6.6 topic
+      sum.int<-
+        moredB(
           espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2]
-        ))/sqrt(2) #/sqrt(2) to be able to apply calibration (Miyara 2017, topic 8.6.6 codes)
-        , factor="SPL", ref=ref)
+          , level="IL")
 
       if(is.finite(sum.int)){
         matriz[i,j+2]<-sum.int
@@ -128,11 +127,7 @@ timbre<-function(files="wd", from=0, to=Inf, weighting="none", bands="thirds", r
     #Calculando Leq ####
     #Equation 1.83 from Miraya (2017) to sum one-third octave bands
     #It needs to be factor 10 (same as 'IL') and without reference (same as 1)
-    matriz[i,2]<-round(
-      LineartodB( sum(
-        dBtoLinear(matriz[i,c(-1,-2)], factor="IL", ref=1)
-      ) , fac="IL", ref=1)
-      ,2)
+    matriz[i,2]<-round(moredB(matriz[i,c(-1,-2)], level="IL"),2)
 
     #Gerando valor de calibração ####
     if(is.numeric(Leq.calib)) {
@@ -147,11 +142,7 @@ timbre<-function(files="wd", from=0, to=Inf, weighting="none", bands="thirds", r
 
     } else if(is.numeric(Calib.value)) { #calibrando ####
       matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+Calib.value
-      matriz[i,2]<-round(
-        LineartodB( sum(
-          dBtoLinear(matriz[i,c(-1,-2)], factor="IL", ref=1)#Equation 1.83 from Miraya (2017) to sum one-third octave bands. It needs to be factor 10 (same as 'IL') and without reference (same as 1)
-        ) , fac="IL", ref=1)
-        ,2)
+      matriz[i,2]<-round(moredB(matriz[i,c(-1,-2)], level="IL"),2)
     }
 
     #mudando os intervalos para bandas de oitavas ####
