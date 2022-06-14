@@ -40,6 +40,9 @@ song.level<-function(files="wd", from=0, to=Inf, freq.interval=c(0, Inf), fdom.i
     files <- dir(pattern=".WAV", ignore.case=T)
   }
 
+  from=c(matrix(from, nrow=length(files)))
+  to=c(matrix(to, nrow=length(files)))
+
   if(!is.null(CalibValue) & !is.data.frame(CalibValue)){
     CalibValue=matrix(CalibValue, nrow=length(files), ncol=1, byrow=T)
   }else if(!is.null(CalibValue) & is.data.frame(CalibValue) && nrow(CalibValue) != length(files)) stop("When CalibValue is a data.frame, it must have the number of rows equal to files length.",call. = F)
@@ -57,7 +60,7 @@ song.level<-function(files="wd", from=0, to=Inf, freq.interval=c(0, Inf), fdom.i
         CalibValue[i]=timbre(files[[i]], from=CalibPosition[1], to=CalibPosition[2], Leq.calib=CalibValue[i], ref=ref, weighting=freq.weight)$Calib.value
     }
 
-    espec=pwrspec(files[[i]], from=from, to=to, res.scale = "dB", ref=ref)
+    espec=pwrspec(files[[i]], from=from[i], to=to[i], res.scale = "dB", ref=ref)
 
     #localizando Frequencia dominante ----
     freq.dom=espec %>%
