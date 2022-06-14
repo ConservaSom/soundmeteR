@@ -8,6 +8,8 @@
 #'        outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T)
 #'
 #' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
+#' @param from Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
+#' @param to Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
 #' @param weighting Character. Argument passed to \code{\link[seewave]{dBweight}} to indicate the weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See \code{\link[seewave]{dBweight}} for details. (By default: "none")
 #' @param bands Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")
 #' @param ref Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)
@@ -34,11 +36,17 @@
 #' timbre(tham, Calib.value=130.24, weighting="A")
 #' timbre(tham, Calib.value=130.24, weighting="A", bands="octaves")
 #'
+#' timbre(tham, Leq.calib=48.17, weighting="A")
+#'
+#' timbre(tham, from=-3.49, to=-0.9, ref=1) #dB at Full Scale
+#' timbre(tham, from=-3.49, to=-0.9, Calib.value=130.24) #song Sound Pressure Level
+#' timbre(tham, from=0, to=3.8, Calib.value=130.24) #background Sound Pressure Level
+#'
 #'
 #'
 #' @export
 
-timbre<-function(files="wd", weighting="none", bands="thirds", ref=20, saveresults=F, outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T){
+timbre<-function(files="wd", from=0, to=Inf, weighting="none", bands="thirds", ref=20, saveresults=F, outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T){
   start.time<-Sys.time()
 
   if(class(files)=="Wave"){
@@ -83,7 +91,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", ref=20, saveresul
 
     if(som@samp.rate<44100){stop("Your audiofiles need to have at least 44100Hz of sampling rate.", call. = F)}
 
-    espec=pwrspec(som)
+    espec=pwrspec(som, from=from, to=to)
 
     #Calulando a quantidade de energia por banda de frequência ####
     for (j in 1:length(Freqbands)) {
