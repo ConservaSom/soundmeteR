@@ -10,6 +10,8 @@ timbre(files="wd", weighting="none", bands="thirds", ref=20, saveresults=F,
 \arguments{
 \item{files}{The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")}
 
+\item{channel}{Argument passe to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.}
+
 \item{from}{Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.}
 
 \item{to}{Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.}

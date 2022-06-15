@@ -3,6 +3,7 @@
 #' @description  This functions computes a power spectrum from a sound file.
 #'
 #' @param file A wave file path in your computer or a class Wave object already loaded into R environment.
+#' @param channel Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
 #' @param from Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
 #' @param to Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
 #' @param bandpass A vector with length two with lower and upper limits of the band pass interval in Hz.
@@ -27,7 +28,7 @@
 #'
 #' @export
 
-pwrspec <- function(file, from=0, to=Inf, bandpass=c(0,Inf), res.scale="microPa", ref=1){
+pwrspec <- function(file, channel="left", from=0, to=Inf, bandpass=c(0,Inf), res.scale="microPa", ref=1){
 
   if(from < 0 & to < 0){ #ajustando para from e to relativo ao tamanho do arquivo
 
@@ -44,8 +45,8 @@ pwrspec <- function(file, from=0, to=Inf, bandpass=c(0,Inf), res.scale="microPa"
 
 
   #Loading the sound file ####
-  if(class(file) == "Wave") som=extractWave(file, from = from, to=to, xunit="time", interact=F)
-  if(is.character(file)) som=readWave(file, from = from, to=to, units = "seconds")
+  if(class(file) == "Wave") som=extractWave(mono(file, channel), from = from, to=to, xunit="time", interact=F)
+  if(is.character(file)) som=mono(readWave(file, from = from, to=to, units = "seconds"), channel)
 
   #freee unused memore ####
   rm(file)

@@ -2,11 +2,12 @@
 #'
 #'
 #' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
+#' @param channel Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
 #' @param from Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
 #' @param to Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
 #' @param freq.interval Frequency interval to compute the RMS. Can be a vector with length two with lower and upper interval of frequencies (in Hz), or a pattern to calculate a interval (as octaves). For the last, see \link{freq.bands} function for details.
 #' @param fdom.int Vector with length two. Vector with length two with lower and upper interval of frequencies (in Hz) to find the dominant frequency. This frequency will be used as the center the interval only if a pettern is specified.
-#' @param CalibPosition
+#' @param CalibPosition Missing
 #' @param CalibValue Canbe a value to apply of the ref value from a calib signal (specified by CalibPosition).
 #' @param freq.weight Character. Argument passed to dBweight to indicate the weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See dBweight for details. (By default: "none")
 #' @param ref Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)
@@ -32,7 +33,7 @@
 #'
 #' @export
 
-song.level<-function(files="wd", from=0, to=Inf, freq.interval=c(0, Inf), fdom.int=c(0,Inf), CalibPosition=NULL, CalibValue=NULL, freq.weight="none", ref=20){
+song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c(0, Inf), fdom.int=c(0,Inf), CalibPosition=NULL, CalibValue=NULL, freq.weight="none", ref=20){
 
   if(class(files)=="Wave"){
     files<-list(files)
@@ -57,10 +58,10 @@ song.level<-function(files="wd", from=0, to=Inf, freq.interval=c(0, Inf), fdom.i
 
     #Calibração ----
     if(!is.null(CalibPosition) & !is.null(CalibValue)){
-        CalibValue[i]=timbre(files[[i]], from=CalibPosition[1], to=CalibPosition[2], Leq.calib=CalibValue[i], ref=ref, weighting=freq.weight)$Calib.value
+        CalibValue[i]=timbre(files[[i]], channel = channel, from=CalibPosition[1], to=CalibPosition[2], Leq.calib=CalibValue[i], ref=ref, weighting=freq.weight)$Calib.value
     }
 
-    espec=pwrspec(files[[i]], from=from[i], to=to[i], res.scale = "dB", ref=ref)
+    espec=pwrspec(files[[i]], channel = channel, from=from[i], to=to[i], res.scale = "dB", ref=ref)
 
     #localizando Frequencia dominante ----
     freq.dom=espec %>%
@@ -86,7 +87,7 @@ song.level<-function(files="wd", from=0, to=Inf, freq.interval=c(0, Inf), fdom.i
     espec=espec %>%
       filter(Freq.Hz >= interval.tosum[1] & Freq.Hz < interval.tosum[2])
 
-    song.level=round(moredB(espec[,"Amp.dB"], level="IL"), 2)
+    song.level=round(sumdB(espec[,"Amp.dB"], level="IL"), 2)
 
     #Calibrando ----
 

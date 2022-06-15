@@ -8,6 +8,7 @@
 #'        outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T)
 #'
 #' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
+#' @param channel Argument passe to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
 #' @param from Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
 #' @param to Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
 #' @param weighting Character. Argument passed to \code{\link[seewave]{dBweight}} to indicate the weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See \code{\link[seewave]{dBweight}} for details. (By default: "none")
@@ -46,7 +47,7 @@
 #'
 #' @export
 
-timbre<-function(files="wd", from=0, to=Inf, weighting="none", bands="thirds", ref=20, saveresults=F, outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T){
+timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none", bands="thirds", ref=20, saveresults=F, outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T){
   start.time<-Sys.time()
 
   if(class(files)=="Wave"){
@@ -82,16 +83,7 @@ timbre<-function(files="wd", from=0, to=Inf, weighting="none", bands="thirds", r
 
   for(i in 1:length(arquivos)){
 
-    #Reading sound file ####
-    if(class(arquivos[[i]])=="Wave"){
-      som<-arquivos[[i]]
-    } else {
-      som<-readWave(arquivos[[i]])
-    }
-
-    if(som@samp.rate<44100){stop("Your audiofiles need to have at least 44100Hz of sampling rate.", call. = F)}
-
-    espec=pwrspec(som, from=from, to=to, res.scale = "dB", ref=ref)
+    espec=pwrspec(arquivos[[i]], channel=channel, from=from, to=to, res.scale = "dB", ref=ref)
 
     #Calulando a quantidade de energia por banda de frequência ####
     for (j in 1:length(Freqbands)) {
@@ -108,7 +100,7 @@ timbre<-function(files="wd", from=0, to=Inf, weighting="none", bands="thirds", r
       }
 
       sum.int<-
-        moredB(
+        sumdB(
           espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2]
           , level="IL")
 
@@ -127,7 +119,7 @@ timbre<-function(files="wd", from=0, to=Inf, weighting="none", bands="thirds", r
     #Calculando Leq ####
     #Equation 1.83 from Miraya (2017) to sum one-third octave bands
     #It needs to be factor 10 (same as 'IL') and without reference (same as 1)
-    matriz[i,2]<-round(moredB(matriz[i,c(-1,-2)], level="IL"),2)
+    matriz[i,2]<-round(sumdB(matriz[i,c(-1,-2)], level="IL", na.rm=T),2)
 
     #Gerando valor de calibração ####
     if(is.numeric(Leq.calib)) {
@@ -142,7 +134,7 @@ timbre<-function(files="wd", from=0, to=Inf, weighting="none", bands="thirds", r
 
     } else if(is.numeric(Calib.value)) { #calibrando ####
       matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+Calib.value
-      matriz[i,2]<-round(moredB(matriz[i,c(-1,-2)], level="IL"),2)
+      matriz[i,2]<-round(sumdB(matriz[i,c(-1,-2)], level="IL", na.rm = T),2)
     }
 
     #mudando os intervalos para bandas de oitavas ####

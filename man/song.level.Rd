@@ -6,6 +6,7 @@
 \usage{
 song.level(
   files = "wd",
+  channel = "left",
   from = 0,
   to = Inf,
   freq.interval = c(0, Inf),
@@ -19,6 +20,8 @@ song.level(
 \arguments{
 \item{files}{The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")}
 
+\item{channel}{Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.}
+
 \item{from}{Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.}
 
 \item{to}{Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.}
@@ -26,6 +29,8 @@ song.level(
 \item{freq.interval}{Frequency interval to compute the RMS. Can be a vector with length two with lower and upper interval of frequencies (in Hz), or a pattern to calculate a interval (as octaves). For the last, see \link{freq.bands} function for details.}
 
 \item{fdom.int}{Vector with length two. Vector with length two with lower and upper interval of frequencies (in Hz) to find the dominant frequency. This frequency will be used as the center the interval only if a pettern is specified.}
+
+\item{CalibPosition}{Missing}
 
 \item{CalibValue}{Canbe a value to apply of the ref value from a calib signal (specified by CalibPosition).}
 
