@@ -1,4 +1,4 @@
-# soundmeteR (beta version)
+# soundmeteR
 
 R package for sound meter alike analysis.
 
