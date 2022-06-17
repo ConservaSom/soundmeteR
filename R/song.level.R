@@ -58,13 +58,14 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c
     fdom.int=matrix(fdom.int, nrow=length(files), ncol=2, byrow=T)
   }else if(is.data.frame(fdom.int) & nrow(fdom.int) != length(files)) stop("When fdom.int is a data.frame, it must have the number of rows equal to files length.",call. = F)
 
+  progresso=txtProgressBar(min=0, max=length(files), style = 3)
 
   #Analisando os arquivos ----
   for(i in 1:length(files)){
 
     #Calibração ----
     if(!is.null(CalibPosition) & !is.null(CalibValue)){
-        CalibValue[i]=timbre(files[[i]], channel = channel, from=CalibPosition[1], to=CalibPosition[2], Leq.calib=CalibValue[i], ref=ref, weighting=freq.weight)$Calib.value
+        CalibValue[i]=timbre(files[[i]], channel = channel, from=CalibPosition[1], to=CalibPosition[2], Leq.calib=CalibValue[i], ref=ref, weighting=freq.weight, time.mess = F, stat.mess = F)$Calib.value
     }
 
 
@@ -73,9 +74,9 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c
       freq.dom=meanspec(readWave(files[[i]], from=from[i], to=to[i], units = "seconds")
                         , channel = ifelse(channel=="left", 1, 2) , wl = wl, ovlp = ovlp, plot = F
                         , dB = ifelse(freq.weight=="none", "max0", freq.weight)) %>% # power spectrum
-        .[.[,"x"] >= min(fdom.int/1000) & .[,"x"] <= max(fdom.int/1000),] %>% #filtro de band pass
+        .[.[,"x"] >= min(fdom.int[i,]/1000) & .[,"x"] <= max(fdom.int[i,]/1000),] %>% #filtro de band pass
         fpeaks(nmax=1, plot = F) %>% #qual o pico?
-        .[,1]
+        .[,1]*1000
 
     }
 
@@ -112,18 +113,25 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c
                      , SongLevel=NA
                      )
 
-      if(length(freq.interval) != 1) res=select(res, -Freq.dom)
+      if(length(freq.interval) != 1){
+        res=select(res, -Freq.dom)
+      }else {
+        colnames(res)[2] = paste0("Freq.interval_", freq.interval)
+      }
     }
 
     res[i, "SongLevel"] = song.level
     if(exists("freq.dom")) res[i, "Freq.dom"] = freq.dom
-    res[i, "Freq.interval"]=paste0(round(interval.tosum,0), collapse="—")
+    res[i, 2]=paste0(round(interval.tosum,0), collapse="—") #Freq.interval
 
     if(is.list(files) & !is.null(names(files))){
       res[i,"File"] = names(files[i])
     }else if(!is.list(files)){
       res[i,"File"]=files[i]
     }
+
+
+    setTxtProgressBar(progresso, i)
 
   }
 
