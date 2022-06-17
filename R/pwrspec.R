@@ -35,7 +35,7 @@ pwrspec <- function(file, channel="left", from=0, to=Inf, bandpass=c(0,Inf), res
     if(is.character(file)) dur=readWave(file, header = T) %>% #se for um arquivo para ler
         data.frame() %>%
         transmute(dur=samples/sample.rate) %>%
-        as.character()
+        as.numeric()
 
     if(class(file) == "Wave") dur=duration(file) #se for um arquivo já carregado no R
 
