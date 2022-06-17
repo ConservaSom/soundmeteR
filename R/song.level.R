@@ -7,6 +7,8 @@
 #' @param to Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
 #' @param freq.interval Frequency interval to compute the RMS. Can be a vector with length two with lower and upper interval of frequencies (in Hz), or a pattern to calculate a interval (as octaves). For the last, see \link{freq.bands} function for details.
 #' @param fdom.int Vector with length two. Vector with length two with lower and upper interval of frequencies (in Hz) to find the dominant frequency. This frequency will be used as the center the interval only if a pettern is specified.
+#' @param wl Explain.
+#' @param ovlp Explain.
 #' @param CalibPosition Missing
 #' @param CalibValue Canbe a value to apply of the ref value from a calib signal (specified by CalibPosition).
 #' @param freq.weight Character. Argument passed to dBweight to indicate the weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See dBweight for details. (By default: "none")
@@ -33,16 +35,20 @@
 #'
 #' @export
 
-song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c(0, Inf), fdom.int=c(0,Inf), CalibPosition=NULL, CalibValue=NULL, freq.weight="none", ref=20){
+song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c(0, Inf), fdom.int=c(0,Inf), wl=512, ovlp = 50, CalibPosition=NULL, CalibValue=NULL, freq.weight="none", ref=20){
 
   if(class(files)=="Wave"){
     files<-list(files)
   }else if(length(files)==1 && files=="wd") {
     files <- dir(pattern=".WAV", ignore.case=T)
+  }else if(is.data.frame(files)){
+    as.character(files)
   }
 
   from=c(matrix(from, nrow=length(files)))
   to=c(matrix(to, nrow=length(files)))
+
+  if(!(channel %in% c("left", "right"))) stop("Only 'left' or 'right' acepted fo channel argument", call. = F)
 
   if(!is.null(CalibValue) & !is.data.frame(CalibValue)){
     CalibValue=matrix(CalibValue, nrow=length(files), ncol=1, byrow=T)
@@ -61,14 +67,17 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c
         CalibValue[i]=timbre(files[[i]], channel = channel, from=CalibPosition[1], to=CalibPosition[2], Leq.calib=CalibValue[i], ref=ref, weighting=freq.weight)$Calib.value
     }
 
-    espec=pwrspec(files[[i]], channel = channel, from=from[i], to=to[i], res.scale = "dB", ref=ref)
 
     #localizando Frequencia dominante ----
-    freq.dom=espec %>%
-      filter(Freq.Hz >= fdom.int[i,1] & Freq.Hz <= fdom.int[i,2]) %>%
-      slice(which.max(Amp.dB)) %>%
-      select(Freq.Hz) %>%
-      as.numeric()
+    if(length(freq.interval) == 1){
+      freq.dom=meanspec(readWave(files[[i]], from=from[i], to=to[i], units = "seconds")
+                        , channel = ifelse(channel=="left", 1, 2) , wl = wl, ovlp = ovlp, plot = F
+                        , dB = ifelse(freq.weight=="none", "max0", freq.weight)) %>% # power spectrum
+        .[.[,"x"] >= min(fdom.int/1000) & .[,"x"] <= max(fdom.int/1000),] %>% #filtro de band pass
+        fpeaks(nmax=1, plot = F) %>% #qual o pico?
+        .[,1]
+
+    }
 
     #Intervalo para somar ----
     if(length(freq.interval) == 1){
@@ -77,6 +86,9 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c
     }else {
       interval.tosum = freq.interval #intervalo fixo, estabelecido pelo usuário ----
     }
+
+    #pwerspec do arquivo ----
+    espec=pwrspec(files[[i]], channel = channel, from=from[i], to=to[i], res.scale = "dB", ref=ref)
 
     #Implementando curvas de ponderacao ----
     if(any(freq.weight == c("A", "B", "C", "D", "ITU"))){
@@ -95,8 +107,8 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c
 
     if(i == 1){
       res=data.frame(File=1:length(files)
-                     , Freq.interval=ifelse(length(freq.interval) == 1, paste0(round(interval.tosum,0), collapse="—"), paste0(freq.interval, collapse="—"))
-                     , Freq.dom=freq.dom
+                     , Freq.interval=NA
+                     , Freq.dom=NA
                      , SongLevel=NA
                      )
 
@@ -104,6 +116,8 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c
     }
 
     res[i, "SongLevel"] = song.level
+    if(exists("freq.dom")) res[i, "Freq.dom"] = freq.dom
+    res[i, "Freq.interval"]=paste0(round(interval.tosum,0), collapse="—")
 
     if(is.list(files) & !is.null(names(files))){
       res[i,"File"] = names(files[i])

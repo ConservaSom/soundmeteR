@@ -11,6 +11,8 @@ song.level(
   to = Inf,
   freq.interval = c(0, Inf),
   fdom.int = c(0, Inf),
+  wl = 512,
+  ovlp = 50,
   CalibPosition = NULL,
   CalibValue = NULL,
   freq.weight = "none",
@@ -29,6 +31,10 @@ song.level(
 \item{freq.interval}{Frequency interval to compute the RMS. Can be a vector with length two with lower and upper interval of frequencies (in Hz), or a pattern to calculate a interval (as octaves). For the last, see \link{freq.bands} function for details.}
 
 \item{fdom.int}{Vector with length two. Vector with length two with lower and upper interval of frequencies (in Hz) to find the dominant frequency. This frequency will be used as the center the interval only if a pettern is specified.}
+
+\item{wl}{Explain.}
+
+\item{ovlp}{Explain.}
 
 \item{CalibPosition}{Missing}
 
