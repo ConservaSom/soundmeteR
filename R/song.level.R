@@ -48,7 +48,7 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c
   from=c(matrix(from, nrow=length(files)))
   to=c(matrix(to, nrow=length(files)))
 
-  if(!(channel %in% c("left", "right"))) stop("Only 'left' or 'right' acepted fo channel argument", call. = F)
+  if(!(channel %in% c("left", "right")))stop("Only 'left' or 'right' acepted fo channel argument", call. = F)
 
   if(!is.null(CalibValue) & !is.data.frame(CalibValue)){
     CalibValue=matrix(CalibValue, nrow=length(files), ncol=1, byrow=T)
@@ -60,8 +60,35 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c
 
   progresso=txtProgressBar(min=0, max=length(files), style = 3)
 
+  #tabela dos resultados ----
+  res=data.frame(File=1:length(files)
+                 , Freq.interval=NA
+                 , Freq.dom=NA
+                 , SongLevel=NA
+  )
+
+  if(is.list(files) & !is.null(names(files))){
+    res$File = names(files)
+  }else if(!is.list(files)){
+    res$File=files
+  }
+
+
+  if(length(freq.interval) != 1){
+    res=select(res, -Freq.dom)
+  }else {
+    colnames(res)[2] = paste0("Freq.interval_", freq.interval)
+  }
+
+
   #Analisando os arquivos ----
   for(i in 1:length(files)){
+
+    if(channel == "right" && !is.list(files) && readWave(files[[i]], header = T)$channels < 2){
+      warning(paste0("File ", files[[i]], " doesn't have a right channel."), call. = F)
+      res[i,"File"]=files[[i]]
+      next
+    }
 
     #Calibração ----
     if(!is.null(CalibPosition) & !is.null(CalibValue)){
@@ -74,8 +101,16 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c
       freq.dom=meanspec(readWave(files[[i]], from=from[i], to=to[i], units = "seconds")
                         , channel = ifelse(channel=="left", 1, 2) , wl = wl, ovlp = ovlp, plot = F
                         , dB = ifelse(freq.weight=="none", "max0", freq.weight)) %>% # power spectrum
+        .[-1,] %>%
         .[.[,"x"] >= min(fdom.int[i,]/1000) & .[,"x"] <= max(fdom.int[i,]/1000),] %>% #filtro de band pass
-        fpeaks(nmax=1, plot = F) %>% #qual o pico?
+        fpeaks(nmax=1, plot = F) #qual o pico?
+
+      if(any(is.na(freq.dom))){
+        warning(paste0("File ", files[[i]], "(round ", i, ") doesn't have a peak to find a Dominant Frequency"), call. = F)
+        next
+      }
+
+      freq.dom=freq.dom %>%
         .[,1]*1000
 
     }
@@ -106,30 +141,10 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c
 
     if(!is.null(CalibValue)) song.level=song.level+CalibValue[i]
 
-    if(i == 1){
-      res=data.frame(File=1:length(files)
-                     , Freq.interval=NA
-                     , Freq.dom=NA
-                     , SongLevel=NA
-                     )
-
-      if(length(freq.interval) != 1){
-        res=select(res, -Freq.dom)
-      }else {
-        colnames(res)[2] = paste0("Freq.interval_", freq.interval)
-      }
-    }
 
     res[i, "SongLevel"] = song.level
     if(exists("freq.dom")) res[i, "Freq.dom"] = freq.dom
     res[i, 2]=paste0(round(interval.tosum,0), collapse="—") #Freq.interval
-
-    if(is.list(files) & !is.null(names(files))){
-      res[i,"File"] = names(files[i])
-    }else if(!is.list(files)){
-      res[i,"File"]=files[i]
-    }
-
 
     setTxtProgressBar(progresso, i)
 
