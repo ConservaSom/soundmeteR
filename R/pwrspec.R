@@ -45,10 +45,16 @@ pwrspec <- function(file, channel="left", from=0, to=Inf, bandpass=c(0,Inf), res
 
 
   #Loading the sound file ####
-  if(class(file) == "Wave") som=extractWave(mono(file, channel), from = from, to=to, xunit="time", interact=F)
-  if(is.character(file)) som=mono(readWave(file, from = from, to=to, units = "seconds"), channel)
+  if(class(file) == "Wave") som=extractWave(file, from = from, to=to, xunit="time", interact=F)
+  if(is.character(file)) som=readWave(file, from = from, to=to, units = "seconds")
 
-  #freee unused memore ####
+  if(channel == "right" && !som@stereo){
+    stop(paste0("Your file doesn't have a right channel."), call. = F)
+  }else {
+   som=mono(som, channel)
+  }
+
+  #free unused memory ####
   rm(file)
 
   #Trunc samples to duration with 3 decimal places if file bigger than 1s####

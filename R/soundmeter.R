@@ -56,12 +56,6 @@ soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValu
   #início do loop maior (por arquivo) ----
   for(i in 1:length(files)){
 
-    if(channel == "right" && !som@stereo){
-      if(i == 1) stop(paste0("File ", files[[i]], " doesn't have a right channel."), call. = F)
-      warning(paste0("File ", files[[i]], " doesn't have a right channel."), call. = F)
-      next
-    }
-
     if(!is.null(CalibPosition) && all(CalibPosition < 0)){ #ajustando calibposition
 
       if(is.character(files[[i]])) dur=readWave(files[[i]], header = T) %>% #se for um arquivo para ler
