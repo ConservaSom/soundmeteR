@@ -42,7 +42,7 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c
   }else if(length(files)==1 && files=="wd") {
     files <- dir(pattern=".WAV", ignore.case=T)
   }else if(is.data.frame(files)){
-    as.character(files)
+    files <- as.character(files)
   }
 
   from=c(matrix(from, nrow=length(files)))
@@ -86,7 +86,6 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c
 
     if(channel == "right" && !is.list(files) && readWave(files[[i]], header = T)$channels < 2){
       warning(paste0("File ", files[[i]], " doesn't have a right channel."), call. = F)
-      res[i,"File"]=files[[i]]
       next
     }
 
