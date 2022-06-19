@@ -10,6 +10,8 @@ timbreCal(files="wd", SignalDur=NULL, RefValue=NULL, ref=20, weighting="none",
 \arguments{
 \item{files}{The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")}
 
+\item{channel}{Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.}
+
 \item{SignalDur}{Numerical. Specify the reference signal duration (in seconds) on the beggining of the audiofile. (By default: \code{NULL})}
 
 \item{RefValue}{Numerical. Specify the reference signal sound pressure level (in deciBells SPL) on the beggining of the audiofile. (By default: \code{NULL})}

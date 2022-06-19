@@ -8,6 +8,9 @@
 #'        outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T)
 #'
 #' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
+#' @param channel Argument passe to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
+#' @param from Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
+#' @param to Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
 #' @param weighting Character. Argument passed to \code{\link[seewave]{dBweight}} to indicate the weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See \code{\link[seewave]{dBweight}} for details. (By default: "none")
 #' @param bands Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")
 #' @param ref Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)
@@ -27,12 +30,25 @@
 #' @references Power spectrum adapted from: Carcagno, S. 2013. Basic Sound Processing with R [Blog post]. Retrieved from http://samcarcagno.altervista.org/blog/basic-sound-processing-r/
 #' @references Miyara, F. 2017. Software-Based Acoustical Measurements. Springer. 429 pp. DOI: 10.1007/978-3-319-55871-4
 #'
+#' @examples
+#' data(tham)
+#' timbre(tham)
+#' timbre(tham, Calib.value=130.24)
+#' timbre(tham, Calib.value=130.24, weighting="A")
+#' timbre(tham, Calib.value=130.24, weighting="A", bands="octaves")
+#'
+#' timbre(tham, Leq.calib=48.17, weighting="A")
+#'
+#' timbre(tham, from=-3.49, to=-0.9, ref=1) #dB at Full Scale
+#' timbre(tham, from=-3.49, to=-0.9, Calib.value=130.24) #song Sound Pressure Level
+#' timbre(tham, from=0, to=3.8, Calib.value=130.24) #background Sound Pressure Level
+#'
+#'
+#'
 #' @export
 
-timbre<-function(files="wd", weighting="none", bands="thirds", ref=20, saveresults=F, outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T){
+timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none", bands="thirds", ref=20, saveresults=F, outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T){
   start.time<-Sys.time()
-
-  require(tuneR)
 
   if(class(files)=="Wave"){
     arquivos<-list(files)
@@ -67,41 +83,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", ref=20, saveresul
 
   for(i in 1:length(arquivos)){
 
-    #Reading sound file ####
-    if(class(arquivos[[i]])=="Wave"){
-      som<-arquivos[[i]]
-    } else {
-      som<-readWave(arquivos[[i]])
-    }
-
-    #Trunc samples to duration with 3 decimal places if file bigger than 1s####
-    if(length(som)/som@samp.rate > 1){ #
-      if(!trunc((length(som)/som@samp.rate)*10^3)/10^3==length(som)/som@samp.rate){
-        som<-extractWave(som, to=(trunc((length(som)/som@samp.rate)*10^3)/10^3)*som@samp.rate, interact=F)
-        if(!trunc((length(som)/som@samp.rate)*10^3)/10^3==length(som)/som@samp.rate){message("Warning: It may take a little longer than usual to analyze this file (file duration with more than three decimal places)")}
-      }
-    }
-
-    if(som@samp.rate<44100){stop("Your audiofiles need to have at least 44100Hz of sampling rate.")}
-
-    s1 <- som@left/2^(som@bit-1) #scaled to the maximum possible (as result of '/2^(bitrate-1)')
-    n <- length(s1)
-    p <- fft(s1)
-    nUniquePts <- ceiling((n+1)/2)
-    p <- p[1:nUniquePts] #select just the first half since the second half is a mirror image of the first
-    p <- 2*(abs(p/n)) #changed here and next if/else in 2020.11.03 to match Miyara (2017) code routine in topic 8.6.6
-
-    if (n %% 2 > 0){  #Routine to remove Nyquist point. Odd nfft excludes Nyquist point
-      p[2:length(p)] <- p[2:length(p)]
-    } else {
-      p[2: (length(p) -1)] <- p[2: (length(p) -1)]
-    }
-
-    freqArray <- (0:(nUniquePts-1)) * (som@samp.rate / n) #create the frequency array
-
-    rm(som) #to free memory usage
-
-    espec<-data.frame(Freq.Hz=freqArray, Int.linear=p^2) #p^2 is part of Miyara (2017) code routine in topic 8.6.6
+    espec=pwrspec(arquivos[[i]], channel=channel, from=from, to=to, res.scale = "dB", ref=ref)
 
     #Calulando a quantidade de energia por banda de frequência ####
     for (j in 1:length(Freqbands)) {
@@ -117,11 +99,10 @@ timbre<-function(files="wd", weighting="none", bands="thirds", ref=20, saveresul
         }
       }
 
-      sum.int<-LineartodB(
-        sqrt(sum( #equation based on Miyara 2017 8.6.6 topic
+      sum.int<-
+        sumdB(
           espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2]
-        ))/sqrt(2) #/sqrt(2) to be able to apply calibration (Miyara 2017, topic 8.6.6 codes)
-        , factor="SPL", ref=ref)
+          , level="IL")
 
       if(is.finite(sum.int)){
         matriz[i,j+2]<-sum.int
@@ -138,11 +119,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", ref=20, saveresul
     #Calculando Leq ####
     #Equation 1.83 from Miraya (2017) to sum one-third octave bands
     #It needs to be factor 10 (same as 'IL') and without reference (same as 1)
-    matriz[i,2]<-round(
-      LineartodB( sum(
-        dBtoLinear(matriz[i,c(-1,-2)], factor="IL", ref=1)
-      ) , fac="IL", ref=1)
-      ,2)
+    matriz[i,2]<-round(sumdB(matriz[i,c(-1,-2)], level="IL", na.rm=T),2)
 
     #Gerando valor de calibração ####
     if(is.numeric(Leq.calib)) {
@@ -157,11 +134,7 @@ timbre<-function(files="wd", weighting="none", bands="thirds", ref=20, saveresul
 
     } else if(is.numeric(Calib.value)) { #calibrando ####
       matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+Calib.value
-      matriz[i,2]<-round(
-        LineartodB( sum(
-          dBtoLinear(matriz[i,c(-1,-2)], factor="IL", ref=1)#Equation 1.83 from Miraya (2017) to sum one-third octave bands. It needs to be factor 10 (same as 'IL') and without reference (same as 1)
-        ) , fac="IL", ref=1)
-        ,2)
+      matriz[i,2]<-round(sumdB(matriz[i,c(-1,-2)], level="IL", na.rm = T),2)
     }
 
     #mudando os intervalos para bandas de oitavas ####
