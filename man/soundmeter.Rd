@@ -41,7 +41,7 @@ soundmeter(
 Function that makes sound meter alike measurements
 }
 \details{
-If your reference signal is in a separate file, we recommend you to get the \code{CalibValue} with \link{Tweighting} function. It's examples provide more details.
+If your reference signal is in a separate file, we recommend you to get the \code{CalibValue} with \link{timbre} function. It's examples provide more details.
 }
 \examples{
 data("tham")

@@ -10,7 +10,7 @@
 #' @param saveresults Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})
 #' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})
 #'
-#' @details If your reference signal is in a separate file, we recommend you to get the \code{CalibValue} with \link{Tweighting} function. It's examples provide more details.
+#' @details If your reference signal is in a separate file, we recommend you to get the \code{CalibValue} with \link{timbre} function. It's examples provide more details.
 #'
 #' @examples
 #' data("tham")
@@ -82,7 +82,7 @@ soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValu
         som<-readWave(files[[i]], from = calib.ini, to=calib.fin, units = "seconds")
       }
 
-      CalibValue[i]=Tweighting(som, channel=channel, window=tw, bands="thirds", Leq.calib=CalibValue[i], weighting=fw, ref=ref)
+      CalibValue[i]=timbre(som, channel=channel, Leq.calib=CalibValue[i], weighting=fw, ref=ref, stat.mess = F, time.mess = F)$Calib.value
 
       rm(som)
     }
@@ -115,8 +115,6 @@ soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValu
       matriz=Tweighting(som, channel=channel, window=tw, bands=bands, weighting=fw, ref=ref)
     }
 
-    rm(som)
-
     #criando e armazenando valores na matriz de resultados ----
     if(i == 1){
       res = data.frame(matrix(data=NA,nrow=length(files),ncol=7+ncol(matriz[-1])))
@@ -144,7 +142,7 @@ soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValu
 
     res[i,4:6] = LineartodB(quantile(dBtoLinear(matriz$Leq, factor = "SPL", ref = ref), probs=c(0.1, 0.5, 0.9)), factor = "SPL", ref = ref) #L90,L50 e L10
 
-    res[i,7:ncol(res)]=apply(matriz, 2, meandB, level="SPL") #Leq e bandas
+    res[i,7:ncol(res)]=timbre(som, channel=channel, bands=bands, weighting=fw, ref=ref, stat.mess = F, time.mess = F, Calib.value=ifelse(is.null(CalibValue), 0, CalibValue[i]))[,-1] #Leq e bandas
 
     res[i,-1]=round(res[i,-1],2) #arredondando valores para duas casas decimais
 
@@ -157,6 +155,8 @@ soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValu
                         ".txt", sep="")
                   ,row.names = F, col.names = T,sep = "\t", quote=F)
     }
+
+    rm(som)
 
     if(progressbar) pb$tick()
 
