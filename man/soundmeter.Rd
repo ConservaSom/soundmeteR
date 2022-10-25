@@ -9,14 +9,12 @@ soundmeter(
   from = 0,
   to = Inf,
   CalibPosition = NULL,
-  CalibValue = 0,
+  CalibValue = NULL,
   ref = 20,
   fw = "none",
   bands = "octaves",
-  banpass = NULL,
   tw = "fast",
-  time.mess = T,
-  stat.mess = T,
+  progressbar = T,
   channel = "left",
   saveresults = F,
   outname = NULL
@@ -31,27 +29,27 @@ soundmeter(
 
 \item{tw}{Time weighting}
 
-\item{time.mess}{Logical. Activate or deactivate message of time to complete the function execution. (By default: \code{TRUE})}
-
-\item{stat.mess}{Logical. Activate or deactivate status message of the function execution. (By default: \code{TRUE})}
+\item{progressbar}{Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})}
 
 \item{channel}{Only "left" or "right" acepted. By default "left"}
 
 \item{saveresults}{Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})}
 
 \item{outname}{Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})}
-
-\item{bandpass}{falta implementar...}
 }
 \description{
 Function that makes sound meter alike measurements
 }
 \details{
-If your reference signal is in a separate file, we recommend you to get the \code{CalibValue} with \link{Tweighting} function. It's examples provide more details.
+If your reference signal is in a separate file, we recommend you to get the \code{CalibValue} with \link{timbre} function. It's examples provide more details.
 }
 \examples{
 data("tham")
 soundmeter(tham, CalibValue = 130.24, tw="slow") #slow time window with calib value
-soundmeter(tham, CalibValue = NULL, tw="fast") #fast time window in dBFS
+soundmeter(tham, CalibValue = 130.24, tw="fast") #fast
+
+soundmeter(tham, CalibValue = 130.24, tw="fast", fw="A") #fast with frequency weight
+
+soundmeter(tham, CalibValue = NULL, tw="fast", ref=1) #fast time window in dBFS
 
 }
