@@ -35,7 +35,7 @@ timbre(files="wd", weighting="none", bands="thirds", ref=20, saveresults=F,
 \item{stat.mess}{Logical. Activate or deactivate status message of the function execution. (By default: \code{TRUE})}
 }
 \description{
-
+Escrever
 }
 \details{
 Caution: You need to use an audiofile with entire values of seconds of duration to avoid bugs. Example: 35s, 60s, 19s. By default, the function will trunc your audiofile to the next entire value of seconds.

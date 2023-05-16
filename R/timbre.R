@@ -2,7 +2,7 @@
 #'
 #' @name timbre
 #'
-#' @description
+#' @description Escrever
 #'
 #' @usage timbre(files="wd", weighting="none", bands="thirds", ref=20, saveresults=F,
 #'        outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T)
