@@ -17,7 +17,7 @@ pwrspec(
 \arguments{
 \item{file}{A wave file path in your computer or a class Wave object already loaded into R environment.}
 
-\item{channel}{Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.}
+\item{channel}{Character. Choose “left” or “right” channel. Argument passe to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.}
 
 \item{from}{Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.}
 
