@@ -4,7 +4,7 @@
 \alias{sumdB}
 \title{Sum with dB values}
 \usage{
-sumdB(x, level = "IL", na.rm = FALSE, ...)
+sumdB(x, level = "IL", na.rm = FALSE)
 }
 \arguments{
 \item{x}{Numerical. A numeric vector or matrix with dB values.}

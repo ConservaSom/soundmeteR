@@ -4,11 +4,9 @@
 #'
 #' @description Function to compute the root mean square (RMS) of values in decibels (dB).
 #'
-#' @usage rms.dB(x, level="SPL", ref=1, ...)
 #'
 #' @param x Numerical. A numeric vector or a numeric matrix with dB values.
 #' @param level Character. Specify in what scale your data is. \code{SPL} for Sound Pressute Level or \code{IL} for Intensity Level. (By default \code{SPL})
-#' @param ref Numerical. Reference value for conversion. For Sound in water the ref is 1microPa and on air 20 microPa. (By default 1)
 #' @param na.rm Logical. Argument passed to \code{\link[base]{mean}}. Should NA be removed? (By default FALSE)
 #'
 #' @details This function converts your dB data to linear values (through \code{\link{dBtoLinear}} function), compute the Root Mean Square (rms), and converts the result back to dB (through \code{\link{LineartodB}} function).

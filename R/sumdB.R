@@ -19,7 +19,7 @@
 #'
 #' @export
 
-sumdB<-function(x, level="IL", na.rm=FALSE, ...){
+sumdB<-function(x, level="IL", na.rm=FALSE){
 
   dBtoLinear(x, factor=level) %>%
     sum(na.rm=na.rm) %>%

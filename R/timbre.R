@@ -4,8 +4,6 @@
 #'
 #' @description Escrever
 #'
-#' @usage timbre(files="wd", weighting="none", bands="thirds", ref=20, saveresults=F,
-#'        outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T)
 #'
 #' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
 #' @param channel Character. Choose “left” or “right” channel. Argument passe to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.

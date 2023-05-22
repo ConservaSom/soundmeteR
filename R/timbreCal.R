@@ -4,9 +4,6 @@
 #'
 #' @description This function passes the parameters to \code{\link{timbre}} to automatize the calibration and return spectral analysis with dB SPL results.
 #'
-#' @usage timbreCal(files="wd", SignalDur=NULL, RefValue=NULL, ref=20, weighting="none",
-#'        bands="thirds", saveresults=F, outname=NULL, time.mess=T, stat.mess=T)
-#'
 #' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
 #' @param channel Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
 #' @param SignalDur Numerical. Specify the reference signal duration (in seconds) on the beggining of the audiofile. (By default: \code{NULL})
