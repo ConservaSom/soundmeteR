@@ -1,2 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+soundmeteR_?.?.?.?.?.?.pdf
+^.*\.tar.gz$
+NoSync_extras&tests/

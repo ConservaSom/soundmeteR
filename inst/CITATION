@@ -3,9 +3,9 @@ citHeader("Package in beta version. Available only on github.")
 citEntry(entry = "MISC",
         title = "soundmeteR: R package for sound meter alike analysis",
         author = personList(person("Cássio Rachid", "Simões"), person("Shaka Nóbrega Marinho", "Furtado"), person("Ingrid Maria Denóbile", "Torres"), person("Marcelo Felgueiras", "Napoli"),person("Carlos Barros", "de Araújo")),
-        year = "2021",
-        url = "https://github.com/cassiorachid/soundmeteR",
-        textVersion = "Simões, CR, Furtado, SNM, Torres, IMD, Napoli, MF and de Araújo, CB (2021). soundmeteR: R package for sound meter alike analysis. URL: https://github.com/cassiorachid/soundmeteR
+        year = "2023",
+        url = "https://github.com/ConservaSom/soundmeteR",
+        textVersion = "Simões, CR, Furtado, SNM, Torres, IMD, Napoli, MF and de Araújo, CB (2023). soundmeteR: R package for sound meter alike analysis. URL: https://github.com/ConservaSom/soundmeteR
 
 NOTE: Our dependencies still need to be referenced."
 )

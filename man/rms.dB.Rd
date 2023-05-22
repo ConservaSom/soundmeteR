@@ -4,16 +4,14 @@
 \alias{rms.dB}
 \title{Root Mean Square with dB values}
 \usage{
-rms.dB(x, level="SPL", ref=1, ...)
+rms.dB(x, level = "SPL", na.rm = FALSE)
 }
 \arguments{
 \item{x}{Numerical. A numeric vector or a numeric matrix with dB values.}
 
 \item{level}{Character. Specify in what scale your data is. \code{SPL} for Sound Pressute Level or \code{IL} for Intensity Level. (By default \code{SPL})}
 
-\item{ref}{Numerical. Reference value for conversion. For Sound in water the ref is 1microPa and on air 20 microPa. (By default 1)}
-
-\item{...}{Further arguments passed to \code{\link[base]{mean}}.}
+\item{na.rm}{Logical. Argument passed to \code{\link[base]{mean}}. Should NA be removed? (By default FALSE)}
 }
 \value{
 A numeric value that represents the root mean square of x.

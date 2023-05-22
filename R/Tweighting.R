@@ -36,8 +36,8 @@
 #'
 #' #With tham data
 #' data(tham)
-#' Tweighting(som, window = "fast", bands="octaves", Calib.value=130.24) #fast
-#' Tweighting(som, window = "slow", bands="octaves", Calib.value=130.24) #slow
+#' Tweighting(tham, window = "fast", bands="octaves", Calib.value=130.24) #fast
+#' Tweighting(tham, window = "slow", bands="octaves", Calib.value=130.24) #slow
 #'
 #'
 #'
@@ -48,8 +48,6 @@
 
 
 Tweighting <- function(file, window="fast", Leq.calib=NULL,...){
-
-  require(tuneR)
 
   if(window == "fast"){
     window = 0.125
