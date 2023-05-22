@@ -8,7 +8,7 @@ Description: An R package designed for sound analysis through spectral analysis 
 URL: https://github.com/ConservaSom/soundmeteR
 BugReports: https://github.com/ConservaSom/soundmeteR/issues
 License: GPL (>=3)
-Depends: tuneR, seewave, dplyr, progress
+Depends: R (>= 3.5.0), tuneR, seewave, dplyr, progress
 Encoding: UTF-8
 LazyData: TRUE
 RoxygenNote: 7.2.3
