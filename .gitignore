@@ -3,4 +3,4 @@
 .RData
 .Ruserdata
 NoSync_extras&tests/
-^.*\.tar.gz$
+*.tar.gz
