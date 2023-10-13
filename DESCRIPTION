@@ -1,7 +1,7 @@
 Type: Package
 Package: soundmeteR
 Title: R package for sound meter alike analysis
-Version: 0.2.0
+Version: 0.2.0.9000
 Author: Cássio Rachid Simões, Shaka Nóbrega Marinho Furtado, Ingrid Maria Denóbile Torres, Marcelo Felgueiras Napoli and Carlos Barros de Araújo
 Maintainer: Cássio Rachid Simões <cassiorachid@gmail.com>
 Description: An R package designed for sound analysis through spectral analysis in octaves and one-thirds octaves, making possible calibration to obtain Sound Pressure Level (SPL) and Sound Intensity Level (SIL).
