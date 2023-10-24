@@ -6,10 +6,10 @@ Package only availaible on [github](http://github.com/). In order to install you
 
 To install the latest released version:
 ```r
-devtools::install_github("cassiorachid/soundmeteR")
+devtools::install_github("ConservaSom/soundmeteR")
 ```
 
 To install the latest development update:
 ```r
-devtools::install_github("cassiorachid/soundmeteR", ref="dev")
+devtools::install_github("ConservaSom/soundmeteR", ref="dev")
 ```
