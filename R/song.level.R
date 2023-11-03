@@ -6,13 +6,14 @@
 #' @param from Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
 #' @param to Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
 #' @param freq.interval Frequency interval to compute the RMS. Can be a vector with length two with lower and upper interval of frequencies (in Hz), or a pattern to calculate a interval (as octaves). For the last, see \link{freq.bands} function for details.
-#' @param fdom.int Vector with length two. Vector with length two with lower and upper interval of frequencies (in Hz) to find the dominant frequency. This frequency will be used as the center the interval only if a pettern is specified.
+#' @param fdom.int Vector with length two. Vector with length two with lower and upper interval of frequencies (in Hz) to find the dominant frequency. This frequency will be used as the center the interval only if a pattern is specified in \code{freq.interval}.
 #' @param wl Explain.
 #' @param ovlp Explain.
 #' @param CalibPosition Missing
 #' @param CalibValue Canbe a value to apply of the ref value from a calib signal (specified by CalibPosition).
 #' @param freq.weight Character. Argument passed to dBweight to indicate the weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See dBweight for details. (By default: "none")
 #' @param ref Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)
+#' @param progressbar Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})
 #'
 #' @examples
 #' song.level(tham, freq.interval=c(22, 20000))
@@ -35,7 +36,10 @@
 #'
 #' @export
 
-song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c(0, Inf), fdom.int=c(0,Inf), wl=512, ovlp = 50, CalibPosition=NULL, CalibValue=NULL, freq.weight="none", ref=20){
+song.level<-function(files="wd", channel="left", from=0, to=Inf,
+                     freq.interval=c(0, Inf), fdom.int=c(0,Inf), wl=512,
+                     ovlp = 50, CalibPosition=NULL, CalibValue=NULL,
+                     freq.weight="none", ref=20, progressbar=T){
 
   if(class(files)=="Wave"){
     files<-list(files)
@@ -58,7 +62,14 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c
     fdom.int=matrix(fdom.int, nrow=length(files), ncol=2, byrow=T)
   }else if(is.data.frame(fdom.int) & nrow(fdom.int) != length(files)) stop("When fdom.int is a data.frame, it must have the number of rows equal to files length.",call. = F)
 
-  progresso=txtProgressBar(min=0, max=length(files), style = 3)
+  pb <- progress_bar$new(format = "[:bar]:percent [:elapsedfull || File :current/:total done]"
+                         , total = length(files)
+                         , complete = "="   # Completion bar character
+                         , incomplete = "-" # Incomplete bar character
+                         , current = ">"    # Current bar character
+                         , clear = FALSE    # If TRUE, clears the bar when finish
+                         #, width = 100     # Width of the progress bar
+  )
 
   #tabela dos resultados ----
   res=data.frame(File=1:length(files)
@@ -84,22 +95,31 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c
   #Analisando os arquivos ----
   for(i in 1:length(files)){
 
-    if(channel == "right" && !is.list(files) && readWave(files[[i]], header = T)$channels < 2){
-      warning(paste0("File ", files[[i]], " doesn't have a right channel."), call. = F)
+    if(channel == "right" &&
+       !is.list(files) &&
+       readWave(files[[i]], header = T)$channels < 2){
+      warning(paste0("File ", files[[i]], " doesn't have a right channel."),
+              call. = F)
       next
     }
 
     #Calibração ----
     if(!is.null(CalibPosition) & !is.null(CalibValue)){
-        CalibValue[i]=timbre(files[[i]], channel = channel, from=CalibPosition[1], to=CalibPosition[2], Leq.calib=CalibValue[i], ref=ref, weighting=freq.weight, time.mess = F, stat.mess = F)$Calib.value
+        CalibValue[i]=timbre(files[[i]], channel = channel,
+                             from=CalibPosition[1], to=CalibPosition[2],
+                             Leq.calib=CalibValue[i], ref=ref,
+                             weighting=freq.weight, time.mess = F,
+                             stat.mess = F)$Calib.value
     }
 
 
     #localizando Frequencia dominante ----
     if(length(freq.interval) == 1){
-      freq.dom=meanspec(readWave(files[[i]], from=from[i], to=to[i], units = "seconds")
-                        , channel = ifelse(channel=="left", 1, 2) , wl = wl, ovlp = ovlp, plot = F
-                        , dB = ifelse(freq.weight=="none", "max0", freq.weight)) %>% # power spectrum
+      freq.dom=meanspec(readWave(files[[i]], from=from[i], to=to[i],
+                                 units = "seconds"),
+                        channel = ifelse(channel=="left", 1, 2),
+                        wl = wl, ovlp = ovlp, plot = F,
+                        dB = ifelse(freq.weight=="none", "max0", freq.weight)) %>% # power spectrum
         .[-1,] %>%
         .[.[,"x"] >= min(fdom.int[i,]/1000) & .[,"x"] <= max(fdom.int[i,]/1000),] %>% #filtro de band pass
         fpeaks(nmax=1, plot = F) #qual o pico?
@@ -116,14 +136,16 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c
 
     #Intervalo para somar ----
     if(length(freq.interval) == 1){
-      interval.tosum=freq.bands(freq.dom, interval = freq.interval, below = 1, above = 1) %>%     #intervalo ao redor da dominante ----
+      interval.tosum=freq.bands(freq.dom, interval = freq.interval,
+                                below = 1, above = 1) %>%     #intervalo ao redor da dominante ----
       range()
     }else {
       interval.tosum = freq.interval #intervalo fixo, estabelecido pelo usuário ----
     }
 
     #pwerspec do arquivo ----
-    espec=pwrspec(files[[i]], channel = channel, from=from[i], to=to[i], res.scale = "dB", ref=ref)
+    espec=pwrspec(files[[i]], channel = channel, from=from[i], to=to[i],
+                  res.scale = "dB", ref=ref)
 
     #Implementando curvas de ponderacao ----
     if(any(freq.weight == c("A", "B", "C", "D", "ITU"))){
@@ -145,10 +167,11 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf, freq.interval=c
     if(exists("freq.dom")) res[i, "Freq.dom"] = freq.dom
     res[i, 2]=paste0(round(interval.tosum,0), collapse="—") #Freq.interval
 
-    setTxtProgressBar(progresso, i)
+    if(progressbar) pb$tick()
 
   }
 
   return(res)
+  pb$terminate()
 
 }

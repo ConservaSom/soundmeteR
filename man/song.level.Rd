@@ -16,7 +16,8 @@ song.level(
   CalibPosition = NULL,
   CalibValue = NULL,
   freq.weight = "none",
-  ref = 20
+  ref = 20,
+  progressbar = T
 )
 }
 \arguments{
@@ -30,7 +31,7 @@ song.level(
 
 \item{freq.interval}{Frequency interval to compute the RMS. Can be a vector with length two with lower and upper interval of frequencies (in Hz), or a pattern to calculate a interval (as octaves). For the last, see \link{freq.bands} function for details.}
 
-\item{fdom.int}{Vector with length two. Vector with length two with lower and upper interval of frequencies (in Hz) to find the dominant frequency. This frequency will be used as the center the interval only if a pettern is specified.}
+\item{fdom.int}{Vector with length two. Vector with length two with lower and upper interval of frequencies (in Hz) to find the dominant frequency. This frequency will be used as the center the interval only if a pattern is specified in \code{freq.interval}.}
 
 \item{wl}{Explain.}
 
@@ -43,6 +44,8 @@ song.level(
 \item{freq.weight}{Character. Argument passed to dBweight to indicate the weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See dBweight for details. (By default: "none")}
 
 \item{ref}{Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)}
+
+\item{progressbar}{Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})}
 }
 \description{
 RMS from a sample of a sound file
