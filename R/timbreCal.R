@@ -29,7 +29,9 @@
 #Pensar ao invés de usar um trecho da gravação para calibrar usar um arquivo externo.
 
 
-timbreCal<- function(files="wd", channel="left", SignalDur=NULL, RefValue=NULL, ref=20, weighting="none", bands="thirds", saveresults=F, outname=NULL, time.mess=T, stat.mess=T){
+timbreCal<- function(files="wd", channel="left", SignalDur=NULL, RefValue=NULL,
+                     ref=20, weighting="none", bands="thirds", saveresults=F,
+                     outname=NULL, time.mess=T, stat.mess=T){
 
   start.time<-Sys.time()
 
@@ -47,31 +49,50 @@ timbreCal<- function(files="wd", channel="left", SignalDur=NULL, RefValue=NULL, 
     stop("Choose a valid file on the 'files' argument. Could be 'wd', a filename on your work directory, a character object containing filenames, or a list of wave files already loaded in the R environment", call. = F)
   }
 
-  if(!is.numeric(SignalDur)){stop("A numeric value specifying the duration (in seconds) of the referencing signal must be set on the 'SignalDur' argument.")} #rever essa mensagem de erro ----
-  if(!is.numeric(RefValue)){stop("A numeric value specifying the intensity (in dB SPL) of the referencing signal must be set on the 'RefValue' argument.")} #rever essa mensagem de erro ----
-  if(!saveresults && !is.null(outname)) {stop("You can't set an 'outname' if 'saveresults' is FALSE", call. = F)} #rever essa mensagem de erro ----
+  if(!is.numeric(SignalDur)){
+    stop("A numeric value specifying the duration (in seconds) of the referencing signal must be set on the 'SignalDur' argument.")
+  } #rever essa mensagem de erro ----
+
+  if(!is.numeric(RefValue)){
+    stop("A numeric value specifying the intensity (in dB SPL) of the referencing signal must be set on the 'RefValue' argument.")
+  } #rever essa mensagem de erro ----
+
+  if(!saveresults && !is.null(outname)){
+    stop("You can't set an 'outname' if 'saveresults' is FALSE", call. = F)
+  } #rever essa mensagem de erro ----
 
   for(i in 1:length(arquivos)){ #Loop que analisara os arquivos####
 
     if(class(arquivos[[i]])=="Wave"){ #isolando o sinal de refer?ncia do som ####
-      som<-mono(extractWave(arquivos[[i]], from=2, to=SignalDur+2, xunit="time", interact=F), channel)
+      som<-mono(extractWave(arquivos[[i]], from=2, to=SignalDur+2, xunit="time",
+                            interact=F), channel)
     } else {
-      som<-mono(readWave(arquivos[[i]], from=2, to=SignalDur+2, units="seconds"), channel)
+      som<-mono(readWave(arquivos[[i]], from=2, to=SignalDur+2, units="seconds"),
+                channel)
     }
 
-    calib.value<-timbre(files=som, channel = channel, Leq.calib=RefValue, ref=ref, Calib.value=NULL, saveresults=F, outname=NULL, weighting=weighting, time.mess=F, stat.mess=F) #Analisa o sinal de referencia e obtem o valor de calibracao ####
+    calib.value<-timbre(files=som, channel = channel, Leq.calib=RefValue,
+                        ref=ref, Calib.value=NULL, saveresults=F, outname=NULL,
+                        weighting=weighting, time.mess=F, stat.mess=F) #Analisa o sinal de referencia e obtem o valor de calibracao ####
+
     calib.value<-calib.value[,2]
 
     if(class(arquivos[[i]])=="Wave"){ #isolando o som a ser analisado ####
-      som<-mono(extractWave(arquivos[[i]], from=4+SignalDur, to=Inf, xunit="time", interact=F), channel)
+      som<-mono(extractWave(arquivos[[i]], from=4+SignalDur, to=Inf,
+                            xunit="time", interact=F), channel)
     } else {
-      som<-mono(readWave(arquivos[[i]], from=4+SignalDur, units="seconds"  ), channel)
+      som<-mono(readWave(arquivos[[i]], from=4+SignalDur, units="seconds"  ),
+                channel)
     }
 
     if(i==1){#gerando a matriz de resultados ####
-    results<-timbre(files=som, channel = channel, Calib.value=calib.value, ref=ref, Leq.calib=NULL, saveresults=F, outname=NULL, weighting=weighting, bands=bands, time.mess=F, stat.mess=F)
+      results<-timbre(files=som, channel = channel, Calib.value=calib.value,
+                      ref=ref, Leq.calib=NULL, saveresults=F, outname=NULL,
+                      weighting=weighting, bands=bands, time.mess=F, stat.mess=F)
     }else {results<-rbind(results,
-                 timbre(files=som, channel = channel, Calib.value=calib.value, ref=ref, Leq.calib=NULL, saveresults=F, outname=NULL, weighting=weighting, bands=bands, time.mess=F, stat.mess=F)
+                          timbre(files=som, channel = channel, Calib.value=calib.value,
+                                 ref=ref, Leq.calib=NULL, saveresults=F, outname=NULL,
+                                 weighting=weighting, bands=bands, time.mess=F, stat.mess=F)
     )}
 
     if(is.list(arquivos) && is.null(names(arquivos))){ # colocando o nome dos arquivos na primeira coluna####
@@ -85,15 +106,21 @@ timbreCal<- function(files="wd", channel="left", SignalDur=NULL, RefValue=NULL, 
     if(saveresults) { #Salvando a matriz a cada audio analisado ####
       write.table(results,
                   paste("TimbreCalResults_", weighting, "-weighting",
-                        ifelse(!is.null(outname),paste("_", outname, sep=""),paste("")),
-                        ".txt", sep="")
+                        ifelse(!is.null(outname),paste("_", outname, sep=""),
+                               paste("")), ".txt", sep="")
                   ,row.names = F, col.names = T,sep = "\t", quote=F)
-      }
+    }
 
-    if(stat.mess){cat(c("File", i, "of", length(arquivos), "done."), sep=" ", fill = T)}
+    if(stat.mess){
+      cat(c("File", i, "of", length(arquivos), "done."), sep=" ", fill = T)
+    }
 
   }
 
-  if(time.mess){message(cat(c("The code has run in ", format(Sys.time()-start.time), "."), sep = ""))}
+  if(time.mess){
+    message(cat(c("The code has run in ", format(Sys.time()-start.time), "."),
+                sep = ""))
+  }
+
   return(results)
 }
