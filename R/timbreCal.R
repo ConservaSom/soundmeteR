@@ -13,9 +13,6 @@
 #' @param bands Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")
 #' @param saveresults Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})
 #' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By defaulf: \code{NULL})
-#' @param time.mess Logical. Activate or deactivate message of time to complete the function execution. (By default: \code{TRUE})
-#' @param stat.mess Logical. Activate or deactivate status message of the function execution. (By default: \code{TRUE})
-#'
 #'
 #' @details   To use this function, the audio file must begin with 2 seconds of silence, followed by a reference signal with known SPL, followed by another 2 seconds of silence, and the following sound to analyze.
 #' @details   The duration of the reference signal must be specified (in seconds) on the \code{SignalDur} argument and his value (in dB SPL) on the \code{refValue} argument.
@@ -31,7 +28,7 @@
 
 timbreCal<- function(files="wd", channel="left", SignalDur=NULL, RefValue=NULL,
                      ref=20, weighting="none", bands="thirds", saveresults=F,
-                     outname=NULL, time.mess=T, stat.mess=T){
+                     outname=NULL){
 
   start.time<-Sys.time()
 
@@ -111,16 +108,8 @@ timbreCal<- function(files="wd", channel="left", SignalDur=NULL, RefValue=NULL,
                   ,row.names = F, col.names = T,sep = "\t", quote=F)
     }
 
-    if(stat.mess){
-      cat(c("File", i, "of", length(arquivos), "done."), sep=" ", fill = T)
-    }
-
-  }
-
-  if(time.mess){
-    message(cat(c("The code has run in ", format(Sys.time()-start.time), "."),
-                sep = ""))
   }
 
   return(results)
+
 }
