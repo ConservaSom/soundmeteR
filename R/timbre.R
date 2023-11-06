@@ -12,10 +12,10 @@
 #' @param weighting Character. Argument passed to \code{\link[seewave]{dBweight}} to indicate the weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See \code{\link[seewave]{dBweight}} for details. (By default: "none")
 #' @param bands Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")
 #' @param ref Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)
-#' @param saveresults Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})
-#' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})
 #' @param Leq.calib Numerical. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: \code{NULL}). Can not be set if \code{Calib.value} is also set.
 #' @param Calib.value Numerical. The calibration value returned from the analysis of a reference signal using \code{Leq.calib} (by default: \code{NULL}). Can not be set if \code{Leq.calib} is also set.
+#' @param saveresults Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})
+#' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})
 #'
 #' @details Caution: You need to use an audiofile with entire values of seconds of duration to avoid bugs. Example: 35s, 60s, 19s. By default, the function will trunc your audiofile to the next entire value of seconds.
 #' @details These function works only with mono audiofiles.
@@ -43,8 +43,8 @@
 #' @export
 
 timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none",
-                 bands="thirds", ref=20, saveresults=F, outname=NULL,
-                 Leq.calib=NULL, Calib.value=NULL){
+                 bands="thirds", ref=20, Leq.calib=NULL, Calib.value=NULL,
+                 saveresults=F, outname=NULL,){
 
   if(class(files)=="Wave"){
     arquivos<-list(files)
