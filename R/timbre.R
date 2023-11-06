@@ -16,6 +16,7 @@
 #' @param Calib.value Numerical. The calibration value returned from the analysis of a reference signal using \code{Leq.calib} (by default: \code{NULL}). Can not be set if \code{Leq.calib} is also set.
 #' @param saveresults Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})
 #' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})
+#' @param progressbar Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})
 #'
 #' @details Caution: You need to use an audiofile with entire values of seconds of duration to avoid bugs. Example: 35s, 60s, 19s. By default, the function will trunc your audiofile to the next entire value of seconds.
 #' @details These function works only with mono audiofiles.
@@ -44,7 +45,7 @@
 
 timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none",
                  bands="thirds", ref=20, Leq.calib=NULL, Calib.value=NULL,
-                 saveresults=F, outname=NULL,){
+                 saveresults=F, outname=NULL, progressbar=T){
 
   if(class(files)=="Wave"){
     arquivos<-list(files)
@@ -60,28 +61,38 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none",
 
   if(length(arquivos)==0){
     stop("There is no wave files on your working directory", call. = F)
-    }
+  }
 
   if(!saveresults && !is.null(outname)) {
     stop("You can't set an 'outname' if 'saveresults' is FALSE", call. = F)
-    }
+  }
 
   if((!is.null(Leq.calib)) && (!is.null(Calib.value))) {
     stop("You can't use 'Leq.calib' and 'Calib.value' in the same function. Please, choose only one.", call. = F)
-    }
+  }
 
   if((!is.null(Leq.calib)) && (!is.numeric(Leq.calib))) {
     stop("Please, use a numeric value on 'Leq.calib'.", call. = F)
-    }
+  }
 
   if((!is.null(Calib.value)) && (!is.numeric(Calib.value))) {
     stop("Please, use a numeric value on 'Calib.value'.", call. = F)
-    }
+  }
 
   if(bands!="thirds" && bands!="octaves"){
     stop("Please, check the 'bands' argument. Only 'octaves' or 'thirds' intervals available.", call. = F)
-    }
+  }
 
+  if(progressbar){
+    pb <- progress_bar$new(format = "[:bar]:percent [:elapsedfull || File :current/:total done]"
+                           , total = length(files)
+                           , complete = "="   # Completion bar character
+                           , incomplete = "-" # Incomplete bar character
+                           , current = ">"    # Current bar character
+                           , clear = FALSE    # If TRUE, clears the bar when finish
+                           #, width = 100     # Width of the progress bar
+    )
+  }
 
   #Definindo os intervalos de frequência e montando a matriz que amazenara resultados ####
   Freqbands<-c(24.8,31.3,39.4,49.6,62.5,78.7,99.2,125,157.5,198.4,250,315.0,
@@ -89,8 +100,8 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none",
                5039.7,6349.6,8000,10079.4,12699.2,16000,20158.7)
   matriz<-data.frame(matrix(data=NA, nrow=length(arquivos),
                             ncol=2+length(Freqbands)
-                            )
-                     )
+  )
+  )
   colnames(matriz)<-c("Arquivo","Leq","25","31.5","40","50","63","80","100",
                       "125","160","200","250","315","400","500","630","800",
                       "1000","1250","1600","2000","2500","3150","4000","5000",
@@ -136,7 +147,7 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none",
 
     } else if(weighting != "none"){
       stop("Wrong weighting curve. Only 'A', 'B', 'C', 'D', 'ITU', and 'none' accepted. See dBweight()' for details.")
-      }
+    }
 
     #Calculando Leq ####
     #Equation 1.83 from Miraya (2017) to sum one-third octave bands
@@ -212,6 +223,8 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none",
                     ,row.names = F, col.names = T,sep = "\t", quote=F)
       }}
 
+    if(progressbar) pb$tick()
+
   }
 
 
@@ -227,5 +240,5 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none",
     return(matriz)
   } else {warning("Something went wrong. Please, check the arguments and try again.",
                   call. = F)
-    }
+  }
 }
