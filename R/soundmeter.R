@@ -1,9 +1,13 @@
 #' Function that makes sound meter alike measurements
 #'
-#'
+#' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
+#' @param from Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
+#' @param to Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
 #' @param CalibPosition anda de mãos dadas com calib value. Pode ser negativo, positivo ou data.frame com essas combinações
 #' @param CalibValue Anda de mãos dadas com calib position. Quando tem o position, ele é considerado o valor de referência, quando não tem o position, ele é considerado o valor de calibração.
+#' @param ref Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)
 #' @param fw Character. Argument passed to \code{\link[seewave]{dBweight}} to indicate the frequency weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See \code{\link[seewave]{dBweight}} for details. (By default: "none")
+#' @param bands Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")
 #' @param tw Time weighting
 #' @param progressbar Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})
 #' @param channel Only "left" or "right" acepted. By default "left"
@@ -82,7 +86,7 @@ soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValu
         som<-readWave(files[[i]], from = calib.ini, to=calib.fin, units = "seconds")
       }
 
-      CalibValue[i]=timbre(som, channel=channel, Leq.calib=CalibValue[i], weighting=fw, ref=ref, stat.mess = F, time.mess = F)$Calib.value
+      CalibValue[i]=timbre(som, channel=channel, Leq.calib=CalibValue[i], weighting=fw, ref=ref, progressbar=F)$Calib.value
 
       rm(som)
     }
@@ -142,7 +146,7 @@ soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValu
 
     res[i,4:6] = LineartodB(quantile(dBtoLinear(matriz$Leq, factor = "SPL", ref = ref), probs=c(0.1, 0.5, 0.9)), factor = "SPL", ref = ref) #L90,L50 e L10
 
-    res[i,7:ncol(res)]=timbre(som, channel=channel, bands=bands, weighting=fw, ref=ref, stat.mess = F, time.mess = F, Calib.value=ifelse(is.null(CalibValue), 0, CalibValue[i]))[,-1] #Leq e bandas
+    res[i,7:ncol(res)]=timbre(som, channel=channel, bands=bands, weighting=fw, ref=ref, progressbar=F, Calib.value=ifelse(is.null(CalibValue), 0, CalibValue[i]))[,-1] #Leq e bandas
 
     res[i,-1]=round(res[i,-1],2) #arredondando valores para duas casas decimais
 

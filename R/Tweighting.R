@@ -59,7 +59,7 @@ Tweighting <- function(file, window="fast", Leq.calib=NULL,...){
 
   res=sapply(1:trunc(duration(file)/window)
              , FUN=function(x, file, samp){
-               return(timbre(extractWave(file, from = round((x-1)*samp), to=round(x*samp)), stat.mess = F, time.mess = F, Leq.calib=NULL, ...)[,-1])
+               return(timbre(extractWave(file, from = round((x-1)*samp), to=round(x*samp)), progressbar=F, Leq.calib=NULL, ...)[,-1])
              }
              , file=file, samp=window*file@samp.rate)
 

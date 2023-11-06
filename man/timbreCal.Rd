@@ -14,8 +14,7 @@ timbreCal(
   bands = "thirds",
   saveresults = F,
   outname = NULL,
-  time.mess = T,
-  stat.mess = T
+  progressbar = T
 )
 }
 \arguments{
@@ -37,9 +36,7 @@ timbreCal(
 
 \item{outname}{Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By defaulf: \code{NULL})}
 
-\item{time.mess}{Logical. Activate or deactivate message of time to complete the function execution. (By default: \code{TRUE})}
-
-\item{stat.mess}{Logical. Activate or deactivate status message of the function execution. (By default: \code{TRUE})}
+\item{progressbar}{Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})}
 }
 \description{
 This function passes the parameters to \code{\link{timbre}} to automatize the calibration and return spectral analysis with dB SPL results.

@@ -12,12 +12,11 @@ timbre(
   weighting = "none",
   bands = "thirds",
   ref = 20,
-  saveresults = F,
-  outname = NULL,
   Leq.calib = NULL,
   Calib.value = NULL,
-  time.mess = T,
-  stat.mess = T
+  saveresults = F,
+  outname = NULL,
+  progressbar = T
 )
 }
 \arguments{
@@ -35,17 +34,15 @@ timbre(
 
 \item{ref}{Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)}
 
-\item{saveresults}{Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})}
-
-\item{outname}{Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})}
-
 \item{Leq.calib}{Numerical. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: \code{NULL}). Can not be set if \code{Calib.value} is also set.}
 
 \item{Calib.value}{Numerical. The calibration value returned from the analysis of a reference signal using \code{Leq.calib} (by default: \code{NULL}). Can not be set if \code{Leq.calib} is also set.}
 
-\item{time.mess}{Logical. Activate or deactivate message of time to complete the function execution. (By default: \code{TRUE})}
+\item{saveresults}{Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})}
 
-\item{stat.mess}{Logical. Activate or deactivate status message of the function execution. (By default: \code{TRUE})}
+\item{outname}{Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})}
+
+\item{progressbar}{Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})}
 }
 \description{
 Escrever
