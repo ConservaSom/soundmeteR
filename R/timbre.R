@@ -16,7 +16,6 @@
 #' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})
 #' @param Leq.calib Numerical. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: \code{NULL}). Can not be set if \code{Calib.value} is also set.
 #' @param Calib.value Numerical. The calibration value returned from the analysis of a reference signal using \code{Leq.calib} (by default: \code{NULL}). Can not be set if \code{Leq.calib} is also set.
-#' @param time.mess Logical. Activate or deactivate message of time to complete the function execution. (By default: \code{TRUE})
 #' @param stat.mess Logical. Activate or deactivate status message of the function execution. (By default: \code{TRUE})
 #'
 #'
@@ -47,8 +46,7 @@
 
 timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none",
                  bands="thirds", ref=20, saveresults=F, outname=NULL,
-                 Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T){
-  start.time<-Sys.time()
+                 Leq.calib=NULL, Calib.value=NULL, stat.mess=T){
 
   if(class(files)=="Wave"){
     arquivos<-list(files)
@@ -226,11 +224,6 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none",
   if(bands=="octaves"){
     matriz<-matriz.octaves
   }
-
-  if(time.mess){
-    message(cat(c("The code has run in ", format(Sys.time()-start.time), "."),
-                sep = ""))
-    }
 
   if((is.null(Leq.calib)) & (is.null(Calib.value))) {
     return(matriz)
