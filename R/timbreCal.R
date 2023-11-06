@@ -70,7 +70,7 @@ timbreCal<- function(files="wd", channel="left", SignalDur=NULL, RefValue=NULL,
 
     calib.value<-timbre(files=som, channel = channel, Leq.calib=RefValue,
                         ref=ref, Calib.value=NULL, saveresults=F, outname=NULL,
-                        weighting=weighting, time.mess=F, stat.mess=F) #Analisa o sinal de referencia e obtem o valor de calibracao ####
+                        weighting=weighting, progressbar=F) #Analisa o sinal de referencia e obtem o valor de calibracao ####
 
     calib.value<-calib.value[,2]
 
@@ -85,11 +85,11 @@ timbreCal<- function(files="wd", channel="left", SignalDur=NULL, RefValue=NULL,
     if(i==1){#gerando a matriz de resultados ####
       results<-timbre(files=som, channel = channel, Calib.value=calib.value,
                       ref=ref, Leq.calib=NULL, saveresults=F, outname=NULL,
-                      weighting=weighting, bands=bands, time.mess=F, stat.mess=F)
+                      weighting=weighting, bands=bands, progressbar=F)
     }else {results<-rbind(results,
                           timbre(files=som, channel = channel, Calib.value=calib.value,
                                  ref=ref, Leq.calib=NULL, saveresults=F, outname=NULL,
-                                 weighting=weighting, bands=bands, time.mess=F, stat.mess=F)
+                                 weighting=weighting, bands=bands, progressbar=F)
     )}
 
     if(is.list(arquivos) && is.null(names(arquivos))){ # colocando o nome dos arquivos na primeira coluna####

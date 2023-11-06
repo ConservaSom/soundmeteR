@@ -108,8 +108,7 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf,
         CalibValue[i]=timbre(files[[i]], channel = channel,
                              from=CalibPosition[1], to=CalibPosition[2],
                              Leq.calib=CalibValue[i], ref=ref,
-                             weighting=freq.weight, time.mess = F,
-                             stat.mess = F)$Calib.value
+                             weighting=freq.weight, progressbar=F)$Calib.value
     }
 
 

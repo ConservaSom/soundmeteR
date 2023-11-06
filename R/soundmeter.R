@@ -86,7 +86,7 @@ soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValu
         som<-readWave(files[[i]], from = calib.ini, to=calib.fin, units = "seconds")
       }
 
-      CalibValue[i]=timbre(som, channel=channel, Leq.calib=CalibValue[i], weighting=fw, ref=ref, stat.mess = F, time.mess = F)$Calib.value
+      CalibValue[i]=timbre(som, channel=channel, Leq.calib=CalibValue[i], weighting=fw, ref=ref, progressbar=F)$Calib.value
 
       rm(som)
     }
@@ -146,7 +146,7 @@ soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValu
 
     res[i,4:6] = LineartodB(quantile(dBtoLinear(matriz$Leq, factor = "SPL", ref = ref), probs=c(0.1, 0.5, 0.9)), factor = "SPL", ref = ref) #L90,L50 e L10
 
-    res[i,7:ncol(res)]=timbre(som, channel=channel, bands=bands, weighting=fw, ref=ref, stat.mess = F, time.mess = F, Calib.value=ifelse(is.null(CalibValue), 0, CalibValue[i]))[,-1] #Leq e bandas
+    res[i,7:ncol(res)]=timbre(som, channel=channel, bands=bands, weighting=fw, ref=ref, progressbar=F, Calib.value=ifelse(is.null(CalibValue), 0, CalibValue[i]))[,-1] #Leq e bandas
 
     res[i,-1]=round(res[i,-1],2) #arredondando valores para duas casas decimais
 
