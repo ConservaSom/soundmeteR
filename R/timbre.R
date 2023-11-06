@@ -174,7 +174,7 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none",
     if(bands=="octaves"){
       if(i==1){
         matriz.octaves<- data.frame(matrix(data=NA,nrow=length(arquivos),ncol=2+10))
-        colnames(matriz.octaves) < -c("Arquivo","Leq","31.5","63","125","250",
+        colnames(matriz.octaves) <- c("Arquivo","Leq","31.5","63","125","250",
                                       "500","1000","2000","4000","8000","16000")
       }
 
