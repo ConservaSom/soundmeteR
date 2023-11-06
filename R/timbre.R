@@ -45,7 +45,9 @@
 #'
 #' @export
 
-timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none", bands="thirds", ref=20, saveresults=F, outname=NULL, Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T){
+timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none",
+                 bands="thirds", ref=20, saveresults=F, outname=NULL,
+                 Leq.calib=NULL, Calib.value=NULL, time.mess=T, stat.mess=T){
   start.time<-Sys.time()
 
   if(class(files)=="Wave"){
@@ -60,28 +62,49 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none", b
     stop("Choose a valid file on the 'files' argument. Could be 'wd', a filename on your work directory, a character object containing filenames, or a list of wave files already loaded in the R environment", call. = F)
   }
 
-  if(length(arquivos)==0){stop("There is no wave files on your working directory", call. = F)}
+  if(length(arquivos)==0){
+    stop("There is no wave files on your working directory", call. = F)
+    }
 
-  if(!saveresults && !is.null(outname)) {stop("You can't set an 'outname' if 'saveresults' is FALSE", call. = F)}
+  if(!saveresults && !is.null(outname)) {
+    stop("You can't set an 'outname' if 'saveresults' is FALSE", call. = F)
+    }
 
-  if((!is.null(Leq.calib)) && (!is.null(Calib.value))) {stop("You can't use 'Leq.calib' and 'Calib.value' in the same function. Please, choose only one.", call. = F)}
+  if((!is.null(Leq.calib)) && (!is.null(Calib.value))) {
+    stop("You can't use 'Leq.calib' and 'Calib.value' in the same function. Please, choose only one.", call. = F)
+    }
 
-  if((!is.null(Leq.calib)) && (!is.numeric(Leq.calib))) {stop("Please, use a numeric value on 'Leq.calib'.", call. = F)}
+  if((!is.null(Leq.calib)) && (!is.numeric(Leq.calib))) {
+    stop("Please, use a numeric value on 'Leq.calib'.", call. = F)
+    }
 
-  if((!is.null(Calib.value)) && (!is.numeric(Calib.value))) {stop("Please, use a numeric value on 'Calib.value'.", call. = F)}
+  if((!is.null(Calib.value)) && (!is.numeric(Calib.value))) {
+    stop("Please, use a numeric value on 'Calib.value'.", call. = F)
+    }
 
-  if(bands!="thirds" && bands!="octaves"){stop("Please, check the 'bands' argument. Only 'octaves' or 'thirds' intervals available.", call. = F)}
+  if(bands!="thirds" && bands!="octaves"){
+    stop("Please, check the 'bands' argument. Only 'octaves' or 'thirds' intervals available.", call. = F)
+    }
 
 
   #Definindo os intervalos de frequência e montando a matriz que amazenara resultados ####
-  Freqbands<-c(24.8,31.3,39.4,49.6,62.5,78.7,99.2,125,157.5,198.4,250,315.0,396.9,500,630.0,793.7,1000,1259.9,1587.4,2000,2519.8,3174.8,4000,5039.7,6349.6,8000,10079.4,12699.2,16000,20158.7)
-  matriz<-data.frame(matrix(data=NA,nrow=length(arquivos),ncol=2+length(Freqbands)))
-  colnames(matriz)<-c("Arquivo","Leq","25","31.5","40","50","63","80","100","125","160","200","250","315","400","500","630","800","1000","1250","1600","2000","2500","3150","4000","5000","6300","8000","10000","12500","16000","20000")
+  Freqbands<-c(24.8,31.3,39.4,49.6,62.5,78.7,99.2,125,157.5,198.4,250,315.0,
+               396.9,500,630.0,793.7,1000,1259.9,1587.4,2000,2519.8,3174.8,4000,
+               5039.7,6349.6,8000,10079.4,12699.2,16000,20158.7)
+  matriz<-data.frame(matrix(data=NA, nrow=length(arquivos),
+                            ncol=2+length(Freqbands)
+                            )
+                     )
+  colnames(matriz)<-c("Arquivo","Leq","25","31.5","40","50","63","80","100",
+                      "125","160","200","250","315","400","500","630","800",
+                      "1000","1250","1600","2000","2500","3150","4000","5000",
+                      "6300","8000","10000","12500","16000","20000")
 
 
   for(i in 1:length(arquivos)){
 
-    espec=pwrspec(arquivos[[i]], channel=channel, from=from, to=to, res.scale = "dB", ref=ref)
+    espec=pwrspec(arquivos[[i]], channel=channel, from=from, to=to,
+                  res.scale = "dB", ref=ref)
 
     #Calulando a quantidade de energia por banda de frequência ####
     for (j in 1:length(Freqbands)) {
@@ -99,7 +122,8 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none", b
 
       sum.int<-
         sumdB(
-          espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) & espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2]
+          espec[espec$Freq.Hz>=Freqbands[j]/(2^(1/6)) &
+                  espec$Freq.Hz<Freqbands[j]*(2^(1/6)),2]
           , level="IL")
 
       if(is.finite(sum.int)){
@@ -111,8 +135,12 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none", b
 
     #Implementando curvas de ponderacao ####
     if(any(weighting == c("A", "B", "C", "D", "ITU"))){
-      matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+round(seewave::dBweight(as.numeric(colnames(matriz[,-1:-2])))[[weighting]],2)
-    } else if(weighting != "none"){stop("Wrong weighting curve. Only 'A', 'B', 'C', 'D', 'ITU', and 'none' accepted. See dBweight()' for details.")}
+      matriz[i,c(-1,-2)]<-matriz[i,c(-1,-2)]+round(seewave::dBweight(as.numeric(colnames(
+        matriz[,-1:-2])))[[weighting]],2)
+
+    } else if(weighting != "none"){
+      stop("Wrong weighting curve. Only 'A', 'B', 'C', 'D', 'ITU', and 'none' accepted. See dBweight()' for details.")
+      }
 
     #Calculando Leq ####
     #Equation 1.83 from Miraya (2017) to sum one-third octave bands
@@ -139,7 +167,8 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none", b
     if(bands=="octaves"){
       if(i==1){
         matriz.octaves<- data.frame(matrix(data=NA,nrow=length(arquivos),ncol=2+10))
-        colnames(matriz.octaves)<-c("Arquivo","Leq","31.5","63","125","250","500","1000","2000","4000","8000","16000")
+        colnames(matriz.octaves) < -c("Arquivo","Leq","31.5","63","125","250",
+                                      "500","1000","2000","4000","8000","16000")
       }
 
       matriz.octaves[i,1:2]<-matriz[i,1:2] #adicionando o Leq a planilha de oitavas
@@ -157,9 +186,11 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none", b
       matriz.octaves[i,"8000"] = matriz[i,which(colnames(matriz)=="8000")-1] + matriz[i,which(colnames(matriz)=="8000")] + matriz[i,which(colnames(matriz)=="8000")+1]
       matriz.octaves[i,"16000"] = matriz[i,which(colnames(matriz)=="16000")-1] + matriz[i,which(colnames(matriz)=="16000")] + matriz[i,which(colnames(matriz)=="16000")+1]
 
-      matriz[i,c(-1:-2)]<-round(LineartodB(matriz[i,c(-1:-2)], factor = "IL", ref=1),2) #here IL and ref is relative to eq 1.83 from Miyara (2017). It needs to be factor 10 (same as 'IL') and without reference (same as 1)
+      matriz[i,c(-1:-2)]<-round(LineartodB(matriz[i,c(-1:-2)], factor = "IL",
+                                           ref=1),2) #here IL and ref is relative to eq 1.83 from Miyara (2017). It needs to be factor 10 (same as 'IL') and without reference (same as 1)
 
-      matriz.octaves[i,c(-1:-2)]<-round(LineartodB(matriz.octaves[i,c(-1:-2)], factor = "IL", ref=1),2) #here IL and ref is relative to eq 1.83 from Miyara (2017). It needs to be factor 10 (same as 'IL') and without reference (same as 1)
+      matriz.octaves[i,c(-1:-2)]<-round(LineartodB(matriz.octaves[i,c(-1:-2)],
+                                                   factor = "IL", ref=1),2) #here IL and ref is relative to eq 1.83 from Miyara (2017). It needs to be factor 10 (same as 'IL') and without reference (same as 1)
 
     }
 
@@ -185,7 +216,9 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none", b
                     ,row.names = F, col.names = T,sep = "\t", quote=F)
       }}
 
-    if(stat.mess){cat(c("File", i, "of", length(arquivos), "done."), sep=" ", fill = T)}
+    if(stat.mess){
+      cat(c("File", i, "of", length(arquivos), "done."), sep=" ", fill = T)
+      }
 
   }
 
@@ -194,7 +227,10 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none", b
     matriz<-matriz.octaves
   }
 
-  if(time.mess){message(cat(c("The code has run in ", format(Sys.time()-start.time), "."), sep = ""))}
+  if(time.mess){
+    message(cat(c("The code has run in ", format(Sys.time()-start.time), "."),
+                sep = ""))
+    }
 
   if((is.null(Leq.calib)) & (is.null(Calib.value))) {
     return(matriz)
@@ -202,5 +238,7 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none", b
     return(calibration)
   } else if(is.numeric(Calib.value)) {
     return(matriz)
-  } else {warning("Something went wrong. Please, check the arguments and try again.", call. = F)}
+  } else {warning("Something went wrong. Please, check the arguments and try again.",
+                  call. = F)
+    }
 }
