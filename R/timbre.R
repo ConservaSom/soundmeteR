@@ -16,8 +16,6 @@
 #' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})
 #' @param Leq.calib Numerical. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: \code{NULL}). Can not be set if \code{Calib.value} is also set.
 #' @param Calib.value Numerical. The calibration value returned from the analysis of a reference signal using \code{Leq.calib} (by default: \code{NULL}). Can not be set if \code{Leq.calib} is also set.
-#' @param stat.mess Logical. Activate or deactivate status message of the function execution. (By default: \code{TRUE})
-#'
 #'
 #' @details Caution: You need to use an audiofile with entire values of seconds of duration to avoid bugs. Example: 35s, 60s, 19s. By default, the function will trunc your audiofile to the next entire value of seconds.
 #' @details These function works only with mono audiofiles.
@@ -46,7 +44,7 @@
 
 timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none",
                  bands="thirds", ref=20, saveresults=F, outname=NULL,
-                 Leq.calib=NULL, Calib.value=NULL, stat.mess=T){
+                 Leq.calib=NULL, Calib.value=NULL){
 
   if(class(files)=="Wave"){
     arquivos<-list(files)
@@ -213,10 +211,6 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none",
                           ".txt", sep="")
                     ,row.names = F, col.names = T,sep = "\t", quote=F)
       }}
-
-    if(stat.mess){
-      cat(c("File", i, "of", length(arquivos), "done."), sep=" ", fill = T)
-      }
 
   }
 
