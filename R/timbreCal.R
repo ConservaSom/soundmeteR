@@ -28,7 +28,7 @@
 
 timbreCal<- function(files="wd", channel="left", SignalDur=NULL, RefValue=NULL,
                      ref=20, weighting="none", bands="thirds", saveresults=F,
-                     outname=NULL){
+                     outname=NULL, progressbar=T){
 
   start.time<-Sys.time()
 
@@ -57,6 +57,17 @@ timbreCal<- function(files="wd", channel="left", SignalDur=NULL, RefValue=NULL,
   if(!saveresults && !is.null(outname)){
     stop("You can't set an 'outname' if 'saveresults' is FALSE", call. = F)
   } #rever essa mensagem de erro ----
+
+  if(progressbar){
+    pb <- progress_bar$new(format = "[:bar]:percent [:elapsedfull || File :current/:total done]"
+                           , total = length(files)
+                           , complete = "="   # Completion bar character
+                           , incomplete = "-" # Incomplete bar character
+                           , current = ">"    # Current bar character
+                           , clear = FALSE    # If TRUE, clears the bar when finish
+                           #, width = 100     # Width of the progress bar
+    )
+  }
 
   for(i in 1:length(arquivos)){ #Loop que analisara os arquivos####
 
@@ -107,6 +118,8 @@ timbreCal<- function(files="wd", channel="left", SignalDur=NULL, RefValue=NULL,
                                paste("")), ".txt", sep="")
                   ,row.names = F, col.names = T,sep = "\t", quote=F)
     }
+
+    if(progressbar) pb$tick()
 
   }
 
