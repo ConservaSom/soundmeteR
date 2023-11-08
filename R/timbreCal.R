@@ -6,6 +6,8 @@
 #'
 #' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
 #' @param channel Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
+#' @param from Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
+#' @param to Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
 #' @param SignalDur Numerical. Specify the reference signal duration (in seconds) on the beggining of the audiofile. (By default: \code{NULL})
 #' @param RefValue Numerical. Specify the reference signal sound pressure level (in deciBells SPL) on the beggining of the audiofile. (By default: \code{NULL})
 #' @param ref Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)
@@ -27,37 +29,19 @@
 #Pensar ao invés de usar um trecho da gravação para calibrar usar um arquivo externo.
 
 
-timbreCal<- function(files="wd", channel="left", SignalDur=NULL, RefValue=NULL,
-                     ref=20, weighting="none", bands="thirds", saveresults=F,
+timbreCal<- function(files="wd", channel="left", from=0, to=Inf,
+                     CalibPosition=NULL, CalibValue=NULL, ref=20,
+                     weighting="none", bands="thirds", saveresults=F,
                      outname=NULL, progressbar=T){
 
-  start.time<-Sys.time()
-
-  require(tuneR)
-
-  if(class(files)=="Wave"){ #vendo o tipo de arquivo usado no imput e armazenando em um objeto ###
-    arquivos<-list(files)
-  }else if(is.list(files)){
-    arquivos<-files
+  if(class(files)=="Wave"){
+    files<-list(files)
   }else if(length(files)==1 && files=="wd") {
-    arquivos <- dir(pattern=".WAV", ignore.case=T)
-  }else if(is.character(files)) {
-    arquivos <- files
-  }else {
-    stop("Choose a valid file on the 'files' argument. Could be 'wd', a filename on your work directory, a character object containing filenames, or a list of wave files already loaded in the R environment", call. = F)
+    files <- dir(pattern=".WAV", ignore.case=T)
+  }else if(is.data.frame(files)){
+    files <- as.character(files)
   }
 
-  if(!is.numeric(SignalDur)){
-    stop("A numeric value specifying the duration (in seconds) of the referencing signal must be set on the 'SignalDur' argument.")
-  } #rever essa mensagem de erro ----
-
-  if(!is.numeric(RefValue)){
-    stop("A numeric value specifying the intensity (in dB SPL) of the referencing signal must be set on the 'RefValue' argument.")
-  } #rever essa mensagem de erro ----
-
-  if(!saveresults && !is.null(outname)){
-    stop("You can't set an 'outname' if 'saveresults' is FALSE", call. = F)
-  } #rever essa mensagem de erro ----
 
   if(progressbar){
     pb <- progress_bar$new(format = "[:bar]:percent [:elapsedfull || File :current/:total done]"
@@ -70,13 +54,13 @@ timbreCal<- function(files="wd", channel="left", SignalDur=NULL, RefValue=NULL,
     )
   }
 
-  for(i in 1:length(arquivos)){ #Loop que analisara os arquivos####
+  for(i in 1:length(files)){ #Loop que analisara os files####
 
-    if(class(arquivos[[i]])=="Wave"){ #isolando o sinal de refer?ncia do som ####
-      som<-mono(extractWave(arquivos[[i]], from=2, to=SignalDur+2, xunit="time",
+    if(class(files[[i]])=="Wave"){ #isolando o sinal de refer?ncia do som ####
+      som<-mono(extractWave(files[[i]], from=2, to=SignalDur+2, xunit="time",
                             interact=F), channel)
     } else {
-      som<-mono(readWave(arquivos[[i]], from=2, to=SignalDur+2, units="seconds"),
+      som<-mono(readWave(files[[i]], from=2, to=SignalDur+2, units="seconds"),
                 channel)
     }
 
@@ -86,11 +70,11 @@ timbreCal<- function(files="wd", channel="left", SignalDur=NULL, RefValue=NULL,
 
     calib.value<-calib.value[,2]
 
-    if(class(arquivos[[i]])=="Wave"){ #isolando o som a ser analisado ####
-      som<-mono(extractWave(arquivos[[i]], from=4+SignalDur, to=Inf,
+    if(class(files[[i]])=="Wave"){ #isolando o som a ser analisado ####
+      som<-mono(extractWave(files[[i]], from=4+SignalDur, to=Inf,
                             xunit="time", interact=F), channel)
     } else {
-      som<-mono(readWave(arquivos[[i]], from=4+SignalDur, units="seconds"  ),
+      som<-mono(readWave(files[[i]], from=4+SignalDur, units="seconds"  ),
                 channel)
     }
 
@@ -104,12 +88,12 @@ timbreCal<- function(files="wd", channel="left", SignalDur=NULL, RefValue=NULL,
                                  weighting=weighting, bands=bands, progressbar=F)
     )}
 
-    if(is.list(arquivos) && is.null(names(arquivos))){ # colocando o nome dos arquivos na primeira coluna####
+    if(is.list(files) && is.null(names(files))){ # colocando o nome dos files na primeira coluna####
       results[i,1]<-i
-    }else if(is.list(arquivos) && !is.null(names(arquivos))){
-      results[i,1]<-names(arquivos[i])
+    }else if(is.list(files) && !is.null(names(files))){
+      results[i,1]<-names(files[i])
     }else {
-      results[i,1]<-arquivos[i]
+      results[i,1]<-files[i]
     }
 
     if(saveresults) { #Salvando a matriz a cada audio analisado ####
