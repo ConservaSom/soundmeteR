@@ -1,6 +1,7 @@
 #' Function that makes sound meter alike measurements
 #'
 #' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
+#' @param channel Only "left" or "right" acepted. By default "left"
 #' @param from Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
 #' @param to Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
 #' @param CalibPosition anda de mãos dadas com calib value. Pode ser negativo, positivo ou data.frame com essas combinações
@@ -9,10 +10,9 @@
 #' @param fw Character. Argument passed to \code{\link[seewave]{dBweight}} to indicate the frequency weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See \code{\link[seewave]{dBweight}} for details. (By default: "none")
 #' @param bands Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")
 #' @param tw Time weighting
-#' @param progressbar Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})
-#' @param channel Only "left" or "right" acepted. By default "left"
 #' @param saveresults Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})
 #' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})
+#' @param progressbar Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})
 #'
 #' @details If your reference signal is in a separate file, we recommend you to get the \code{CalibValue} with \link{timbre} function. It's examples provide more details.
 #'
@@ -27,7 +27,10 @@
 #'
 #' @export
 
-soundmeter <- function(files="wd", from=0, to=Inf, CalibPosition=NULL, CalibValue=NULL, ref=20, fw="none", bands="octaves", tw="fast", progressbar=T, channel="left", saveresults=F, outname=NULL){
+soundmeter <- function(files="wd", channel="left", from=0, to=Inf,
+                       CalibPosition=NULL, CalibValue=NULL, ref=20,
+                       fw="none", bands="octaves", tw="fast", saveresults=F,
+                       outname=NULL, progressbar=T){
 
   if(class(files)=="Wave"){
     files<-list(files)
