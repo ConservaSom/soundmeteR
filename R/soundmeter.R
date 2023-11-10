@@ -53,27 +53,36 @@ soundmeter <- function(files="wd", channel="left", from=0, to=Inf,
   from=c(matrix(from, nrow=length(files)))
   to=c(matrix(to, nrow=length(files)))
 
-  if(!(channel %in% c("left", "right")))stop("Only 'left' or 'right' acepted fo channel argument", call. = F)
+  if(!(channel %in% c("left", "right"))){
+    stop("Only 'left' or 'right' acepted fo channel argument", call. = F)
+  }
 
   if(!is.null(CalibValue) & !is.data.frame(CalibValue)){
     CalibValue=matrix(CalibValue, nrow=length(files), ncol=1, byrow=T)
-  }else if(!is.null(CalibValue) & is.data.frame(CalibValue) && nrow(CalibValue) != length(files)) stop("When CalibValue is a data.frame, it must have the number of rows equal to files length.",call. = F)
-
+  }else if(!is.null(CalibValue) & is.data.frame(CalibValue) &&
+           nrow(CalibValue) != length(files)){
+    stop("When CalibValue is a data.frame, it must have the number of rows equal to files length.",call. = F)
+  }
 
   #início do loop maior (por arquivo) ----
   for(i in 1:length(files)){
 
     if(!is.null(CalibPosition) && all(CalibPosition < 0)){ #ajustando calibposition
 
-      if(is.character(files[[i]])) dur=readWave(files[[i]], header = T) %>% #se for um arquivo para ler
+      if(is.character(files[[i]])){ #se for um arquivo para ler
+        dur=readWave(files[[i]], header = T) %>%
           data.frame() %>%
           transmute(dur=samples/sample.rate) %>%
           as.numeric()
+      }
 
-      if(class(files[[i]]) == "Wave") dur=duration(files[[i]]) #se for um arquivo já carregado no R
+      if(class(files[[i]]) == "Wave"){ #se for um arquivo já carregado no R
+        dur=duration(files[[i]])
+      }
 
       calib.ini=dur+CalibPosition[1]
       calib.fin=dur+CalibPosition[2]
+
     }else if(!is.null(CalibPosition)){
 
       calib.ini=CalibPosition[1]
@@ -84,12 +93,15 @@ soundmeter <- function(files="wd", channel="left", from=0, to=Inf,
     #calibrando ----
     if(exists("calib.ini") && exists("calib.fin")){
       if(class(files[[i]])=="Wave"){
-        som<-extractWave(files[[i]], from=calib.ini, to=calib.fin, xunit = "time", interact = F)
+        som<-extractWave(files[[i]], from=calib.ini, to=calib.fin,
+                         xunit = "time", interact = F)
       } else {
-        som<-readWave(files[[i]], from = calib.ini, to=calib.fin, units = "seconds")
+        som<-readWave(files[[i]], from = calib.ini, to=calib.fin,
+                      units = "seconds")
       }
 
-      CalibValue[i]=timbre(som, channel=channel, Leq.calib=CalibValue[i], weighting=fw, ref=ref, progressbar=F)$Calib.value
+      CalibValue[i]=timbre(som, channel=channel, Leq.calib=CalibValue[i],
+                           weighting=fw, ref=ref, progressbar=F)$Calib.value
 
       rm(som)
     }
