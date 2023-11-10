@@ -97,18 +97,11 @@ timbreCal <- function(files="wd", channel="left", from=0, to=Inf,
 
     #calibrando ----
     if(exists("calib.ini") && exists("calib.fin")){
-      if(class(files[[i]])=="Wave"){
-        som<-extractWave(files[[i]], from=calib.ini, to=calib.fin,
-                         xunit = "time", interact = F)
-      } else {
-        som<-readWave(files[[i]], from = calib.ini, to=calib.fin,
-                      units = "seconds")
-      }
 
-      CalibValue[i]=timbre(som, channel=channel, Leq.calib=CalibValue[i],
-                           weighting=weighting, ref=ref, progressbar=F)$Calib.value
-
-      rm(som)
+      CalibValue[i]=timbre(files[[i]], channel=channel, from=calib.ini,
+                           to=calib.fin, Leq.calib=CalibValue[i],
+                           weighting=weighting, ref=ref,
+                           progressbar=F)$Calib.value
     }
 
     if(i==1){#gerando a matriz de resultados ####
