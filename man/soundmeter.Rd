@@ -6,6 +6,7 @@
 \usage{
 soundmeter(
   files = "wd",
+  channel = "left",
   from = 0,
   to = Inf,
   CalibPosition = NULL,
@@ -14,14 +15,15 @@ soundmeter(
   fw = "none",
   bands = "octaves",
   tw = "fast",
-  progressbar = T,
-  channel = "left",
   saveresults = F,
-  outname = NULL
+  outname = NULL,
+  progressbar = T
 )
 }
 \arguments{
 \item{files}{The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")}
+
+\item{channel}{Only "left" or "right" acepted. By default "left"}
 
 \item{from}{Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.}
 
@@ -39,13 +41,11 @@ soundmeter(
 
 \item{tw}{Time weighting}
 
-\item{progressbar}{Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})}
-
-\item{channel}{Only "left" or "right" acepted. By default "left"}
-
 \item{saveresults}{Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})}
 
 \item{outname}{Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})}
+
+\item{progressbar}{Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})}
 }
 \description{
 Function that makes sound meter alike measurements
