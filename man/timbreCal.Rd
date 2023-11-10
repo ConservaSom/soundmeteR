@@ -7,8 +7,10 @@
 timbreCal(
   files = "wd",
   channel = "left",
-  SignalDur = NULL,
-  RefValue = NULL,
+  from = 0,
+  to = Inf,
+  CalibPosition = NULL,
+  CalibValue = NULL,
   ref = 20,
   weighting = "none",
   bands = "thirds",
@@ -22,9 +24,13 @@ timbreCal(
 
 \item{channel}{Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.}
 
-\item{SignalDur}{Numerical. Specify the reference signal duration (in seconds) on the beggining of the audiofile. (By default: \code{NULL})}
+\item{from}{Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.}
 
-\item{RefValue}{Numerical. Specify the reference signal sound pressure level (in deciBells SPL) on the beggining of the audiofile. (By default: \code{NULL})}
+\item{to}{Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.}
+
+\item{CalibPosition}{anda de mãos dadas com calib value. Pode ser negativo, positivo ou data.frame com essas combinações}
+
+\item{CalibValue}{Anda de mãos dadas com calib position. Quando tem o position, ele é considerado o valor de referência, quando não tem o position, ele é considerado o valor de calibração.}
 
 \item{ref}{Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)}
 
