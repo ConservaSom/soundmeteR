@@ -14,7 +14,7 @@
 #' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})
 #' @param progressbar Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})
 #'
-#' @details If your reference signal is in a separate file, we recommend you to get the \code{CalibValue} with \link{timbre} function. It's examples provide more details.
+#' @details If your reference signal is in a separate file, we recommend you to get the \code{CalibValue} with \link{leqbands} function. It's examples provide more details.
 #'
 #' @examples
 #' data("tham")
@@ -100,7 +100,7 @@ soundmeter <- function(files="wd", channel="left", from=0, to=Inf,
                       units = "seconds")
       }
 
-      CalibValue[i]=timbre(som, channel=channel, Leq.calib=CalibValue[i],
+      CalibValue[i]=leqbands(som, channel=channel, Leq.calib=CalibValue[i],
                            weighting=fw, ref=ref, progressbar=F)$Calib.value
 
       rm(som)
@@ -161,7 +161,7 @@ soundmeter <- function(files="wd", channel="left", from=0, to=Inf,
 
     res[i,4:6] = LineartodB(quantile(dBtoLinear(matriz$Leq, factor = "SPL", ref = ref), probs=c(0.1, 0.5, 0.9)), factor = "SPL", ref = ref) #L90,L50 e L10
 
-    res[i,7:ncol(res)]=timbre(som, channel=channel, bands=bands, weighting=fw, ref=ref, progressbar=F, Calib.value=ifelse(is.null(CalibValue), 0, CalibValue[i]))[,-1] #Leq e bandas
+    res[i,7:ncol(res)]=leqbands(som, channel=channel, bands=bands, weighting=fw, ref=ref, progressbar=F, Calib.value=ifelse(is.null(CalibValue), 0, CalibValue[i]))[,-1] #Leq e bandas
 
     res[i,-1]=round(res[i,-1],2) #arredondando valores para duas casas decimais
 

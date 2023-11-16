@@ -1,8 +1,8 @@
-#' Timbre analysis for audiofiles with reference signal
+#' leqbands analysis for audiofiles with reference signal
 #'
-#' @name timbreCal
+#' @name leqbands_cal
 #'
-#' @description This function passes the parameters to \code{\link{timbre}} to automatize the calibration and return spectral analysis with dB SPL results.
+#' @description This function passes the parameters to \code{\link{leqbands}} to automatize the calibration and return spectral analysis with dB SPL results.
 #'
 #' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
 #' @param channel Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
@@ -20,7 +20,7 @@
 #' @details   To use this function, the audio file must begin with 2 seconds of silence, followed by a reference signal with known SPL, followed by another 2 seconds of silence, and the following sound to analyze.
 #' @details   The duration of the reference signal must be specified (in seconds) on the \code{SignalDur} argument and his value (in dB SPL) on the \code{refValue} argument.
 #'
-#' @seealso \code{\link{timbre}}
+#' @seealso \code{\link{leqbands}}
 #'
 #'
 #' @export
@@ -29,7 +29,7 @@
 #Pensar ao invés de usar um trecho da gravação para calibrar usar um arquivo externo.
 
 
-timbreCal <- function(files="wd", channel="left", from=0, to=Inf,
+leqbands_cal <- function(files="wd", channel="left", from=0, to=Inf,
                      CalibPosition=NULL, CalibValue=NULL, ref=20,
                      weighting="none", bands="thirds", saveresults=F,
                      outname=NULL, progressbar=T){
@@ -98,20 +98,20 @@ timbreCal <- function(files="wd", channel="left", from=0, to=Inf,
     #calibrando ----
     if(exists("calib.ini") && exists("calib.fin")){
 
-      CalibValue[i]=timbre(files[[i]], channel=channel, from=calib.ini,
+      CalibValue[i]=leqbands(files[[i]], channel=channel, from=calib.ini,
                            to=calib.fin, Leq.calib=CalibValue[i],
                            weighting=weighting, ref=ref,
                            progressbar=F)$Calib.value
     }
 
     if(i==1){#gerando a matriz de resultados ####
-      results<-timbre(files=files[[i]], from=from[i], to=to[i],
+      results<-leqbands(files=files[[i]], from=from[i], to=to[i],
                       channel=channel, Calib.value=CalibValue[i], ref=ref,
                       weighting=weighting, bands=bands, progressbar=F)
 
     }else {
       results<-rbind(results,
-                     timbre(files=files[[i]], from=from[i], to=to[i],
+                     leqbands(files=files[[i]], from=from[i], to=to[i],
                             channel=channel, Calib.value=CalibValue[i],
                             ref=ref, weighting=weighting, bands=bands,
                             progressbar=F)
@@ -128,7 +128,7 @@ timbreCal <- function(files="wd", channel="left", from=0, to=Inf,
 
     if(saveresults) { #Salvando a matriz a cada audio analisado ####
       write.table(results,
-                  paste("TimbreCalResults_", weighting, "-weighting",
+                  paste("leqbands_calResults_", weighting, "-weighting",
                         ifelse(!is.null(outname),paste("_", outname, sep=""),
                                paste("")), ".txt", sep="")
                   ,row.names = F, col.names = T,sep = "\t", quote=F)

@@ -11,9 +11,9 @@ Tweighting(file, window = "fast", Leq.calib = NULL, ...)
 
 \item{window}{Character. Wich time window should be used. 'fast' or 'slow' are accepted. (by default: "fast")}
 
-\item{Leq.calib}{Numeric. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: NULL). This parameter is passed to \code{\link{timbre}} function.}
+\item{Leq.calib}{Numeric. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: NULL). This parameter is passed to \code{\link{leqbands}} function.}
 
-\item{...}{Further arguments passed to \code{\link{timbre}}.}
+\item{...}{Further arguments passed to \code{\link{leqbands}}.}
 }
 \value{
 A numeric vector
@@ -22,7 +22,7 @@ A numeric vector
 Escrever descrição
 }
 \details{
-This function split your audiofile in smaller files defined as \code{fast} (0.125s) and \code{slow} (1s) and analyze each one with \code{\link{timbre}} function.
+This function split your audiofile in smaller files defined as \code{fast} (0.125s) and \code{slow} (1s) and analyze each one with \code{\link{leqbands}} function.
 }
 \examples{
 #creating an example sound file
@@ -55,5 +55,5 @@ Tweighting(tham, window = "slow", bands="octaves", Calib.value=130.24) #slow
 
 }
 \seealso{
-\code{\link{timbre}}, \code{\link{soundmeter}}
+\code{\link{leqbands}}, \code{\link{soundmeter}}
 }

@@ -1,6 +1,6 @@
-#' Level per octaves or one-thirds octaves
+#' Equivalent Level per octaves or one-thirds octaves
 #'
-#' @name timbre
+#' @name leqbands
 #'
 #' @description Escrever
 #'
@@ -28,22 +28,22 @@
 #'
 #' @examples
 #' data(tham)
-#' timbre(tham)
-#' timbre(tham, Calib.value=130.24)
-#' timbre(tham, Calib.value=130.24, weighting="A")
-#' timbre(tham, Calib.value=130.24, weighting="A", bands="octaves")
+#' leqbands(tham)
+#' leqbands(tham, Calib.value=130.24)
+#' leqbands(tham, Calib.value=130.24, weighting="A")
+#' leqbands(tham, Calib.value=130.24, weighting="A", bands="octaves")
 #'
-#' timbre(tham, Leq.calib=48.17, weighting="A")
+#' leqbands(tham, Leq.calib=48.17, weighting="A")
 #'
-#' timbre(tham, from=-3.49, to=-0.9, ref=1) #dB at Full Scale
-#' timbre(tham, from=-3.49, to=-0.9, Calib.value=130.24) #song Sound Pressure Level
-#' timbre(tham, from=0, to=3.8, Calib.value=130.24) #background Sound Pressure Level
+#' leqbands(tham, from=-3.49, to=-0.9, ref=1) #dB at Full Scale
+#' leqbands(tham, from=-3.49, to=-0.9, Calib.value=130.24) #song Sound Pressure Level
+#' leqbands(tham, from=0, to=3.8, Calib.value=130.24) #background Sound Pressure Level
 #'
 #'
 #'
 #' @export
 
-timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none",
+leqbands<-function(files="wd", channel="left", from=0, to=Inf, weighting="none",
                  bands="thirds", ref=20, Leq.calib=NULL, Calib.value=NULL,
                  saveresults=F, outname=NULL, progressbar=T){
 
@@ -207,7 +207,7 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none",
 
       if(bands=="octaves"){
         write.table(matriz.octaves,
-                    paste("TimbreResults_",weighting,"-weighting",
+                    paste("leqbandsResults_",weighting,"-weighting",
                           ifelse(!is.null(Leq.calib),paste("_Calib.value"),paste("")),
                           ifelse(!is.null(Calib.value),paste("_Adjusted"),paste("")),
                           ifelse(!is.null(outname),paste("_",outname, sep=""),paste("")),
@@ -215,7 +215,7 @@ timbre<-function(files="wd", channel="left", from=0, to=Inf, weighting="none",
                     ,row.names = F, col.names = T,sep = "\t", quote=F)
       }else {
         write.table(matriz,
-                    paste("TimbreResults_",weighting,"-weighting",
+                    paste("leqbandsResults_",weighting,"-weighting",
                           ifelse(!is.null(Leq.calib),paste("_Calib.value"),paste("")),
                           ifelse(!is.null(Calib.value),paste("_Adjusted"),paste("")),
                           ifelse(!is.null(outname),paste("_",outname, sep=""),paste("")),

@@ -6,14 +6,14 @@
 #'
 #' @param file Wave object
 #' @param window Character. Wich time window should be used. 'fast' or 'slow' are accepted. (by default: "fast")
-#' @param Leq.calib Numeric. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: NULL). This parameter is passed to \code{\link{timbre}} function.
-#' @param ... Further arguments passed to \code{\link{timbre}}.
+#' @param Leq.calib Numeric. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: NULL). This parameter is passed to \code{\link{leqbands}} function.
+#' @param ... Further arguments passed to \code{\link{leqbands}}.
 #'
-#' @details This function split your audiofile in smaller files defined as \code{fast} (0.125s) and \code{slow} (1s) and analyze each one with \code{\link{timbre}} function.
+#' @details This function split your audiofile in smaller files defined as \code{fast} (0.125s) and \code{slow} (1s) and analyze each one with \code{\link{leqbands}} function.
 #'
 #' @return A numeric vector
 #'
-#' @seealso \code{\link{timbre}}, \code{\link{soundmeter}}
+#' @seealso \code{\link{leqbands}}, \code{\link{soundmeter}}
 #'
 #' @examples
 #' #creating an example sound file
@@ -59,7 +59,7 @@ Tweighting <- function(file, window="fast", Leq.calib=NULL,...){
 
   res=sapply(1:trunc(duration(file)/window)
              , FUN=function(x, file, samp){
-               return(timbre(extractWave(file, from = round((x-1)*samp), to=round(x*samp)), progressbar=F, Leq.calib=NULL, ...)[,-1])
+               return(leqbands(extractWave(file, from = round((x-1)*samp), to=round(x*samp)), progressbar=F, Leq.calib=NULL, ...)[,-1])
              }
              , file=file, samp=window*file@samp.rate)
 
