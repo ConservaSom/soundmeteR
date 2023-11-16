@@ -105,7 +105,7 @@ song.level<-function(files="wd", channel="left", from=0, to=Inf,
 
     #Calibração ----
     if(!is.null(CalibPosition) & !is.null(CalibValue)){
-        CalibValue[i]=timbre(files[[i]], channel = channel,
+        CalibValue[i]=leqbands(files[[i]], channel = channel,
                              from=CalibPosition[1], to=CalibPosition[2],
                              Leq.calib=CalibValue[i], ref=ref,
                              weighting=freq.weight, progressbar=F)$Calib.value
