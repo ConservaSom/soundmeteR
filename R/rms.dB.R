@@ -28,7 +28,7 @@ rms.dB<-function(x, level="SPL", na.rm=FALSE){
   dBtoLinear(x, factor=level) %>%
     .^2 %>%
     mean(na.rm=na.rm) %>%
-    sqrt() %>%
+    sqrt(.) %>%
     LineartodB(factor=level) %>%
     return()
 
