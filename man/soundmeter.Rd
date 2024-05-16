@@ -47,8 +47,11 @@ soundmeter(
 
 \item{progressbar}{Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})}
 }
+\value{
+ESCREVER
+}
 \description{
-Function that makes sound meter alike measurements
+ESCREVER
 }
 \details{
 If your reference signal is in a separate file, we recommend you to get the \code{CalibValue} with \link{leqbands} function. It's examples provide more details.

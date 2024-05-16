@@ -47,8 +47,14 @@ song.level(
 
 \item{progressbar}{Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})}
 }
+\value{
+ESCREVER
+}
 \description{
-RMS from a sample of a sound file
+ESCREVER
+}
+\details{
+ESCREVER
 }
 \examples{
 song.level(tham, freq.interval=c(22, 20000))

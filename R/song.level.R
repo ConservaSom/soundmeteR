@@ -1,5 +1,7 @@
 #' RMS from a sample of a sound file
 #'
+#' @description
+#' ESCREVER
 #'
 #' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
 #' @param channel Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
@@ -14,6 +16,11 @@
 #' @param freq.weight Character. Argument passed to dBweight to indicate the weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See dBweight for details. (By default: "none")
 #' @param ref Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)
 #' @param progressbar Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})
+#'
+#' @details
+#' ESCREVER
+#'
+#' @return ESCREVER
 #'
 #' @examples
 #' song.level(tham, freq.interval=c(22, 20000))

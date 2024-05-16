@@ -44,6 +44,9 @@ leqbands_cal(
 
 \item{progressbar}{Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})}
 }
+\value{
+ESCREVER
+}
 \description{
 This function passes the parameters to \code{\link{leqbands}} to automatize the calibration and return spectral analysis with dB SPL results.
 }

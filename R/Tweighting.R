@@ -1,15 +1,18 @@
 #' Time Weighting of a Audiofile
 #'
-#' @name Tweighting
-#'
 #' @description Escrever descrição
 #'
 #' @param file Wave object
-#' @param window Character. Wich time window should be used. 'fast' or 'slow' are accepted. (by default: "fast")
-#' @param Leq.calib Numeric. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: NULL). This parameter is passed to \code{\link{leqbands}} function.
+#' @param window Character. Wich time window should be used. 'fast' or 'slow'
+#'     are accepted. (by default: "fast")
+#' @param Leq.calib Numeric. The sound pressure level (in dB SPL) that the
+#'     signal in the audio file must have (by default: NULL). This parameter is
+#'     passed to \code{\link{leqbands}} function.
 #' @param ... Further arguments passed to \code{\link{leqbands}}.
 #'
-#' @details This function split your audiofile in smaller files defined as \code{fast} (0.125s) and \code{slow} (1s) and analyze each one with \code{\link{leqbands}} function.
+#' @details This function split your audiofile in smaller files defined as
+#'     \code{fast} (0.125s) and \code{slow} (1s) and analyze each one with
+#'     \code{\link{leqbands}} function.
 #'
 #' @return A numeric vector
 #'
@@ -38,11 +41,6 @@
 #' data(tham)
 #' Tweighting(tham, window = "fast", bands="octaves", Calib.value=130.24) #fast
 #' Tweighting(tham, window = "slow", bands="octaves", Calib.value=130.24) #slow
-#'
-#'
-#'
-#'
-#'
 #'
 #' @export
 

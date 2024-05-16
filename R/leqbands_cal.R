@@ -1,7 +1,5 @@
 #' leqbands analysis for audiofiles with reference signal
 #'
-#' @name leqbands_cal
-#'
 #' @description This function passes the parameters to \code{\link{leqbands}} to automatize the calibration and return spectral analysis with dB SPL results.
 #'
 #' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
@@ -20,8 +18,9 @@
 #' @details   To use this function, the audio file must begin with 2 seconds of silence, followed by a reference signal with known SPL, followed by another 2 seconds of silence, and the following sound to analyze.
 #' @details   The duration of the reference signal must be specified (in seconds) on the \code{SignalDur} argument and his value (in dB SPL) on the \code{refValue} argument.
 #'
-#' @seealso \code{\link{leqbands}}
+#' @return ESCREVER
 #'
+#' @seealso \code{\link{leqbands}}
 #'
 #' @export
 

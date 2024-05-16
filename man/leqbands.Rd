@@ -44,8 +44,11 @@ leqbands(
 
 \item{progressbar}{Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})}
 }
+\value{
+ESCREVER
+}
 \description{
-Escrever
+ESCREVER
 }
 \details{
 Caution: You need to use an audiofile with entire values of seconds of duration to avoid bugs. Example: 35s, 60s, 19s. By default, the function will trunc your audiofile to the next entire value of seconds.
