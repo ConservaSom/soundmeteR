@@ -54,13 +54,28 @@ Tweighting <- function(file, window = "fast", Leq.calib = NULL, ...) {
     stop("Choose a valid window size in seconds ('fast' or 'slow')")
   }
 
-  if (class(file) != "Wave") stop("Only one Wave object accepted on this function")
+  if (class(file) != "Wave") {
+    stop("Only one Wave object accepted on this function")
+  }
 
-  res <- sapply(1:trunc(duration(file) / window),
+  res <- sapply(
+    1:trunc(duration(file) / window),
     FUN = function(x, file, samp) {
-      return(leqbands(extractWave(file, from = round((x - 1) * samp), to = round(x * samp)), progressbar = F, Leq.calib = NULL, ...)[, -1])
+      return(
+        leqbands(
+          extractWave(
+            file,
+            from = round((x - 1) * samp),
+            to = round(x * samp)
+          ),
+          progressbar = F,
+          Leq.calib = NULL,
+          ...
+        )[, -1]
+      )
     },
-    file = file, samp = window * file@samp.rate
+    file = file,
+    samp = window * file@samp.rate
   )
 
   if (!is.numeric(res)) {
