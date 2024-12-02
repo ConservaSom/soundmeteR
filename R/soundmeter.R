@@ -45,6 +45,7 @@ soundmeter <- function(
     tw = "fast",
     saveresults = F,
     outname = NULL,
+    bandpass = c(0, Inf),
     progressbar = T) {
   if (class(files) == "Wave") {
     files <- list(files)
@@ -155,6 +156,7 @@ soundmeter <- function(
         bands = bands,
         weighting = fw,
         ref = ref,
+        bandpass = bandpass,
         Calib.value = CalibValue[i]
       )
     } else {
@@ -163,7 +165,8 @@ soundmeter <- function(
         window = tw,
         bands = bands,
         weighting = fw,
-        ref = ref
+        ref = ref,
+        bandpass = bandpass
       )
     }
 
@@ -205,14 +208,45 @@ soundmeter <- function(
       ref = ref
     ) # L90,L50 e L10
 
-    res[i, 7:ncol(res)] <- leqbands(som,
-      channel = channel,
-      bands = bands,
-      weighting = fw,
-      ref = ref,
-      progressbar = F,
-      Calib.value = ifelse(is.null(CalibValue), 0, CalibValue[i])
-    )[, -1] # Leq e bandas
+    if (all(bandpass == c(0, Inf))) {
+      res[i, 7:ncol(res)] <- leqbands(
+        som,
+        channel = channel,
+        bands = bands,
+        weighting = fw,
+        ref = ref,
+        progressbar = F,
+        Calib.value = ifelse(is.null(CalibValue), 0, CalibValue[i])
+      )[, -1] # Leq e bandas
+    } else {
+      espec <- pwrspec(
+        som,
+        channel = channel,
+        bandpass = bandpass,
+        res.scale = "dB",
+        ref = ref
+      )
+
+      # Implementando curvas de ponderacao ----
+      if (any(fw == c("A", "B", "C", "D", "ITU"))) {
+        espec$Amp.dB <- dBweight(espec$Freq.Hz, dBref = espec$Amp.dB)[[fw]]
+      } else if (fw != "none") {
+        stop("Wrong weighting curve. Only 'A', 'B', 'C', 'D', 'ITU', and 'none' accepted. See dBweight()' for details.")
+      }
+
+      espec <- espec %>%
+        select(Amp.dB) %>%
+        sumdB() %>%
+        round(2)
+      
+      if (!is.null(!is.null(CalibValue))) {
+        espec <- round(espec + CalibValue, 2)
+      }
+      
+      res[i,7] <- espec
+
+    }
+
 
     res[i, -1] <- round(res[i, -1], 2) # arredondando valores para duas casas decimais
 
