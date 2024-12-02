@@ -115,12 +115,11 @@ Tweighting <- function(
         dimnames = list(NULL, colnames(res))
       ) %>%
       as.data.frame(check.names = FALSE)
-    
   } else {
     res <- sapply(
       1:trunc(duration(file) / window),
       FUN = function(x, file, channel, samp, bandpass, ref) {
-        file %>%
+        res <- file %>%
           extractWave(
             from = round((x - 1) * samp),
             to = round(x * samp)
@@ -130,8 +129,16 @@ Tweighting <- function(
             bandpass = bandpass,
             res.scale = "dB",
             ref = ref
-          ) %>%
-          # curva de ponderação deve entrar em algum momento antes daqui
+          )
+
+        # Implementando curvas de ponderacao ----
+        if (any(weighting == c("A", "B", "C", "D", "ITU"))) {
+          res$Amp.dB <- dBweight(res$Freq.Hz, dBref = res$Amp.dB)[[weighting]]
+        } else if (weighting != "none") {
+          stop("Wrong weighting curve. Only 'A', 'B', 'C', 'D', 'ITU', and 'none' accepted. See dBweight()' for details.")
+        }
+
+        res <- res %>%
           select(Amp.dB) %>%
           sumdB() %>%
           round(2) %>%
