@@ -5,9 +5,6 @@
 #' @param file Wave object
 #' @param window Character. Wich time window should be used. 'fast' or 'slow'
 #'     are accepted. (by default: "fast")
-#' @param Leq.calib Numeric. The sound pressure level (in dB SPL) that the
-#'     signal in the audio file must have (by default: NULL). This parameter is
-#'     passed to \code{\link{leqbands}} function.
 #' @param ... Further arguments passed to \code{\link{leqbands}}.
 #'
 #' @details This function split your audiofile in smaller files defined as
@@ -45,7 +42,7 @@
 #' @export
 
 
-Tweighting <- function(file, window = "fast", Leq.calib = NULL, ...) {
+Tweighting <- function(file, window = "fast", ...) {
   if (window == "fast") {
     window <- 0.125
   } else if (window == "slow") {
@@ -82,8 +79,6 @@ Tweighting <- function(file, window = "fast", Leq.calib = NULL, ...) {
     res <- t(res)
     res <- as.data.frame(matrix(unlist(res), nrow = nrow(res), byrow = F, dimnames = list(NULL, colnames(res))), check.names = F) # convertendo em data.frame p facilitar manuseio
   }
-
-  if (!is.null(Leq.calib)) res <- Leq.calib - seewave::meandB(res$Leq, level = "SPL") # Extraindo valor de calibração a partir do da média dos valores de RMS (exatamente o Leq)
 
   return(res)
 }
