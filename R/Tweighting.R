@@ -42,7 +42,17 @@
 #' @export
 
 
-Tweighting <- function(file, window = "fast", ...) {
+Tweighting <- function(
+    file,
+    window = "fast",
+    channel = "left",
+    weighting = "none",
+    bands = "thirds",
+    ref = 20,
+    Calib.value = NULL,
+    bandpass = c(0, Inf),
+    from = 0,
+    to = Inf) {
   if (window == "fast") {
     window <- 0.125
   } else if (window == "slow") {
@@ -55,9 +65,21 @@ Tweighting <- function(file, window = "fast", ...) {
     stop("Only one Wave object accepted on this function")
   }
 
+  if (from > 0 | to < Inf) {
+    file <- extractWave(file, from = from, to = to, xunit = "time", interact = F)
+  }
+
+  if (all(bandpass == c(0, Inf))) {
   res <- sapply(
     1:trunc(duration(file) / window),
-    FUN = function(x, file, samp) {
+      FUN = function(x,
+                     file,
+                     samp,
+                     channel,
+                     weighting,
+                     bands,
+                     Calib.value,
+                     ref) {
       file %>%
         extractWave(
           from = round((x - 1) * samp),
@@ -66,16 +88,58 @@ Tweighting <- function(file, window = "fast", ...) {
         leqbands(
           progressbar = F,
           Leq.calib = NULL,
-          ...
+            channel = channel,
+            weighting = weighting,
+            bands = bands,
+            Calib.value = Calib.value,
+            ref = ref
         ) %>%
         select(-Arquivo) %>%
         return()
     },
     file = file,
-    samp = window * file@samp.rate
+      samp = window * file@samp.rate,
+      channel = channel,
+      weighting = weighting,
+      bands = bands,
+      Calib.value = Calib.value,
+      ref = ref
   ) %>%
     t() %>%
     as.data.frame()
+  } else {
+    res <- sapply(
+      1:trunc(duration(file) / window),
+      FUN = function(x, file, channel, samp, bandpass, ref) {
+        file %>%
+          extractWave(
+            from = round((x - 1) * samp),
+            to = round(x * samp)
+          ) %>%
+          pwrspec(
+            channel = channel,
+            bandpass = bandpass,
+            res.scale = "dB",
+            ref = ref
+          ) %>%
+          # curva de ponderação deve entrar em algum momento antes daqui
+          select(Amp.dB) %>%
+          sumdB() %>%
+          round(2) %>%
+          return()
+      },
+      file = file,
+      channel = channel,
+      samp = window * file@samp.rate,
+      bandpass = bandpass,
+      ref = ref
+    ) %>%
+      data.frame(Leq = .)
+    
+    if(!is.null(Calib.value)){
+      res <- res + Calib.value
+    }
+  }
 
   return(res)
 }
