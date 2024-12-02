@@ -135,7 +135,9 @@ soundmeter <- function(
           as.numeric()
       }
 
-      if (class(files[[i]]) == "Wave") dur <- duration(files[[i]]) # se for um arquivo já carregado no R
+      if (class(files[[i]]) == "Wave"){
+        dur <- duration(files[[i]]) # se for um arquivo já carregado no R
+      }
 
       from[i] <- dur + from[i]
       to[i] <- dur + to[i]
