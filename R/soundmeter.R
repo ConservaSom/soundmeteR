@@ -80,6 +80,13 @@ soundmeter <- function(
     stop("When CalibValue is a data.frame, it must have the number of rows equal to files length.", call. = F)
   }
 
+  if (!is.null(bandpass) & !is.data.frame(bandpass)) {
+    bandpass <- matrix(bandpass, nrow = length(files), ncol = 2, byrow = T)
+  } else if (!is.null(bandpass) & is.data.frame(bandpass) &&
+    nrow(bandpass) != length(files)) {
+    stop("When bandpass is a data.frame, it must have the number of rows equal to files length.", call. = F)
+  }
+
   # início do loop maior (por arquivo) ----
   for (i in 1:length(files)) {
     if (!is.null(CalibPosition) && all(CalibPosition < 0)) { # ajustando calibposition
@@ -158,7 +165,7 @@ soundmeter <- function(
         bands = bands,
         weighting = fw,
         ref = ref,
-        bandpass = bandpass,
+        bandpass = c(bandpass[i,1],bandpass[i,2]),
         Calib.value = CalibValue[i]
       )
     } else {
@@ -168,7 +175,7 @@ soundmeter <- function(
         bands = bands,
         weighting = fw,
         ref = ref,
-        bandpass = bandpass
+        bandpass = c(bandpass[i,1],bandpass[i,2])
       )
     }
 
@@ -210,7 +217,7 @@ soundmeter <- function(
       ref = ref
     ) # L90,L50 e L10
 
-    if (all(bandpass == c(0, Inf))) {
+    if (all(bandpass[i,] == c(0, Inf))) {
       res[i, 7:ncol(res)] <- leqbands(
         som,
         channel = channel,
@@ -224,7 +231,7 @@ soundmeter <- function(
       espec <- pwrspec(
         som,
         channel = channel,
-        bandpass = bandpass,
+        bandpass = c(bandpass[i,1],bandpass[i,2]),
         res.scale = "dB",
         ref = ref
       )
@@ -240,13 +247,12 @@ soundmeter <- function(
         select(Amp.dB) %>%
         sumdB() %>%
         round(2)
-      
-      if (!is.null(!is.null(CalibValue))) {
-        espec <- round(espec + CalibValue, 2)
-      }
-      
-      res[i,7] <- espec
 
+      if (!is.null(!is.null(CalibValue))) {
+        espec <- round(espec + CalibValue[i], 2)
+      }
+
+      res[i, 7] <- espec
     }
 
 
