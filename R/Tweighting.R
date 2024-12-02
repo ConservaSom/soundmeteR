@@ -70,8 +70,8 @@ Tweighting <- function(
   }
 
   if (all(bandpass == c(0, Inf))) {
-  res <- sapply(
-    1:trunc(duration(file) / window),
+    res <- sapply(
+      1:trunc(duration(file) / window),
       FUN = function(x,
                      file,
                      samp,
@@ -80,33 +80,42 @@ Tweighting <- function(
                      bands,
                      Calib.value,
                      ref) {
-      file %>%
-        extractWave(
-          from = round((x - 1) * samp),
-          to = round(x * samp)
-        ) %>%
-        leqbands(
-          progressbar = F,
-          Leq.calib = NULL,
+        file %>%
+          extractWave(
+            from = round((x - 1) * samp),
+            to = round(x * samp)
+          ) %>%
+          leqbands(
+            progressbar = F,
+            Leq.calib = NULL,
             channel = channel,
             weighting = weighting,
             bands = bands,
             Calib.value = Calib.value,
             ref = ref
-        ) %>%
-        select(-Arquivo) %>%
-        return()
-    },
-    file = file,
+          ) %>%
+          select(-Arquivo) %>%
+          return()
+      },
+      file = file,
       samp = window * file@samp.rate,
       channel = channel,
       weighting = weighting,
       bands = bands,
       Calib.value = Calib.value,
       ref = ref
-  ) %>%
-    t() %>%
-    as.data.frame()
+    ) %>%
+      t()
+
+    res <- res %>%
+      unlist() %>%
+      matrix(
+        nrow = nrow(res),
+        byrow = FALSE,
+        dimnames = list(NULL, colnames(res))
+      ) %>%
+      as.data.frame(check.names = FALSE)
+    
   } else {
     res <- sapply(
       1:trunc(duration(file) / window),
@@ -135,9 +144,9 @@ Tweighting <- function(
       ref = ref
     ) %>%
       data.frame(Leq = .)
-    
-    if(!is.null(Calib.value)){
-      res <- res + Calib.value
+
+    if (!is.null(Calib.value)) {
+      res <- round(res + Calib.value, 2)
     }
   }
 
