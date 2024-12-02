@@ -58,27 +58,24 @@ Tweighting <- function(file, window = "fast", ...) {
   res <- sapply(
     1:trunc(duration(file) / window),
     FUN = function(x, file, samp) {
-      return(
+      file %>%
+        extractWave(
+          from = round((x - 1) * samp),
+          to = round(x * samp)
+        ) %>%
         leqbands(
-          extractWave(
-            file,
-            from = round((x - 1) * samp),
-            to = round(x * samp)
-          ),
           progressbar = F,
           Leq.calib = NULL,
           ...
-        )[, -1]
-      )
+        ) %>%
+        select(-Arquivo) %>%
+        return()
     },
     file = file,
     samp = window * file@samp.rate
-  )
-
-  if (!is.numeric(res)) {
-    res <- t(res)
-    res <- as.data.frame(matrix(unlist(res), nrow = nrow(res), byrow = F, dimnames = list(NULL, colnames(res))), check.names = F) # convertendo em data.frame p facilitar manuseio
-  }
+  ) %>%
+    t() %>%
+    as.data.frame()
 
   return(res)
 }
