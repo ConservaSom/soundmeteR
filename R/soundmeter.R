@@ -99,7 +99,7 @@ soundmeter <- function(
       }
 
       if (class(files[[i]]) == "Wave") { # se for um arquivo já carregado no R
-        dur <- duration(files[[i]])
+        dur <- seewave::duration(files[[i]])
       }
 
       calib.ini <- dur + CalibPosition[1]
@@ -143,7 +143,7 @@ soundmeter <- function(
       }
 
       if (class(files[[i]]) == "Wave"){
-        dur <- duration(files[[i]]) # se for um arquivo já carregado no R
+        dur <- seewave::duration(files[[i]]) # se for um arquivo já carregado no R
       }
 
       from[i] <- dur + from[i]
