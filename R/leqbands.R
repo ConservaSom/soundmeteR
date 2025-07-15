@@ -5,7 +5,7 @@
 #' @description Function to comput the Equivalent Level (Leq) across octaves or one-third octaves.
 #'
 #' @param files The audio file(s) to be analyzed. Can be set to "wd" to get all ".wav" files in the work directory, or a single file name, or a character containing a list of file names, or an Wave object, or a list containing more than one Wave object. Only ".wav" files are accepted. By default "wd".
-#' @param channel Character. Choose “left” or “right” channel. This argument is passed to \link[tuneR]{mono} function from the  \link[tuneR]{tuneR} to extract the desired channel.
+#' @param channel Character. Choose “left” or “right” channel. Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
 #' @param from Numeric. The start time (in seconds) of the segment to analyze. Could also be relative to the end of the file (in negative values). See examples for details.
 #' @param to Numeric. The end time (in seconds) of the segment to analyze. Could also be relative to the beginning of the file (in negative values). See examples for details.
 #' @param weighting Character. Defines the weighting curve for the analysis, passed to the \code{\link[seewave]{dBweight}} function. Accepted values are 'A', 'B', 'C', 'D', 'ITU', and 'none'. See \code{\link[seewave]{dBweight}} for details. By default "none".
