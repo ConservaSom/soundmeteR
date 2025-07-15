@@ -1,26 +1,26 @@
-#' Equivalent Level per octaves or one-thirds octaves
+#' Equivalent Level per octaves or one-third octaves
 #'
 #' @name leqbands
 #'
-#' @description ESCREVER
+#' @description Function to comput the Equivalent Level (Leq) across octaves or one-third octaves.
 #'
-#' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
-#' @param channel Character. Choose “left” or “right” channel. Argument passe to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
-#' @param from Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
-#' @param to Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
-#' @param weighting Character. Argument passed to \code{\link[seewave]{dBweight}} to indicate the weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See \code{\link[seewave]{dBweight}} for details. (By default: "none")
-#' @param bands Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")
-#' @param ref Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)
-#' @param Leq.calib Numerical. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: \code{NULL}). Can not be set if \code{Calib.value} is also set.
-#' @param Calib.value Numerical. The calibration value returned from the analysis of a reference signal using \code{Leq.calib} (by default: \code{NULL}). Can not be set if \code{Leq.calib} is also set.
-#' @param saveresults Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})
-#' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})
-#' @param progressbar Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})
+#' @param files The audio file(s) to be analyzed. Can be set to "wd" to get all ".wav" files in the work directory, or a specify a single file name, or a list of file names files located in the work directory, or an Wave object, or a list containing more than one Wave object. Only ".wav" files are accepted. By default "wd".
+#' @param channel Character. Choose “left” or “right” channel. This argument is passed to \link[tuneR]{mono} function from the  \link[tuneR]{tuneR} to extract the desired channel.
+#' @param from Numeric. The start time (in seconds) of the segment to analyze. Could also be relative to the end of the file (in negative values). See examples for details.
+#' @param to Numeric. The end time (in seconds) of the segment to analyze. Could also be relative to the beginning of the file (in negative values). See examples for details.
+#' @param weighting Character. Defines the weighting curve for the analysis, passed to the \code{\link[seewave]{dBweight}} function. Accepted values are 'A', 'B', 'C', 'D', 'ITU', and 'none'. See \code{\link[seewave]{dBweight}} for details. By default "none".
+#' @param bands Character. Specifies the type of frequency band for the output. Use "octaves" for octaves bands or "thirds" to one-third octaves bands intervals (default "thirds".
+#' @param ref Numerical. The reference value for dB conversion. For sound in water, the common reference is 1 µPa, and for sound in air, 20 µPa. By default 20.
+#' @param Leq.calib Numerical. The sound pressure level (in dB SPL) for the signal in the audio file. Cannot be set if \code{Calib.value} is specified. By default \code{NULL}).
+#' @param Calib.value Numerical. The calibration value returned from analyzing a reference signal using \code{Leq.calib}. Can not be set if \code{Leq.calib} is specified. By default \code{NULL}.
+#' @param saveresults Logical. Set to \code{TRUE} to save the results to a .txt file. By default \code{FALSE}.
+#' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to append to the default file name on the txt file. By default \code{NULL}.
+#' @param progressbar Logical. Set \code{TRUE} or \code{FALSE} to display or hide a progress bar showing elapsed time and the last concluded file number. By default \code{TRUE}.
 #'
-#' @details Caution: You need to use an audiofile with entire values of seconds of duration to avoid bugs. Example: 35s, 60s, 19s. By default, the function will trunc your audiofile to the next entire value of seconds.
-#' @details These function works only with mono audiofiles.
-#' @details The audio files need to have at least 44100Hz of sampling rate.
-#' @details If you intend to work with decibels at full scale (dBFS), we recommend setting \code{ref=1}. With this, your results will be relative to 0 dBFS.
+#' @details Caution: Ensure the audio file has a duration that is a whole number of seconds to avoid bugs (e.g., 35s, 60s, 19s). By default, the function will truncate the audio file to the next full second.
+#' @details This function works only with mono audio files.
+#' @details Audio files must have a minimum sampling rate of 44100Hz.
+#' @details If you are working with decibels at full scale (dBFS), we recommend setting \code{ref=1}. This will make the results relative to 0 dBFS.
 #'
 #' @references Power spectrum adapted from: Carcagno, S. 2013. Basic Sound Processing with R [Blog post]. Retrieved from http://samcarcagno.altervista.org/blog/basic-sound-processing-r/
 #' @references Miyara, F. 2017. Software-Based Acoustical Measurements. Springer. 429 pp. DOI: 10.1007/978-3-319-55871-4
