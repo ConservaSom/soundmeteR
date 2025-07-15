@@ -1,19 +1,19 @@
 #' leqbands analysis for audiofiles with reference signal
 #'
-#' @description This function passes the parameters to \code{\link{leqbands}} to automatize the calibration and return spectral analysis with dB SPL results.
+#' @description Function to automate the calibration process by passing the parameters to \code{\link{leqbands}}, returning spectral analysis results in dB SPL.
 #'
-#' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
-#' @param channel Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
-#' @param from Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
-#' @param to Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
+#' @param files The audio file(s) to be analyzed. Can be set to "wd" to get all ".wav" files in the work directory, or a single file name, or a character containing a list of file names, or an Wave object, or a list containing more than one Wave object. Only ".wav" files are accepted. By default "wd".
+#' @param channel Character. Choose “left” or “right” channel. Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
+#' @param from Numeric. The start time (in seconds) of the segment to analyze. Could also be relative to the end of the file (in negative values). See examples for details.
+#' @param to Numeric. The end time (in seconds) of the segment to analyze. Could also be relative to the beginning of the file (in negative values). See examples for details.
 #' @param CalibPosition anda de mãos dadas com calib value. Pode ser negativo, positivo ou data.frame com essas combinações
 #' @param CalibValue Anda de mãos dadas com calib position. Quando tem o position, ele é considerado o valor de referência, quando não tem o position, ele é considerado o valor de calibração.
 #' @param ref Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)
 #' @param weighting Character. Indicate the weighting curve to use on the anlysis. A, B, C and none are supported. (By default: "none")
 #' @param bands Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")
-#' @param saveresults Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})
-#' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By defaulf: \code{NULL})
-#' @param progressbar Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})
+#' @param saveresults Logical. Set to \code{TRUE} to save the results to a .txt file. By default \code{FALSE}.
+#' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to append to the default file name on the txt file. By default \code{NULL}.
+#' @param progressbar Logical. Set \code{TRUE} or \code{FALSE} to display or hide a progress bar showing elapsed time and the last concluded file number. By default \code{TRUE}.
 #'
 #' @details   To use this function, the audio file must begin with 2 seconds of silence, followed by a reference signal with known SPL, followed by another 2 seconds of silence, and the following sound to analyze.
 #' @details   The duration of the reference signal must be specified (in seconds) on the \code{SignalDur} argument and his value (in dB SPL) on the \code{refValue} argument.
