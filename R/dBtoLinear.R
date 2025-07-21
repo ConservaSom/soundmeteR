@@ -2,17 +2,17 @@
 #'
 #' @name dBtoLinear
 #'
-#' @description Function to convert dB scales. The conversion can be made from dB to µPa (\code{dBtoLinear}) and from µPa to dB (\code{\link{LineartodB}}).
+#' @description Function to convert decibels (dB) to linear values (µPa).
 #'
 #' @usage dBtoLinear(x, factor="IL", ref=1)
 #'
-#' @param x Numerical. A numeric vector or a numeric matrix with dB values.
-#' @param factor Character. Specify the factor to use for conversion. \code{SPL} (Sound Pressure Level) for amplitude-base data (factor \code{20}) or \code{IL} (Intensity Level) for power-base data (fator \code{10}). By default \code{IL}.
-#' @param ref Numerical. Reference value for conversion. For sound in water the reference is 1 µPa and in air 20 µPa. By default 1.
+#' @param x Numeric. A numeric vector or a numeric matrix with dB values.
+#' @param factor Character. Specify the factor to use for conversion. Use \code{SPL} (Sound Pressure Level) for amplitude-base data, with factor \code{20}, or \code{IL} (Intensity Level) for power-base data, with fator \code{10} (by default "IL").
+#' @param ref Numeric. The reference value for dB conversion. For sound in water, the common reference is 1 µPa, and for sound in air,it is 20 µPa (by default 1).
 #'
 #' @details For further details on selecting the appropriate factor, we recommend consulting \href{https://dspillustrations.com/pages/posts/misc/decibel-conversion-factor-10-or-factor-20.html}{this} web page.
 #'
-#' @return The same object of the input with the converted values.
+#' @return The same input object with the values converted.
 #'
 #'
 #' @seealso \code{\link{rms.dB}}, \code{\link{LineartodB}}, \code{\link[seewave]{convSPL}}
