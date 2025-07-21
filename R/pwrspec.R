@@ -2,13 +2,13 @@
 #'
 #' @description  This functions computes a power spectrum from a sound file.
 #'
-#' @param file A wave file path in your computer or a class Wave object already loaded into R environment.
-#' @param channel Character. Choose “left” or “right” channel. Argument passe to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
-#' @param from Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
-#' @param to Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
-#' @param bandpass A vector with length two with lower and upper limits of the band pass interval in Hz.
-#' @param res.scale Character. Specify the kind of scale the power spectrum amplitude should be adjusted. \code{microPa} for linear values in µPa, and \code{dB} fo decibells values in dB-SPL. (By default "microPa")
-#' @param ref Numerical. Reference value for dB conversion. For Sound in water the ref is 1 µPa and on air 20 µPa. (By default 1)
+#' @param file A wave file path or a class Wave object already loaded into R environment.
+#' @param channel Character. Choose “left” or “right” channel. Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} (by default "left").
+#' @param from Numeric. The start time (in seconds) of the segment to analyze. It can also be relative to the end of the file (in negative values). See examples for details.
+#' @param to Numeric. The end time (in seconds) of the segment to analyze. It can also be relative to the beginning of the file (in negative values). See examples for details.
+#' @param bandpass A vector of length two specifying the lower and upper limits of the bandpass interval in Hz.
+#' @param res.scale Character. Specifies the scale for adjusting the power spectrum amplitude. Use \code{microPa} for linear values in µPa, or \code{dB} for decibel values in dB SPL (by default \code{microPa}).
+#' @param ref Numeric. The reference value for dB conversion. For sound in water, the common reference is 1 µPa, and for sound in air,it is 20 µPa (by default 1).
 #'
 #' @return This function returns a data.frame with Frequency (Hz) and Intensity (microPa) of the file.
 #'
