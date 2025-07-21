@@ -14,7 +14,7 @@
 #' @param Leq.calib Numeric. Specifies the sound pressure level (in dB SPL) for the signal in the audio (by default \code{NULL}). Cannot be set if \code{Calib.value} is specified. 
 #' @param Calib.value Numeric. Specifies the calibration value (by default \code{NULL}). Can not be set if \code{Leq.calib} is specified.
 #' @param saveresults Logical. Set to \code{TRUE}  to save the results to a .txt file (by default \code{FALSE}).
-#' @param outname Character. If \code{TRUE}, specifies a name to append to the file name in the txt file (by default \code{NULL}).
+#' @param outname Character. If \code{saveresults} is \code{TRUE}, specifies a name to append to the file name in the txt file (by default \code{NULL}).
 #' @param progressbar Logical. Set \code{TRUE} to display a progress bar showing elapsed time and the last completed file number, or \code{FALSE} to hide it (default \code{TRUE}).
 #'
 #' @details Caution: Caution: Ensure that the audio file has a duration with whole second values to avoid bugs. For example: 35s, 60s, 19s. By default, the function will truncate your audio file to the next whole second.
