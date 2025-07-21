@@ -1,21 +1,21 @@
 #' leqbands analysis for audiofiles with reference signal
 #'
-#' @description Function to automate the calibration process by passing the parameters to \code{\link{leqbands}}, returning spectral analysis results in dB SPL.
+#' @description This function passes the parameters to \code{\link{leqbands}}to automate the calibration process and return spectral analysis results in dB SPL.
 #'
-#' @param files The audio file(s) to be analyzed. Can be set to "wd" to get all ".wav" files in the work directory, or a single file name, or a character containing a list of file names, or an Wave object, or a list containing more than one Wave object. Only ".wav" files are accepted. By default "wd".
-#' @param channel Character. Choose “left” or “right” channel. Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
-#' @param from Numeric. The start time (in seconds) of the segment to analyze. Could also be relative to the end of the file (in negative values). See examples for details.
-#' @param to Numeric. The end time (in seconds) of the segment to analyze. Could also be relative to the beginning of the file (in negative values). See examples for details.
-#' @param CalibPosition anda de mãos dadas com calib value. Pode ser negativo, positivo ou data.frame com essas combinações
-#' @param CalibValue Anda de mãos dadas com calib position. Quando tem o position, ele é considerado o valor de referência, quando não tem o position, ele é considerado o valor de calibração.
-#' @param ref Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)
-#' @param weighting Character. Indicate the weighting curve to use on the anlysis. A, B, C and none are supported. (By default: "none")
-#' @param bands Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")
-#' @param saveresults Logical. Set to \code{TRUE} to save the results to a .txt file. By default \code{FALSE}.
-#' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to append to the default file name on the txt file. By default \code{NULL}.
-#' @param progressbar Logical. Set \code{TRUE} or \code{FALSE} to display or hide a progress bar showing elapsed time and the last concluded file number. By default \code{TRUE}.
+#' @param files Specifies audio file(s) to be analyzed. It can be set to "wd" to select all ".wav" files in the work directory, a single file name, a character vector with multiple file names, a Wave object, or a list of Wave objects (by default "wd"). Only ".wav" files are accepted.
+#' @param channel Character. Choose “left” or “right” channel. Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} (by default "left").
+#' @param from Numeric. The start time (in seconds) of the segment to analyze. It can also be relative to the end of the file (in negative values). See examples for details.
+#' @param to Numeric. The end time (in seconds) of the segment to analyze. It can also be relative to the beginning of the file (in negative values). See examples for details.
+#' @param CalibPosition Numeric. Specifies the calibration position. It can be a negative (relative to the sound file duration) or a positive value, or a data.frame containing these combinations. This parameter is used in conjunction with \code{CalibValue}.
+#' @param CalibValue Numeric. Specifies the calibration value. If \code{CalibPosition} is provided, it serves as the reference value. If \code{CalibPosition} is absent, \code{CalibValue} is used as the calibration reference.
+#' @param ref Numeric. The reference value for dB conversion. For sound in water, the common reference is 1 µPa, and for sound in air,it is 20 µPa (by default 20).
+#' @param weighting Character. Defines the weighting curve for the analysis, passed to the \link[seewave]{dBweight} function. Accepted values are "A", "B", "C", "D", "ITU", and "none" (by default "none"). See \link[seewave]{dBweight} for details.
+#' @param bands Character. Use "octaves" for octave bands or "thirds" for one-third octave bands intervals (by default "thirds").
+#' @param saveresults Logical. Set to \code{TRUE} to save the results to a .txt file (by default \code{FALSE}).
+#' @param outname Character. If \code{saveresults} is \code{TRUE}, specifies a name to append to the file name in the txt file (by default \code{NULL}).
+#' @param progressbar Logical. Set \code{TRUE} to display a progress bar showing elapsed time and the last completed file number, or \code{FALSE} to hide it (default \code{TRUE}).
 #'
-#' @details   To use this function, the audio file must begin with 2 seconds of silence, followed by a reference signal with known SPL, followed by another 2 seconds of silence, and the following sound to analyze.
+#' @details   To use this function, the audio file must follow this structure: 2 seconds of silence, folowed by a reference signal with a known SPL; then another 2 seconds of silence, followed by the sound to be analyzed.
 #' @details   The duration of the reference signal must be specified (in seconds) on the \code{SignalDur} argument and his value (in dB SPL) on the \code{refValue} argument.
 #'
 #' @return ESCREVER
