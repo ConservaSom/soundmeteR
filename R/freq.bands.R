@@ -1,13 +1,13 @@
 #' Interval Limits
 #'
-#' @description Function to compute intervals based on user-defined patterns. This function was adapted from the \code{\link[seewave]{octaves}} functions from \code{\link[seewave]{seewave}} package.
+#' @description Function to compute frequency intervals based on patterns defined by the user. This function is adapted from the \code{\link[seewave]{octaves}} functions from \code{\link[seewave]{seewave}} package.
 #'
-#' @param x Numerical. Frequency values to initiate the band calculation.
-#' @param interval Numeric. The interval pattern to be applied. See details for more information.
-#' @param below Numerical. Number of intervals below x.
-#' @param above Numerical. Number of intervals above x.
+#' @param x Numerical. Frequency used as the central point from which bands are calculated in kHz (by default 2).
+#' @param interval Numeric. Specifies the interval pattern to be applied. See details for further information.
+#' @param below Numerical. Number of intervals below x (by default 3).
+#' @param above Numerical. Number of intervals above x (by default 3).
 #'
-#' @details The specified interval is applied by x/interval (for bellow) of x*interval (for upper). Some examples of intervals that can be applied are:
+#' @details The specified interval is applied as x/interval (for the lower bound) and x×interval (for the upper bound). Some examples of intervals that can be applied are:
 #' \itemize{
 #'   \item Octaves = 2
 #'   \item Third of an octave = 2^(1/3)
@@ -17,7 +17,7 @@
 #'   \item For additional values that can be used, please refer to this \href{https://academics.hamilton.edu/music/spellman/class_notes/music_theory.htm}{link}.
 #'}
 #'
-#' @return A numeric vector with the frequency limits of each interval.
+#' @return A numeric vector containing the frequency limits of each interval.
 #'
 #'
 #' @seealso \code{\link[seewave]{octaves}}
