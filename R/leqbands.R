@@ -4,23 +4,22 @@
 #'
 #' @description Function to comput the Equivalent Level (Leq) across octaves or one-third octaves.
 #'
-#' @param files The audio file(s) to be analyzed. Can be set to "wd" to get all ".wav" files in the work directory, or a single file name, or a character containing a list of file names, or an Wave object, or a list containing more than one Wave object. Only ".wav" files are accepted. By default "wd".
-#' @param channel Character. Choose “left” or “right” channel. Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
-#' @param from Numeric. The start time (in seconds) of the segment to analyze. Could also be relative to the end of the file (in negative values). See examples for details.
+#' @param files Specifies audio file(s) to be analyzed. It can be set to "wd" to select all ".wav" files in the work directory, a single file name, a character vector with multiple file names, a Wave object, or a list of Wave objects (by default "wd"). Only ".wav" files are accepted.
+#' @param channel Character. Choose “left” or “right” channel (by default "left"). Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
+#' @param from Numeric. The start time (in seconds) of the segment to analyze. It can also be relative to the end of the file (in negative values). See examples for details.
 #' @param to Numeric. The end time (in seconds) of the segment to analyze. Could also be relative to the beginning of the file (in negative values). See examples for details.
-#' @param weighting Character. Defines the weighting curve for the analysis, passed to the \code{\link[seewave]{dBweight}} function. Accepted values are 'A', 'B', 'C', 'D', 'ITU', and 'none'. See \code{\link[seewave]{dBweight}} for details. By default "none".
-#' @param bands Character. Specifies the type of frequency band for the output. Use "octaves" for octaves bands or "thirds" to one-third octaves bands intervals (default "thirds".
-#' @param ref Numerical. The reference value for dB conversion. For sound in water, the common reference is 1 µPa, and for sound in air, 20 µPa. By default 20.
-#' @param Leq.calib Numerical. The sound pressure level (in dB SPL) for the signal in the audio file. Cannot be set if \code{Calib.value} is specified. By default \code{NULL}).
-#' @param Calib.value Numerical. The calibration value returned from analyzing a reference signal using \code{Leq.calib}. Can not be set if \code{Leq.calib} is specified. By default \code{NULL}.
-#' @param saveresults Logical. Set to \code{TRUE} to save the results to a .txt file. By default \code{FALSE}.
-#' @param outname Character. If \code{saveresults} is \code{TRUE}, you can specify a name to append to the default file name on the txt file. By default \code{NULL}.
-#' @param progressbar Logical. Set \code{TRUE} or \code{FALSE} to display or hide a progress bar showing elapsed time and the last concluded file number. By default \code{TRUE}.
+#' @param weighting Character. Defines the weighting curve for the analysis, passed to the \code{\link[seewave]{dBweight}} function. Accepted values are "A", "B", "C", "D", "ITU", and "none" (by default "none"). See \code{\link[seewave]{dBweight}} for details.
+#' @param bands Character. Use "octaves" for octave bands or "thirds" for one-third octave bands intervals (by default "thirds").
+#' @param ref Numeric. The reference value for dB conversion. For sound in water, the common reference is 1 µPa, and for sound in air,it is 20 µPa (by default 20).
+#' @param Leq.calib Numeric. Specifies the sound pressure level (in dB SPL) for the signal in the audio (by default \code{NULL}). Cannot be set if \code{Calib.value} is specified. 
+#' @param Calib.value Numeric. Specifies the calibration value (by default \code{NULL}). Can not be set if \code{Leq.calib} is specified.
+#' @param saveresults Logical. Set to \code{TRUE}  to save the results to a .txt file (by default \code{FALSE}).
+#' @param outname Character. If \code{TRUE}, specifies a name to append to the file name in the txt file (by default \code{NULL}).
+#' @param progressbar Logical. Set \code{TRUE} to display a progress bar showing elapsed time and the last completed file number, or \code{FALSE} to hide it (default \code{TRUE}).
 #'
-#' @details Caution: Ensure the audio file has a duration that is a whole number of seconds to avoid bugs (e.g., 35s, 60s, 19s). By default, the function will truncate the audio file to the next full second.
-#' @details This function works only with mono audio files.
-#' @details Audio files must have a minimum sampling rate of 44100Hz.
-#' @details If you are working with decibels at full scale (dBFS), we recommend setting \code{ref=1}. This will make the results relative to 0 dBFS.
+#' @details Caution: Caution: Ensure that the audio file has a duration with whole second values to avoid bugs. For example: 35s, 60s, 19s. By default, the function will truncate your audio file to the next whole second.
+#' @details This function only works with mono audio files, and the audio must have a sampling rate of at least 44,100 Hz.
+#' @details If you are working with decibels at full scale (dBFS), we recommend setting \code{ref=1} so the results will be relative to 0 dBFS.
 #'
 #' @references Power spectrum adapted from: Carcagno, S. 2013. Basic Sound Processing with R [Blog post]. Retrieved from http://samcarcagno.altervista.org/blog/basic-sound-processing-r/
 #' @references Miyara, F. 2017. Software-Based Acoustical Measurements. Springer. 429 pp. DOI: 10.1007/978-3-319-55871-4
