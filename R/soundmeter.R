@@ -14,6 +14,7 @@
 #' @param tw Character. Specifies the time window to be used. Accepted values are "fast" and "slow" (default "fast").
 #' @param saveresults Logical. Set \code{TRUE} to save the results to a .txt file (by default \code{FALSE}).
 #' @param outname Character. If \code{saveresults} is \code{TRUE}, specifies a name to append to the file name in the txt file (by default \code{NULL}).
+#' @param bandpass Numeric. A vector of length two specifying the lower and upper limits of the bandpass interval in Hz.
 #' @param progressbar Logical. Set to \code{TRUE}) to display a progress bar showing elapsed time and the last completed file number, or \code{FALSE} to hide it (default is \code{TRUE}).
 #'
 #' @details If your reference signal is in a separate file, we recommend obtaining the \code{CalibValue} using the \link{leqbands} function. Examples in the documentation provide further details.
