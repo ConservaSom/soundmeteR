@@ -1,14 +1,14 @@
 #' Sum with dB values
 #'
-#' @details This function computes the sum of dB values.
+#' @details Function to compute the sum of decibels values (dB).
 #'
-#' @param x Numerical. A numeric vector or matrix with dB values.
-#' @param level Character. Specify in what scale your data is. \code{SPL} for Sound Pressute Level or \code{IL} for Intensity Level. (By default \code{SPL})
-#' @param na.rm Logical. Argument passed to \code{\link[base]{sum}}. Should NA be removed? (By default FALSE)
+#' @param x Numerical. A vector or a matrix with decibels values (dB).
+#' @param level Character. Specify the factor for conversion. Use \code{SPL} (Sound Pressure Level) for amplitude-base data, with factor 20, or \code{IL} (Intensity Level) for power-base data, with fator 10 (By default \code{IL}).
+#' @param na.rm Logical. Argument passed to \code{\link[base]{sum}}. If \code{TRUE} removes NA (by default \code{FALSE}).
 #'
-#' @details This function converts your dB data to linear values (through \code{\link{dBtoLinear}} function), compute the sum, and converts the result back to dB (through \code{\link{LineartodB}} function).
+#' @details This function converts the decibels data to linear values using the \code{\link{dBtoLinear}} function, computes the sum, and then converts the result back to decibels using the \code{\link{LineartodB}} function.
 #'
-#' @return A numeric value that represents the sum of x.
+#' @return A numeric value representing the sum of x.
 #'
 #' @seealso \code{\link[seewave]{moredB}}
 #'
