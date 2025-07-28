@@ -3,15 +3,20 @@
 #' @description Escrever descrição
 #'
 #' @param file Wave object
-#' @param window Character. Wich time window should be used. 'fast' or 'slow'
-#'     are accepted. (by default: "fast")
-#' @param ... Further arguments passed to \code{\link{leqbands}}.
+#' @param window Character. Specifies the time window to be used. Accepted values are \code{fast} and \code{slow} (default \code{fast}).
+#' @param Leq.calib Numeric. Specifies the sound pressure level (in dB SPL) for the signal in the audio file (by default NULL). Cannot be set if Calib.value is specified.
+#' @param bandpass Numeric. A vector of length two specifying the lower and upper limits of the bandpass interval in Hz.
+#' @param bands Character. Use "octaves" for octave bands or "thirds" for one-third octave bands intervals (by default "thirds").
+#' @param Calib.value Numeric. Specifies the calibration value (by default NULL). Cannot be set if Leq.calib is specified.
+#' @param channel Character. Choose “left” or “right” channel. Argument passed to mono function from tuneR (by default "left").
+#' @param from Numeric. Specifies the start time (in seconds) of the segment to analyze. It can also be relative to the end of the file (in negative values). See examples for details.
+#' @param to Numeric. Specifies the end time (in seconds) of the segment to analyze. It can also be relative to the beginning of the file (in negative values). See examples for more details.
+#' @param weighting Character. Specifies the end time (in seconds) of the segment to analyze. It can also be relative to the beginning of the file (in negative values). See examples for more details.
+#' @param ref Numeric. Defines the weighting curve for the analysis, passed to the dBweight function. Accepted values are "A", "B", "C", "D", "ITU", and "none" (by default "none"). See dBweight for details.
 #'
-#' @details This function split your audiofile in smaller files defined as
-#'     \code{fast} (0.125s) and \code{slow} (1s) and analyze each one with
-#'     \code{\link{leqbands}} function.
+#' @details This function split your audiofile into smaller segments, defined as \code{fast} (0.125s) and \code{slow} (1s), and analyze each one using the \code{\link{leqbands}} function.
 #'
-#' @return A numeric vector
+#' @return A numeric vector containing the results of the analysis.
 #'
 #' @seealso \code{\link{leqbands}}, \code{\link{soundmeter}}
 #'
