@@ -1,7 +1,7 @@
 #' RMS from a sample of a sound file
 #'
-#' @description
-#' ESCREVER
+#' @description RMS (Root Mean Square) from a sample of a sound file.
+#' 
 #'
 #' @param files Specifies audio file(s) to be analyzed. It can be set to "wd" to select all ".wav" files in the work directory, a single file name, a character vector with multiple file names, a Wave object, or a list of Wave objects (by default "wd"). Only ".wav" files are accepted.
 #' @param channel Character. Choose “left” or “right” channel. Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} (by default "left").
