@@ -3,19 +3,19 @@
 #' @description
 #' ESCREVER
 #'
-#' @param files The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")
-#' @param channel Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
-#' @param from Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
-#' @param to Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.
-#' @param freq.interval Frequency interval to compute the RMS. Can be a vector with length two with lower and upper interval of frequencies (in Hz), or a pattern to calculate a interval (as octaves). For the last, see \link{freq.bands} function for details.
-#' @param fdom.int Vector with length two. Vector with length two with lower and upper interval of frequencies (in Hz) to find the dominant frequency. This frequency will be used as the center the interval only if a pattern is specified in \code{freq.interval}.
-#' @param wl Explain.
-#' @param ovlp Explain.
-#' @param CalibPosition Missing
-#' @param CalibValue Canbe a value to apply of the ref value from a calib signal (specified by CalibPosition).
-#' @param freq.weight Character. Argument passed to dBweight to indicate the weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See dBweight for details. (By default: "none")
-#' @param ref Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)
-#' @param progressbar Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})
+#' @param files Specifies audio file(s) to be analyzed. It can be set to "wd" to select all ".wav" files in the work directory, a single file name, a character vector with multiple file names, a Wave object, or a list of Wave objects (by default "wd"). Only ".wav" files are accepted.
+#' @param channel Character. Choose “left” or “right” channel. Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} (by default "left").
+#' @param from Numeric. Specifies the start time (in seconds) of the segment to analyze. It can also be relative to the end of the file (in negative values). See examples for details.
+#' @param to Numeric. Specifies the end time (in seconds) of the segment to analyze. It can also be relative to the beginning of the file (in negative values). See examples for more details.
+#' @param freq.interval Specifies the frequency interval for computing the RMS. It can be a vector of length two, with the lower and upper frequency bounds (in Hz), or a pattern to calculate a interval (e.g., octaves). For more details, refer to \link{freq.bands}.
+#' @param fdom.int A vector of length two specifying the lower and upper frequency bounds (in Hz) to determine the dominant frequency. This frequency will be used as the center of the interval only if a pattern is specified in \code{freq.interval}.
+#' @param wl Numeric. Window length for the analysis. It must be a even number of points (by default 512).
+#' @param ovlp Numeric. Overlap percentage between two successive windows (by default 50). Argument passed to \link[seewave]{meanspec} function from \link[seewave]{seewave}.
+#' @param CalibPosition Numeric. Specifies the calibration position. It can be a negative (relative to the sound file duration) or a positive value, or a data.frame containing these combinations. This parameter is used in conjunction with \code{CalibValue}.
+#' @param CalibValue Numeric. Canbe a value to apply of the ref value from a calib signal (specified by CalibPosition).
+#' @param freq.weight Character. Defines the weighting curve for the analysis, passed to the \link[seewave]{dBweight} function. Accepted values are "A", "B", "C", "D", "ITU", and "none" (by default "none"). See \link[seewave]{dBweight} for details.
+#' @param ref Numeric. The reference value for dB conversion. For sound in water, the common reference is 1 µPa, and for sound in air,it is 20 µPa (by default 20).
+#' @param progressbar Logical. Set to \code{TRUE} to display a progress bar showing elapsed time and the last completed file number, or \code{FALSE} to hide it (default \code{TRUE}).
 #'
 #' @details
 #' ESCREVER
