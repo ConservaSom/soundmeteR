@@ -7,7 +7,7 @@
 #' @param na.rm Logical. Argument passed to \code{\link[base]{mean}}. If \code{TRUE} removes NA (By default \code{FALSE}).
 #'
 #' @details This function converts the decibels data to linear values using the \code{\link{dBtoLinear}} function, computes the Root Mean Square (rms), and then converts the result back to decibels using the \code{\link{LineartodB}} function.
-#' @details This function s adapted from the \code{\link[seewave]{meandB}} and \code{\link[seewave]{rms}} functions from \code{\link[seewave]{seewave}} package. See their documentation for more details.
+#' @details This function was adapted from the \code{\link[seewave]{meandB}} and \code{\link[seewave]{rms}} functions from \code{\link[seewave]{seewave}} package. See their documentation for more details.
 #'
 #' @return A numeric value that representing the root mean square of x.
 #'

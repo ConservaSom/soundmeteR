@@ -17,14 +17,12 @@
 #' @param outname Character. If \code{saveresults} is \code{TRUE}, specifies a name to append to the file name in the txt file (by default \code{NULL}).
 #' @param progressbar Logical. Set \code{TRUE} to display a progress bar showing elapsed time and the last completed file number, or \code{FALSE} to hide it (default \code{TRUE}).
 #'
-#' @details Caution: Caution: Ensure that the audio file has a duration with whole second values to avoid bugs. For example: 35s, 60s, 19s. By default, the function will truncate your audio file to the next whole second.
+#' @details Caution: Ensure that the audio file has a duration with whole second values to avoid bugs. For example: 35s, 60s, 19s. By default, the function will truncate your audio file to the next whole second.
 #' @details This function only works with mono audio files, and the audio must have a sampling rate of at least 44,100 Hz.
 #' @details If you are working with decibels at full scale (dBFS), we recommend setting \code{ref=1} so the results will be relative to 0 dBFS.
 #'
 #' @references Power spectrum adapted from: Carcagno, S. 2013. Basic Sound Processing with R [Blog post]. Retrieved from http://samcarcagno.altervista.org/blog/basic-sound-processing-r/
 #' @references Miyara, F. 2017. Software-Based Acoustical Measurements. Springer. 429 pp. DOI: 10.1007/978-3-319-55871-4
-#'
-#' @return ESCREVER
 #'
 #' @examples
 #' data(tham)

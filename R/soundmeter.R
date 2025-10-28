@@ -19,8 +19,6 @@
 #'
 #' @details If your reference signal is in a separate file, we recommend obtaining the \code{CalibValue} using the \link{leqbands} function. Examples in the documentation provide further details.
 #'
-#' @return ESCREVER
-#'
 #' @examples
 #' data("tham")
 #' soundmeter(tham, CalibValue = 130.24, tw = "slow") # slow time window with calib value

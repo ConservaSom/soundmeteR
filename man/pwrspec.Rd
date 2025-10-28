@@ -30,7 +30,12 @@ pwrspec(
 \item{ref}{Numeric. The reference value for dB conversion. For sound in water, the common reference is 1 µPa, and for sound in air,it is 20 µPa (by default 1).}
 }
 \value{
-This function returns a data.frame with Frequency (Hz) and Intensity (microPa) of the file.
+A data.frame with columns:
+\itemize{
+  \item Freq.Hz: numeric, frequency in Hertz
+  \item Amp.microPa: numeric, amplitude in µPa (present when res.scale = "microPa")
+  \item Amp.dB: numeric, amplitude in dB SPL (present when res.scale = "dB")
+}
 }
 \description{
 This functions computes a power spectrum from a sound file.

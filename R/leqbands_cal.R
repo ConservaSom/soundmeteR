@@ -1,6 +1,6 @@
 #' leqbands analysis for audiofiles with reference signal
 #'
-#' @description This function passes the parameters to \code{\link{leqbands}}to automate the calibration process and return spectral analysis results in dB SPL.
+#' @description This function passes the parameters to \code{\link{leqbands}} to automate the calibration process and return spectral analysis results in dB SPL.
 #'
 #' @param files Specifies audio file(s) to be analyzed. It can be set to "wd" to select all ".wav" files in the work directory, a single file name, a character vector with multiple file names, a Wave object, or a list of Wave objects (by default "wd"). Only ".wav" files are accepted.
 #' @param channel Character. Choose “left” or “right” channel. Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} (by default "left").
@@ -15,17 +15,9 @@
 #' @param outname Character. If \code{saveresults} is \code{TRUE}, specifies a name to append to the file name in the txt file (by default \code{NULL}).
 #' @param progressbar Logical. Set \code{TRUE} to display a progress bar showing elapsed time and the last completed file number, or \code{FALSE} to hide it (default \code{TRUE}).
 #'
-#' @details   To use this function, the audio file must follow this structure: 2 seconds of silence, folowed by a reference signal with a known SPL; then another 2 seconds of silence, followed by the sound to be analyzed.
-#' @details   The duration of the reference signal must be specified (in seconds) on the \code{SignalDur} argument and his value (in dB SPL) on the \code{refValue} argument.
-#'
-#' @return ESCREVER
-#'
 #' @seealso \code{\link{leqbands}}
 #'
 #' @export
-
-#Coisas para fazer:
-#Pensar ao invés de usar um trecho da gravação para calibrar usar um arquivo externo.
 
 
 leqbands_cal <- function(files="wd", channel="left", from=0, to=Inf,

@@ -50,9 +50,6 @@ soundmeter(
 
 \item{progressbar}{Logical. Set to \code{TRUE}) to display a progress bar showing elapsed time and the last completed file number, or \code{FALSE} to hide it (default is \code{TRUE}).}
 }
-\value{
-ESCREVER
-}
 \description{
 Funtion that performs sound meter measurements.
 }

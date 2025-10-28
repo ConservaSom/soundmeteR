@@ -16,7 +16,6 @@
 #'
 #' @details This function split your audiofile into smaller segments, defined as \code{fast} (0.125s) and \code{slow} (1s), and analyze each one using the \code{\link{leqbands}} function.
 #'
-#' @return A numeric vector containing the results of the analysis.
 #'
 #' @seealso \code{\link{leqbands}}, \code{\link{soundmeter}}
 #'

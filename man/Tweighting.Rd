@@ -40,9 +40,6 @@ Tweighting(
 
 \item{Leq.calib}{Numeric. Specifies the sound pressure level (in dB SPL) for the signal in the audio file (by default NULL). Cannot be set if Calib.value is specified.}
 }
-\value{
-A numeric vector containing the results of the analysis.
-}
 \description{
 Escrever descrição
 }

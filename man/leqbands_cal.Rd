@@ -44,16 +44,8 @@ leqbands_cal(
 
 \item{progressbar}{Logical. Set \code{TRUE} to display a progress bar showing elapsed time and the last completed file number, or \code{FALSE} to hide it (default \code{TRUE}).}
 }
-\value{
-ESCREVER
-}
 \description{
-This function passes the parameters to \code{\link{leqbands}}to automate the calibration process and return spectral analysis results in dB SPL.
-}
-\details{
-To use this function, the audio file must follow this structure: 2 seconds of silence, folowed by a reference signal with a known SPL; then another 2 seconds of silence, followed by the sound to be analyzed.
-
-The duration of the reference signal must be specified (in seconds) on the \code{SignalDur} argument and his value (in dB SPL) on the \code{refValue} argument.
+This function passes the parameters to \code{\link{leqbands}} to automate the calibration process and return spectral analysis results in dB SPL.
 }
 \seealso{
 \code{\link{leqbands}}

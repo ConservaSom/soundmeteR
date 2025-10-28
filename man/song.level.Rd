@@ -47,14 +47,8 @@ song.level(
 
 \item{progressbar}{Logical. Set to \code{TRUE} to display a progress bar showing elapsed time and the last completed file number, or \code{FALSE} to hide it (default \code{TRUE}).}
 }
-\value{
-ESCREVER
-}
 \description{
 RMS (Root Mean Square) from a sample of a sound file.
-}
-\details{
-ESCREVER
 }
 \examples{
 song.level(tham, freq.interval=c(22, 20000))

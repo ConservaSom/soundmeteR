@@ -44,14 +44,11 @@ leqbands(
 
 \item{progressbar}{Logical. Set \code{TRUE} to display a progress bar showing elapsed time and the last completed file number, or \code{FALSE} to hide it (default \code{TRUE}).}
 }
-\value{
-ESCREVER
-}
 \description{
 Function to comput the Equivalent Level (Leq) across octaves or one-third octaves.
 }
 \details{
-Caution: Caution: Ensure that the audio file has a duration with whole second values to avoid bugs. For example: 35s, 60s, 19s. By default, the function will truncate your audio file to the next whole second.
+Caution: Ensure that the audio file has a duration with whole second values to avoid bugs. For example: 35s, 60s, 19s. By default, the function will truncate your audio file to the next whole second.
 
 This function only works with mono audio files, and the audio must have a sampling rate of at least 44,100 Hz.
 

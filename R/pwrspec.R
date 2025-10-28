@@ -10,7 +10,12 @@
 #' @param res.scale Character. Specifies the scale for adjusting the power spectrum amplitude. Use \code{microPa} for linear values in µPa, or \code{dB} for decibel values in dB SPL (by default \code{microPa}).
 #' @param ref Numeric. The reference value for dB conversion. For sound in water, the common reference is 1 µPa, and for sound in air,it is 20 µPa (by default 1).
 #'
-#' @return This function returns a data.frame with Frequency (Hz) and Intensity (microPa) of the file.
+#' @return A data.frame with columns:
+#' \itemize{
+#'   \item Freq.Hz: numeric, frequency in Hertz
+#'   \item Amp.microPa: numeric, amplitude in µPa (present when res.scale = "microPa")
+#'   \item Amp.dB: numeric, amplitude in dB SPL (present when res.scale = "dB")
+#' }
 #'
 #' @references Power spectrum adapted from: Carcagno, S. 2013. Basic Sound Processing with R [Blog post]. Retrieved from http://samcarcagno.altervista.org/blog/basic-sound-processing-r/
 #' @references Miyara, F. 2017. Software-Based Acoustical Measurements. Springer. 429 pp. DOI: 10.1007/978-3-319-55871-4

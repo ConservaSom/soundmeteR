@@ -17,10 +17,6 @@
 #' @param ref Numeric. The reference value for dB conversion. For sound in water, the common reference is 1 µPa, and for sound in air,it is 20 µPa (by default 20).
 #' @param progressbar Logical. Set to \code{TRUE} to display a progress bar showing elapsed time and the last completed file number, or \code{FALSE} to hide it (default \code{TRUE}).
 #'
-#' @details
-#' ESCREVER
-#'
-#' @return ESCREVER
 #'
 #' @examples
 #' song.level(tham, freq.interval=c(22, 20000))

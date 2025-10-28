@@ -22,7 +22,7 @@ Function to compute the root mean square (RMS) of values in decibels (dB).
 \details{
 This function converts the decibels data to linear values using the \code{\link{dBtoLinear}} function, computes the Root Mean Square (rms), and then converts the result back to decibels using the \code{\link{LineartodB}} function.
 
-This function s adapted from the \code{\link[seewave]{meandB}} and \code{\link[seewave]{rms}} functions from \code{\link[seewave]{seewave}} package. See their documentation for more details.
+This function was adapted from the \code{\link[seewave]{meandB}} and \code{\link[seewave]{rms}} functions from \code{\link[seewave]{seewave}} package. See their documentation for more details.
 }
 \examples{
 rms.dB(c(80,60,65,62))
