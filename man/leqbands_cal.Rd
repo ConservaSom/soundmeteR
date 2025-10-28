@@ -20,38 +20,38 @@ leqbands_cal(
 )
 }
 \arguments{
-\item{files}{The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")}
+\item{files}{Specifies audio file(s) to be analyzed. It can be set to "wd" to select all ".wav" files in the work directory, a single file name, a character vector with multiple file names, a Wave object, or a list of Wave objects (by default "wd"). Only ".wav" files are accepted.}
 
-\item{channel}{Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.}
+\item{channel}{Character. Choose “left” or “right” channel. Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} (by default "left").}
 
-\item{from}{Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.}
+\item{from}{Numeric. The start time (in seconds) of the segment to analyze. It can also be relative to the end of the file (in negative values). See examples for details.}
 
-\item{to}{Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.}
+\item{to}{Numeric. The end time (in seconds) of the segment to analyze. It can also be relative to the beginning of the file (in negative values). See examples for details.}
 
-\item{CalibPosition}{anda de mãos dadas com calib value. Pode ser negativo, positivo ou data.frame com essas combinações}
+\item{CalibPosition}{Numeric. Specifies the calibration position. It can be a negative (relative to the sound file duration) or a positive value, or a data.frame containing these combinations. This parameter is used in conjunction with \code{CalibValue}.}
 
-\item{CalibValue}{Anda de mãos dadas com calib position. Quando tem o position, ele é considerado o valor de referência, quando não tem o position, ele é considerado o valor de calibração.}
+\item{CalibValue}{Numeric. Specifies the calibration value. If \code{CalibPosition} is provided, it serves as the reference value. If \code{CalibPosition} is absent, \code{CalibValue} is used as the calibration reference.}
 
-\item{ref}{Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)}
+\item{ref}{Numeric. The reference value for dB conversion. For sound in water, the common reference is 1 µPa, and for sound in air,it is 20 µPa (by default 20).}
 
-\item{weighting}{Character. Indicate the weighting curve to use on the anlysis. A, B, C and none are supported. (By default: "none")}
+\item{weighting}{Character. Defines the weighting curve for the analysis, passed to the \link[seewave]{dBweight} function. Accepted values are "A", "B", "C", "D", "ITU", and "none" (by default "none"). See \link[seewave]{dBweight} for details.}
 
-\item{bands}{Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")}
+\item{bands}{Character. Use "octaves" for octave bands or "thirds" for one-third octave bands intervals (by default "thirds").}
 
-\item{saveresults}{Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})}
+\item{saveresults}{Logical. Set to \code{TRUE} to save the results to a .txt file (by default \code{FALSE}).}
 
-\item{outname}{Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By defaulf: \code{NULL})}
+\item{outname}{Character. If \code{saveresults} is \code{TRUE}, specifies a name to append to the file name in the txt file (by default \code{NULL}).}
 
-\item{progressbar}{Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})}
+\item{progressbar}{Logical. Set \code{TRUE} to display a progress bar showing elapsed time and the last completed file number, or \code{FALSE} to hide it (default \code{TRUE}).}
 }
 \value{
 ESCREVER
 }
 \description{
-This function passes the parameters to \code{\link{leqbands}} to automatize the calibration and return spectral analysis with dB SPL results.
+This function passes the parameters to \code{\link{leqbands}}to automate the calibration process and return spectral analysis results in dB SPL.
 }
 \details{
-To use this function, the audio file must begin with 2 seconds of silence, followed by a reference signal with known SPL, followed by another 2 seconds of silence, and the following sound to analyze.
+To use this function, the audio file must follow this structure: 2 seconds of silence, folowed by a reference signal with a known SPL; then another 2 seconds of silence, followed by the sound to be analyzed.
 
 The duration of the reference signal must be specified (in seconds) on the \code{SignalDur} argument and his value (in dB SPL) on the \code{refValue} argument.
 }

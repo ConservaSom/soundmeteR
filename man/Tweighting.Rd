@@ -4,54 +4,74 @@
 \alias{Tweighting}
 \title{Time Weighting of a Audiofile}
 \usage{
-Tweighting(file, window = "fast", Leq.calib = NULL, ...)
+Tweighting(
+  file,
+  window = "fast",
+  channel = "left",
+  weighting = "none",
+  bands = "thirds",
+  ref = 20,
+  Calib.value = NULL,
+  bandpass = c(0, Inf),
+  from = 0,
+  to = Inf
+)
 }
 \arguments{
 \item{file}{Wave object}
 
-\item{window}{Character. Wich time window should be used. 'fast' or 'slow'
-are accepted. (by default: "fast")}
+\item{window}{Character. Specifies the time window to be used. Accepted values are \code{fast} and \code{slow} (default \code{fast}).}
 
-\item{Leq.calib}{Numeric. The sound pressure level (in dB SPL) that the
-signal in the audio file must have (by default: NULL). This parameter is
-passed to \code{\link{leqbands}} function.}
+\item{channel}{Character. Choose “left” or “right” channel. Argument passed to mono function from tuneR (by default "left").}
 
-\item{...}{Further arguments passed to \code{\link{leqbands}}.}
+\item{weighting}{Character. Specifies the end time (in seconds) of the segment to analyze. It can also be relative to the beginning of the file (in negative values). See examples for more details.}
+
+\item{bands}{Character. Use "octaves" for octave bands or "thirds" for one-third octave bands intervals (by default "thirds").}
+
+\item{ref}{Numeric. Defines the weighting curve for the analysis, passed to the dBweight function. Accepted values are "A", "B", "C", "D", "ITU", and "none" (by default "none"). See dBweight for details.}
+
+\item{Calib.value}{Numeric. Specifies the calibration value (by default NULL). Cannot be set if Leq.calib is specified.}
+
+\item{bandpass}{Numeric. A vector of length two specifying the lower and upper limits of the bandpass interval in Hz.}
+
+\item{from}{Numeric. Specifies the start time (in seconds) of the segment to analyze. It can also be relative to the end of the file (in negative values). See examples for details.}
+
+\item{to}{Numeric. Specifies the end time (in seconds) of the segment to analyze. It can also be relative to the beginning of the file (in negative values). See examples for more details.}
+
+\item{Leq.calib}{Numeric. Specifies the sound pressure level (in dB SPL) for the signal in the audio file (by default NULL). Cannot be set if Calib.value is specified.}
 }
 \value{
-A numeric vector
+A numeric vector containing the results of the analysis.
 }
 \description{
 Escrever descrição
 }
 \details{
-This function split your audiofile in smaller files defined as
-    \code{fast} (0.125s) and \code{slow} (1s) and analyze each one with
-    \code{\link{leqbands}} function.
+This function split your audiofile into smaller segments, defined as \code{fast} (0.125s) and \code{slow} (1s), and analyze each one using the \code{\link{leqbands}} function.
 }
 \examples{
-#creating an example sound file
-som=sine(1000, duration = 44500)
+# creating an example sound file
+som <- sine(1000, duration = 44500)
 
-#default options without calibration (results in dBFS)
+# default options without calibration (results in dBFS)
 Tweighting(som)
 
-#Simulation of a calib signal with a Leq of 94dB in the field ####
-#fast
-Tweighting(som, window = "fast", bands="octaves", Leq.calib=94)
-#slow
-Tweighting(som, window = "slow", bands="octaves", Leq.calib=94)
+# Simulation of a calib signal with a Leq of 94dB in the field ####
+# fast
+Tweighting(som, window = "fast", bands = "octaves", Leq.calib = 94)
+# slow
+Tweighting(som, window = "slow", bands = "octaves", Leq.calib = 94)
 
-#Using the result of the simulation above to calibrate the sound and output
-#fast
-Tweighting(som, window = "fast", bands="octaves", Calib.value=309.67)
-#slow
-Tweighting(som, window = "slow", bands="octaves", Calib.value=309.67)
+# Using the result of the simulation above to calibrate the sound and output
+# fast
+Tweighting(som, window = "fast", bands = "octaves", Calib.value = 309.67)
+# slow
+Tweighting(som, window = "slow", bands = "octaves", Calib.value = 309.67)
 
-#With tham data
+# With tham data
 data(tham)
-Tweighting(tham, window = "fast", bands="octaves", Calib.value=130.24) #fast
-Tweighting(tham, window = "slow", bands="octaves", Calib.value=130.24) #slow
+Tweighting(tham, window = "fast", bands = "octaves", Calib.value = 130.24) # fast
+Tweighting(tham, window = "slow", bands = "octaves", Calib.value = 130.24) # slow
 
 }
 \seealso{

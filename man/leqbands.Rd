@@ -2,7 +2,7 @@
 % Please edit documentation in R/leqbands.R
 \name{leqbands}
 \alias{leqbands}
-\title{Equivalent Level per octaves or one-thirds octaves}
+\title{Equivalent Level per octaves or one-third octaves}
 \usage{
 leqbands(
   files = "wd",
@@ -20,44 +20,42 @@ leqbands(
 )
 }
 \arguments{
-\item{files}{The audiofile to be analyzed. Can be "wd" to get all ".wav" files on the work directory, a file name (or a character containing a list of filenames) that exist in the work directory (only ".wav" files accepted), or an Wave object (or a list containing more than one Wave object). (By default: "wd")}
+\item{files}{Specifies audio file(s) to be analyzed. It can be set to "wd" to select all ".wav" files in the work directory, a single file name, a character vector with multiple file names, a Wave object, or a list of Wave objects (by default "wd"). Only ".wav" files are accepted.}
 
-\item{channel}{Character. Choose “left” or “right” channel. Argument passe to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.}
+\item{channel}{Character. Choose “left” or “right” channel (by default "left"). Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.}
 
-\item{from}{Numeric. The start time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.}
+\item{from}{Numeric. The start time (in seconds) of the segment to analyze. It can also be relative to the end of the file (in negative values). See examples for details.}
 
-\item{to}{Numeric. The end time in seconds of the sample you want to analyze. Could also be relative to the end of the file (in negative values), see examples.}
+\item{to}{Numeric. The end time (in seconds) of the segment to analyze. Could also be relative to the beginning of the file (in negative values). See examples for details.}
 
-\item{weighting}{Character. Argument passed to \code{\link[seewave]{dBweight}} to indicate the weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See \code{\link[seewave]{dBweight}} for details. (By default: "none")}
+\item{weighting}{Character. Defines the weighting curve for the analysis, passed to the \code{\link[seewave]{dBweight}} function. Accepted values are "A", "B", "C", "D", "ITU", and "none" (by default "none"). See \code{\link[seewave]{dBweight}} for details.}
 
-\item{bands}{Character. Choose the type of frequency band of the output. "octaves" to octaves bands intervals or "thirds" to one-third octaves bands intervals. (by deafault: "thirds")}
+\item{bands}{Character. Use "octaves" for octave bands or "thirds" for one-third octave bands intervals (by default "thirds").}
 
-\item{ref}{Numerical. The reference value for dB conversion. For sound in water, the common is 1 microPa, and for sound on air 20 microPa. (By default 20)}
+\item{ref}{Numeric. The reference value for dB conversion. For sound in water, the common reference is 1 µPa, and for sound in air,it is 20 µPa (by default 20).}
 
-\item{Leq.calib}{Numerical. The sound pressure level (in dB SPL) that the signal in the audio file must have (by default: \code{NULL}). Can not be set if \code{Calib.value} is also set.}
+\item{Leq.calib}{Numeric. Specifies the sound pressure level (in dB SPL) for the signal in the audio (by default \code{NULL}). Cannot be set if \code{Calib.value} is specified.}
 
-\item{Calib.value}{Numerical. The calibration value returned from the analysis of a reference signal using \code{Leq.calib} (by default: \code{NULL}). Can not be set if \code{Leq.calib} is also set.}
+\item{Calib.value}{Numeric. Specifies the calibration value (by default \code{NULL}). Can not be set if \code{Leq.calib} is specified.}
 
-\item{saveresults}{Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})}
+\item{saveresults}{Logical. Set to \code{TRUE}  to save the results to a .txt file (by default \code{FALSE}).}
 
-\item{outname}{Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})}
+\item{outname}{Character. If \code{saveresults} is \code{TRUE}, specifies a name to append to the file name in the txt file (by default \code{NULL}).}
 
-\item{progressbar}{Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})}
+\item{progressbar}{Logical. Set \code{TRUE} to display a progress bar showing elapsed time and the last completed file number, or \code{FALSE} to hide it (default \code{TRUE}).}
 }
 \value{
 ESCREVER
 }
 \description{
-ESCREVER
+Function to comput the Equivalent Level (Leq) across octaves or one-third octaves.
 }
 \details{
-Caution: You need to use an audiofile with entire values of seconds of duration to avoid bugs. Example: 35s, 60s, 19s. By default, the function will trunc your audiofile to the next entire value of seconds.
+Caution: Caution: Ensure that the audio file has a duration with whole second values to avoid bugs. For example: 35s, 60s, 19s. By default, the function will truncate your audio file to the next whole second.
 
-These function works only with mono audiofiles.
+This function only works with mono audio files, and the audio must have a sampling rate of at least 44,100 Hz.
 
-The audio files need to have at least 44100Hz of sampling rate.
-
-If you intend to work with decibels at full scale (dBFS), we recommend setting \code{ref=1}. With this, your results will be relative to 0 dBFS.
+If you are working with decibels at full scale (dBFS), we recommend setting \code{ref=1} so the results will be relative to 0 dBFS.
 }
 \examples{
 data(tham)
