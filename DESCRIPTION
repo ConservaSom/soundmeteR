@@ -1,7 +1,7 @@
 Type: Package
 Package: soundmeteR
-Title:  R package for calculating sound pressure and intensity levels
-Version: 0.2.0.9003
+Title: R package for calculating sound pressure and intensity levels
+Version: 0.2.0.9004
 Author: Cássio Rachid Simões, Ingrid Maria Denóbile Torres, Gabriel L. M. Rosa, Wilmara Guedes de Lucena, Shaka Nóbrega Marinho Furtado, Marcelo Felgueiras Napoli and Carlos Barros de Araújo
 Maintainer: Cássio Rachid Simões <cassiorachid@gmail.com>
 Description: An R package for sound analysis using octave and one-third octave spectral analysis, with calibration support for obtaining Sound Pressure Level (SPL) and Sound Intensity Level (SIL).
@@ -11,4 +11,4 @@ License: GPL (>=3)
 Depends: R (>= 3.5.0), tuneR, seewave, dplyr, progress
 Encoding: UTF-8
 LazyData: TRUE
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
