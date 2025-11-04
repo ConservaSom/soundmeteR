@@ -41,9 +41,6 @@ Tweighting(
 \item{Leq.calib}{Numeric. Specifies the sound pressure level (in dB SPL) for the signal in the audio file (by default NULL). Cannot be set if Calib.value is specified.}
 }
 \description{
-Escrever descrição
-}
-\details{
 This function split your audiofile into smaller segments, defined as \code{fast} (0.125s) and \code{slow} (1s), and analyze each one using the \code{\link{leqbands}} function.
 }
 \examples{

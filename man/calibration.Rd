@@ -29,5 +29,5 @@ calibration(
 \item{ref}{Numeric. The reference value for dB conversion. For sound in water, the common reference is 1 µPa, and for sound in air,it is 20 µPa (by default 20).}
 }
 \description{
-ESCREVER
+Function to compute the calibration factor from a reference signal, converting measured levels from decibels at full scale (dBFS) to absolute values (dB) for subsequent analyses.
 }
