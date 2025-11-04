@@ -1,6 +1,6 @@
 #' Time Weighting of a Audiofile
 #'
-#' @description Escrever descrição
+#' @description This function split your audiofile into smaller segments, defined as \code{fast} (0.125s) and \code{slow} (1s), and analyze each one using the \code{\link{leqbands}} function.
 #'
 #' @param file Wave object
 #' @param window Character. Specifies the time window to be used. Accepted values are \code{fast} and \code{slow} (default \code{fast}).
@@ -13,9 +13,6 @@
 #' @param to Numeric. Specifies the end time (in seconds) of the segment to analyze. It can also be relative to the beginning of the file (in negative values). See examples for more details.
 #' @param weighting Character. Specifies the end time (in seconds) of the segment to analyze. It can also be relative to the beginning of the file (in negative values). See examples for more details.
 #' @param ref Numeric. Defines the weighting curve for the analysis, passed to the dBweight function. Accepted values are "A", "B", "C", "D", "ITU", and "none" (by default "none"). See dBweight for details.
-#'
-#' @details This function split your audiofile into smaller segments, defined as \code{fast} (0.125s) and \code{slow} (1s), and analyze each one using the \code{\link{leqbands}} function.
-#'
 #'
 #' @seealso \code{\link{leqbands}}, \code{\link{soundmeter}}
 #'
