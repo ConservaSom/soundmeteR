@@ -2,7 +2,7 @@
 #'
 #' @name calibration
 #'
-#' @description ESCREVER
+#' @description Function to compute the calibration factor from a reference signal, converting measured levels from decibels at full scale (dBFS) to absolute values (dB) for subsequent analyses.
 #'
 #' @param file Specifies audio file to be analyzed. It can be a single file name on the computer or a Wave object on the environment (by default NULL). Only ".wav" files are accepted.
 #' @param channel Character. Choose “left” or “right” channel (by default "left"). Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} to extract the desired channel.
