@@ -2,6 +2,7 @@
 
 export(LineartodB)
 export(Tweighting)
+export(calibration)
 export(dBtoLinear)
 export(freq.bands)
 export(leqbands)
