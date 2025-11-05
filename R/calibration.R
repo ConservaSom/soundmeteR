@@ -27,7 +27,7 @@ calibration <- function(
         stop("leqsignal must be a positive value")
     }
 
-    if(files == "wd"){
+    if(is.character(file) && file == "wd"){
       stop("When using calibration function, file must be a single file name or a Wave object.", call. = F)
     }
 
