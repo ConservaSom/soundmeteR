@@ -7,22 +7,22 @@
 sumdB(x, level = "IL", na.rm = FALSE)
 }
 \arguments{
-\item{x}{Numerical. A numeric vector or matrix with dB values.}
+\item{x}{Numerical. A vector or a matrix with decibels values (dB).}
 
-\item{level}{Character. Specify in what scale your data is. \code{SPL} for Sound Pressute Level or \code{IL} for Intensity Level. (By default \code{SPL})}
+\item{level}{Character. Specify the factor for conversion. Use \code{SPL} (Sound Pressure Level) for amplitude-base data, with factor 20, or \code{IL} (Intensity Level) for power-base data, with fator 10 (By default \code{IL}).}
 
-\item{na.rm}{Logical. Argument passed to \code{\link[base]{sum}}. Should NA be removed? (By default FALSE)}
+\item{na.rm}{Logical. Argument passed to \code{\link[base]{sum}}. If \code{TRUE} removes NA (by default \code{FALSE}).}
 }
 \value{
-A numeric value that represents the sum of x.
+A numeric value representing the sum of x.
 }
 \description{
 Sum with dB values
 }
 \details{
-This function computes the sum of dB values.
+Function to compute the sum of decibels values (dB).
 
-This function converts your dB data to linear values (through \code{\link{dBtoLinear}} function), compute the sum, and converts the result back to dB (through \code{\link{LineartodB}} function).
+This function converts the decibels data to linear values using the \code{\link{dBtoLinear}} function, computes the sum, and then converts the result back to decibels using the \code{\link{LineartodB}} function.
 }
 \examples{
 sumdB(c(80,60,65,62))

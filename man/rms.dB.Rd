@@ -7,22 +7,22 @@
 rms.dB(x, level = "SPL", na.rm = FALSE)
 }
 \arguments{
-\item{x}{Numerical. A numeric vector or a numeric matrix with dB values.}
+\item{x}{Numeric. A vector or a matrix with decibels values (dB).}
 
-\item{level}{Character. Specify in what scale your data is. \code{SPL} for Sound Pressute Level or \code{IL} for Intensity Level. (By default \code{SPL})}
+\item{level}{Character. Specify the factor for conversion. Use \code{SPL} (Sound Pressure Level) for amplitude-base data, with factor 20, or \code{IL} (Intensity Level) for power-base data, with fator 10 (By default \code{SPL}).}
 
-\item{na.rm}{Logical. Argument passed to \code{\link[base]{mean}}. Should NA be removed? (By default FALSE)}
+\item{na.rm}{Logical. Argument passed to \code{\link[base]{mean}}. If \code{TRUE} removes NA (By default \code{FALSE}).}
 }
 \value{
-A numeric value that represents the root mean square of x.
+A numeric value that representing the root mean square of x.
 }
 \description{
 Function to compute the root mean square (RMS) of values in decibels (dB).
 }
 \details{
-This function converts your dB data to linear values (through \code{\link{dBtoLinear}} function), compute the Root Mean Square (rms), and converts the result back to dB (through \code{\link{LineartodB}} function).
+This function converts the decibels data to linear values using the \code{\link{dBtoLinear}} function, computes the Root Mean Square (rms), and then converts the result back to decibels using the \code{\link{LineartodB}} function.
 
-This function was adapted from \code{\link[seewave]{meandB}} and \code{\link[seewave]{rms}} functions from \code{\link[seewave]{seewave}} package. See their help for more details.
+This function was adapted from the \code{\link[seewave]{meandB}} and \code{\link[seewave]{rms}} functions from \code{\link[seewave]{seewave}} package. See their documentation for more details.
 }
 \examples{
 rms.dB(c(80,60,65,62))

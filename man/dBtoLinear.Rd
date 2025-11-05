@@ -7,20 +7,20 @@
 dBtoLinear(x, factor="IL", ref=1)
 }
 \arguments{
-\item{x}{Numerical. A numeric vector or a numeric matrix with dB values.}
+\item{x}{Numeric. A numeric vector or a numeric matrix with dB values.}
 
-\item{factor}{Character. Specify in what factor the function should use to convert your data. \code{SPL} (Sound Pressure Level) for amplitude like data (factor \code{20}) or \code{IL} (Intensity Level) for power like (fator \code{10}). (By default \code{IL})}
+\item{factor}{Character. Specify the factor to use for conversion. Use \code{SPL} (Sound Pressure Level) for amplitude-base data, with factor \code{20}, or \code{IL} (Intensity Level) for power-base data, with fator \code{10} (by default "IL").}
 
-\item{ref}{Numerical. Reference value for conversion. For Sound in water the ref is 1 µPa and on air 20 µPa. (By default 1)}
+\item{ref}{Numeric. The reference value for dB conversion. For sound in water, the common reference is 1 µPa, and for sound in air,it is 20 µPa (by default 1).}
 }
 \value{
-The same object of the input with the converted values.
+The same input object with the values converted.
 }
 \description{
-Function to convert dB scales. The conversion can be made either from dB to µPa (\code{dBtoLinear}) or from µPa to dB (\code{\link{LineartodB}}).
+Function to convert decibels (dB) to linear values (µPa).
 }
 \details{
-For details about the factor choice, we recommend the reading of \href{https://dspillustrations.com/pages/posts/misc/decibel-conversion-factor-10-or-factor-20.html}{this} web page.
+For further details on selecting the appropriate factor, we recommend consulting \href{https://dspillustrations.com/pages/posts/misc/decibel-conversion-factor-10-or-factor-20.html}{this} web page.
 }
 \examples{
 dBtoLinear(c(80,60,65,62))

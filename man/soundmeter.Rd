@@ -2,10 +2,11 @@
 % Please edit documentation in R/soundmeter.R
 \name{soundmeter}
 \alias{soundmeter}
-\title{Function that makes sound meter alike measurements}
+\title{Sound meter measurements}
 \usage{
 soundmeter(
   files = "wd",
+  channel = "left",
   from = 0,
   to = Inf,
   CalibPosition = NULL,
@@ -14,42 +15,54 @@ soundmeter(
   fw = "none",
   bands = "octaves",
   tw = "fast",
-  progressbar = T,
-  channel = "left",
   saveresults = F,
-  outname = NULL
+  outname = NULL,
+  bandpass = c(0, Inf),
+  progressbar = T
 )
 }
 \arguments{
-\item{CalibPosition}{anda de mãos dadas com calib value. Pode ser negativo, positivo ou data.frame com essas combinações}
+\item{files}{Specifies audio file(s) to be analyzed. It can be set to "wd" to select all ".wav" files in the work directory, a single file name, a character vector with multiple file names, a Wave object, or a list of Wave objects (by default "wd"). Only ".wav" files are accepted.}
 
-\item{CalibValue}{Anda de mãos dadas com calib position. Quando tem o position, ele é considerado o valor de referência, quando não tem o position, ele é considerado o valor de calibração.}
+\item{channel}{Character. Choose “left” or “right” channel. Argument passed to \link[tuneR]{mono} function from \link[tuneR]{tuneR} (by default "left").}
 
-\item{fw}{Character. Argument passed to \code{\link[seewave]{dBweight}} to indicate the frequency weighting curve to use on the anlysis. 'A', 'B', 'C', 'D', 'ITU', and 'none' are supported. See \code{\link[seewave]{dBweight}} for details. (By default: "none")}
+\item{from}{Numeric. Specifies the start time (in seconds) of the segment to analyze. It can also be relative to the end of the file (in negative values). See examples for details.}
 
-\item{tw}{Time weighting}
+\item{to}{Numeric. Specifies the end time (in seconds) of the segment to analyze. It can also be relative to the beginning of the file (in negative values). See examples for more details.}
 
-\item{progressbar}{Logical. Activate or deactivate a progress bar with elapsed time and the last concluded file number. (By default: \code{TRUE})}
+\item{CalibPosition}{Numeric. Specifies the calibration position. It can be a negative (relative to the sound file duration) or a positive value, or a data.frame containing these combinations. This parameter is used in conjunction with \code{CalibValue}.}
 
-\item{channel}{Only "left" or "right" acepted. By default "left"}
+\item{CalibValue}{Numeric. Specifies the calibration value (by default NULL). If "CalibPosition" is provided, it serves as the reference value. If "CalibPosition" is absent, "CalibValue" is used as the calibration reference.}
 
-\item{saveresults}{Logical. Set \code{TRUE} if you want to save a txt file with the results of the function execution. (By default: \code{FALSE})}
+\item{ref}{Numeric. The reference value for dB conversion. For sound in water, the common reference is 1 µPa, and for sound in air, it is 20 µPa (by default 20).}
 
-\item{outname}{Character. If \code{saveresults} is \code{TRUE}, you can specify a name to appear on the txt file name after the default name. (By default: \code{NULL})}
+\item{fw}{Character. Defines the weighting curve for the analysis, passed to the dBweight function. Accepted values are "A", "B", "C", "D", "ITU", and "none" (by default "none"). See  \code{\link[seewave]{dBweight}} for details.}
+
+\item{bands}{Character. Use "octaves" for octave bands or "thirds" for one-third octave bands intervals (by default "thirds").}
+
+\item{tw}{Character. Specifies the time window to be used. Accepted values are "fast" and "slow" (default "fast").}
+
+\item{saveresults}{Logical. Set \code{TRUE} to save the results to a .txt file (by default \code{FALSE}).}
+
+\item{outname}{Character. If \code{saveresults} is \code{TRUE}, specifies a name to append to the file name in the txt file (by default \code{NULL}).}
+
+\item{bandpass}{Numeric. A vector of length two specifying the lower and upper limits of the bandpass interval in Hz.}
+
+\item{progressbar}{Logical. Set to \code{TRUE}) to display a progress bar showing elapsed time and the last completed file number, or \code{FALSE} to hide it (default is \code{TRUE}).}
 }
 \description{
-Function that makes sound meter alike measurements
+Funtion that performs sound meter measurements.
 }
 \details{
-If your reference signal is in a separate file, we recommend you to get the \code{CalibValue} with \link{timbre} function. It's examples provide more details.
+If your reference signal is in a separate file, we recommend obtaining the \code{CalibValue} using the \link{leqbands} function. Examples in the documentation provide further details.
 }
 \examples{
 data("tham")
-soundmeter(tham, CalibValue = 130.24, tw="slow") #slow time window with calib value
-soundmeter(tham, CalibValue = 130.24, tw="fast") #fast
+soundmeter(tham, CalibValue = 130.24, tw = "slow") # slow time window with calib value
+soundmeter(tham, CalibValue = 130.24, tw = "fast") # fast
 
-soundmeter(tham, CalibValue = 130.24, tw="fast", fw="A") #fast with frequency weight
+soundmeter(tham, CalibValue = 130.24, tw = "fast", fw = "A") # fast with frequency weight
 
-soundmeter(tham, CalibValue = NULL, tw="fast", ref=1) #fast time window in dBFS
+soundmeter(tham, CalibValue = NULL, tw = "fast", ref = 1) # fast time window in dBFS
 
 }
